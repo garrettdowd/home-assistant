@@ -1,0 +1,154 @@
+# # N_8266_test
+# - platform: mqtt
+#   state_topic: "clb/sensors/N_8266_test"
+#   name: "N_8266_test Temp"
+#   unit_of_measurement: "°C"
+#   value_template: '{{ value_json.temperature }}'
+
+# - platform: mqtt
+#   state_topic: "clb/sensors/N_8266_test"
+#   name: "N_8266_test Humidity"
+#   unit_of_measurement: "%"
+#   value_template: '{{ value_json.humidity }}'
+
+# H_8266_1
+- platform: mqtt
+  state_topic: "clb/env/H_8266_1/temp"
+  name: "H_8266_1 Temp"
+  unit_of_measurement: "°C"
+
+- platform: mqtt
+  state_topic: "clb/env/H_8266_1/humid"
+  name: "H_8266_1 Humidity"
+  unit_of_measurement: "%"
+
+- platform: mqtt
+  state_topic: "clb/lux/H_8266_1/lux"
+  name: "H_8266_1 Lux"
+  unit_of_measurement: "lux"
+
+# H_8266_2
+- platform: mqtt
+  state_topic: "clb/env/H_8266_2/temp"
+  name: "H_8266_2 Temp"
+  unit_of_measurement: "°C"
+
+- platform: mqtt
+  state_topic: "clb/env/H_8266_2/humid"
+  name: "H_8266_2 Humidity"
+  unit_of_measurement: "%"
+
+# H_8266_3
+- platform: mqtt
+  state_topic: "clb/env/H_8266_3/temp"
+  name: "H_8266_3 Temp"
+  unit_of_measurement: "°C"
+
+- platform: mqtt
+  state_topic: "clb/env/H_8266_3/humid"
+  name: "H_8266_3 Humidity"
+  unit_of_measurement: "%"
+
+# N_8266_4
+- platform: mqtt
+  state_topic: "clb/sensors/N_8266_4"
+  name: "N_8266_4 Temp"
+  unit_of_measurement: "°C"
+  value_template: '{{ value_json.temperature }}'
+
+- platform: mqtt
+  state_topic: "clb/sensors/N_8266_4"
+  name: "N_8266_4 Humidity"
+  unit_of_measurement: "%"
+  value_template: '{{ value_json.humidity }}'
+
+# N_8266_6
+- platform: mqtt
+  state_topic: "clb/sensors/N_8266_6"
+  name: "N_8266_6 Temp"
+  unit_of_measurement: "°C"
+  value_template: '{{ value_json.temperature }}'
+
+- platform: mqtt
+  state_topic: "clb/sensors/N_8266_6"
+  name: "N_8266_6 Humidity"
+  unit_of_measurement: "%"
+  value_template: '{{ value_json.humidity }}'
+
+
+
+
+- platform: darksky
+  name: "Dark Sky"
+  api_key: !secret darksky_key
+  latitude: !secret home_lat
+  longitude: !secret home_long
+  update_interval: "00:02:00"
+  monitored_conditions:
+    - summary
+    - minutely_summary
+    - icon
+    - apparent_temperature
+    - apparent_temperature_max
+    - apparent_temperature_min
+    - humidity
+    - precip_probability
+    - precip_intensity
+    - precip_type
+    - precip_intensity_max
+    - wind_speed
+    - cloud_cover
+    - nearest_storm_distance
+
+# - platform: yr
+#   name: Weather
+#   forecast: 24
+#   monitored_conditions:
+#     - temperature
+#     - symbol
+#     - precipitation
+#     - windSpeed
+#     - humidity
+#     - cloudiness
+
+
+- platform: deluge
+  name: "MasterTower Deluge"
+  host: 192.168.0.4
+  port: 58846
+  username: !secret deluge_user
+  password: !secret deluge_pass
+  monitored_variables:
+    - 'current_status'
+    - 'download_speed'
+    - 'upload_speed'
+
+
+- platform: speedtest
+  minute:
+    - 37
+  hour:
+    - 2
+    # - 6
+    # - 9
+    # - 12
+    # - 15
+    # - 19
+    # - 21
+  monitored_conditions:
+    - ping
+    - download
+    - upload
+
+
+# ########################
+# ## https://github.com/master-kenobi/ha-alarmclock
+
+# - platform: time_date
+#   display_options:
+#     - 'time'
+#     - 'date'
+#     - 'date_time'
+#     - 'time_date'
+#     - 'time_utc'
+# ########################

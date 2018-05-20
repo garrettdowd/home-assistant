@@ -1,0 +1,2037 @@
+################################################
+####
+#### Local Configuration
+####
+#### This can be quite tedious. Attempts were made to make it less so however,
+####  using a Jinja variable to generate the entity_id in a template does not allow 
+####  HA to automatically update the sensor when the related input_number is changed
+####
+#### Time can be saved by limiting the scope of control (i.e. by only setting up input_numbers and sensors for brightness)
+####
+################################################
+
+################################################
+#
+# lights
+#
+################################################
+light:
+  - platform: hyperion
+    host: 192.168.0.20
+
+  - platform: mqtt_json
+    name: "Test Light"
+    state_topic: "clb/lights/N_8266_test"
+    command_topic: "clb/lights/N_8266_test/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, entrance, flash, music, rainbow, clock, array, dinner, movie, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Livingroom Light"
+    state_topic: "clb/lights/N_8266_1"
+    command_topic: "clb/lights/N_8266_1/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, entrance, flash, music, rainbow, clock, array, dinner, movie, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Prep Light"
+    state_topic: "clb/lights/N_8266_3"
+    command_topic: "clb/lights/N_8266_3/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Kitchen Light"
+    state_topic: "clb/lights/N_8266_2"
+    command_topic: "clb/lights/N_8266_2/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Bedroom Light"
+    state_topic: "clb/lights/N_8266_4"
+    command_topic: "clb/lights/N_8266_4/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "iMac Light"
+    state_topic: "clb/lights/N_8266_11"
+    command_topic: "clb/lights/N_8266_11/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Closet Light"
+    state_topic: "clb/lights/N_8266_7"
+    command_topic: "clb/lights/N_8266_7/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Office Light"
+    state_topic: "clb/lights/N_8266_5"
+    command_topic: "clb/lights/N_8266_5/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Desk Light"
+    state_topic: "clb/lights/N_8266_8"
+    command_topic: "clb/lights/N_8266_8/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Monitor Light"
+    state_topic: "clb/lights/N_8266_10"
+    command_topic: "clb/lights/N_8266_10/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt_json
+    name: "Bathroom Light"
+    state_topic: "clb/lights/N_8266_6"
+    command_topic: "clb/lights/N_8266_6/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt
+    name: "Server Light"
+    command_topic: "clb/lights/H_8266_2/onoff/set"
+    state_topic: "clb/lights/H_8266_2/onoff"
+    brightness_command_topic: "clb/lights/H_8266_2/brightness/set"
+    brightness_state_topic: "clb/lights/H_8266_2/brightness"
+    effect_command_topic: "clb/lights/H_8266_2/effect/set"
+    effect_state_topic: "clb/lights/H_8266_2/effect"
+    effect_list:
+      - "none"
+      - "#ff0000-3-44" #red fast
+      - "#0026ff-3-44" #blue f
+      - "#00ff39-3-44" #green f
+      - "#7300ff-3-44" #purple f
+      - "#ff0000-3-88" #red slow
+      - "#0026ff-3-88" #blue s
+      - "#00ff39-3-88" #green s
+      - "#7300ff-3-88" #purple s
+      - "#ff0000-3-176" #red super slow
+      - "#0026ff-3-176" #blue ss
+      - "#00ff39-3-176" #green ss
+      - "#7300ff-3-176" #purple ss
+    rgb_command_topic: "clb/lights/H_8266_2/rgb/set"
+    rgb_state_topic: "clb/lights/H_8266_2/rgb"
+    payload_off: "OFF"
+
+
+
+################################################
+#
+# groups
+#
+################################################
+group:
+  lights:
+    name: All Lights
+    entities:
+      - light.livingroom_light
+      - light.hyperion
+      - light.kitchen_light
+      - light.prep_light
+      - light.office_light
+      - light.desk_light
+      - light.monitor_light
+      - light.server_light
+      - light.bedroom_light
+      - light.imac_light
+      - light.closet_light
+      - light.bathroom_light
+      - light.test_light
+
+
+################ Living Room ###################
+  livingroom_lights:
+    name: Living Room Lights
+    entities:
+      - light.livingroom_light
+      - light.hyperion
+
+  livingroom_light_control:
+    name: Light Control Living Room Light
+    entities:
+      - input_number.light_rgb_color_r_livingroom_light
+      - input_number.light_rgb_color_g_livingroom_light
+      - input_number.light_rgb_color_b_livingroom_light
+      - input_number.light_color_temp_livingroom_light
+      - input_number.light_white_value_livingroom_light
+      - input_number.light_brightness_livingroom_light
+      - input_number.light_transition_livingroom_light
+      - input_select.light_flash_livingroom_light
+      - input_select.light_effect_livingroom_light
+
+      - sensor.light_rgb_color_livingroom_light
+      - sensor.light_color_temp_livingroom_light
+      - sensor.light_white_value_livingroom_light
+      - sensor.light_brightness_livingroom_light
+      - sensor.light_transition_livingroom_light
+
+  hyperion_control:
+    name: Light Control Hyperion
+    entities:
+      - input_number.light_rgb_color_r_hyperion
+      - input_number.light_rgb_color_g_hyperion
+      - input_number.light_rgb_color_b_hyperion
+      - input_number.light_brightness_hyperion
+
+      - sensor.light_rgb_color_hyperion
+      - sensor.light_brightness_hyperion
+
+################## Kitchen #####################
+  kitchen_lights:
+    name: Kitchen Lights
+    entities:
+      - light.kitchen_light
+      - light.prep_light
+
+  kitchen_light_control:
+    name: Light Control Kitchen Light
+    entities:
+      - input_number.light_rgb_color_r_kitchen_light
+      - input_number.light_rgb_color_g_kitchen_light
+      - input_number.light_rgb_color_b_kitchen_light
+      - input_number.light_color_temp_kitchen_light
+      - input_number.light_white_value_kitchen_light
+      - input_number.light_brightness_kitchen_light
+      - input_number.light_transition_kitchen_light
+      - input_select.light_flash_kitchen_light
+      - input_select.light_effect_kitchen_light
+
+      - sensor.light_rgb_color_kitchen_light
+      - sensor.light_color_temp_kitchen_light
+      - sensor.light_white_value_kitchen_light
+      - sensor.light_brightness_kitchen_light
+      - sensor.light_transition_kitchen_light
+
+  prep_light_control:
+    name: Light Control Prep Light
+    entities:
+      - input_number.light_rgb_color_r_prep_light
+      - input_number.light_rgb_color_g_prep_light
+      - input_number.light_rgb_color_b_prep_light
+      - input_number.light_color_temp_prep_light
+      - input_number.light_white_value_prep_light
+      - input_number.light_brightness_prep_light
+      - input_number.light_transition_prep_light
+      - input_select.light_flash_prep_light
+      - input_select.light_effect_prep_light
+
+      - sensor.light_rgb_color_prep_light
+      - sensor.light_color_temp_prep_light
+      - sensor.light_white_value_prep_light
+      - sensor.light_brightness_prep_light
+      - sensor.light_transition_prep_light
+
+################## Office ######################
+  office_lights:
+    name: Office Lights
+    entities:
+      - light.office_light
+      - light.monitor_light
+      - light.server_light
+      - light.desk_light
+
+  office_light_control:
+    name: Light Control Office Light
+    entities:
+      - input_number.light_rgb_color_r_office_light
+      - input_number.light_rgb_color_g_office_light
+      - input_number.light_rgb_color_b_office_light
+      - input_number.light_color_temp_office_light
+      - input_number.light_white_value_office_light
+      - input_number.light_brightness_office_light
+      - input_number.light_transition_office_light
+      - input_select.light_flash_office_light
+      - input_select.light_effect_office_light
+
+      - sensor.light_rgb_color_office_light
+      - sensor.light_color_temp_office_light
+      - sensor.light_white_value_office_light
+      - sensor.light_brightness_office_light 
+      - sensor.light_transition_office_light
+
+  desk_light_control:
+    name: Light Control Desk Light
+    entities:
+      - input_number.light_rgb_color_r_desk_light
+      - input_number.light_rgb_color_g_desk_light
+      - input_number.light_rgb_color_b_desk_light
+      - input_number.light_color_temp_desk_light
+      - input_number.light_white_value_desk_light
+      - input_number.light_brightness_desk_light
+      - input_number.light_transition_desk_light
+      - input_select.light_flash_desk_light
+      - input_select.light_effect_desk_light
+
+      - sensor.light_rgb_color_desk_light
+      - sensor.light_color_temp_desk_light
+      - sensor.light_white_value_desk_light
+      - sensor.light_brightness_desk_light
+      - sensor.light_transition_desk_light
+
+  monitor_light_control:
+    name: Light Control Monitor Light
+    entities:
+      - input_number.light_rgb_color_r_monitor_light
+      - input_number.light_rgb_color_g_monitor_light
+      - input_number.light_rgb_color_b_monitor_light
+      - input_number.light_color_temp_monitor_light
+      - input_number.light_white_value_monitor_light
+      - input_number.light_brightness_monitor_light
+      - input_number.light_transition_monitor_light
+      - input_select.light_flash_monitor_light
+      - input_select.light_effect_monitor_light
+
+      - sensor.light_rgb_color_monitor_light
+      - sensor.light_color_temp_monitor_light
+      - sensor.light_white_value_monitor_light
+      - sensor.light_brightness_monitor_light
+      - sensor.light_transition_monitor_light
+
+################ Bathroom #####################
+  bathroom_lights:
+    name: Bathroom Lights
+    entities:
+      - light.bathroom_light
+
+  bathroom_light_control:
+    name: Light Control Bathroom Light
+    entities:
+      - input_number.light_rgb_color_r_bathroom_light
+      - input_number.light_rgb_color_g_bathroom_light
+      - input_number.light_rgb_color_b_bathroom_light
+      - input_number.light_color_temp_bathroom_light
+      - input_number.light_white_value_bathroom_light
+      - input_number.light_brightness_bathroom_light
+      - input_number.light_transition_bathroom_light
+      - input_select.light_flash_bathroom_light
+      - input_select.light_effect_bathroom_light
+
+      - sensor.light_rgb_color_bathroom_light
+      - sensor.light_color_temp_bathroom_light
+      - sensor.light_white_value_bathroom_light
+      - sensor.light_brightness_bathroom_light
+      - sensor.light_transition_bathroom_light
+
+################# Bedroom ######################
+  bedroom_lights:
+    name: Bedroom Lights
+    entities:
+      - light.bedroom_light
+      - light.imac_light
+
+  bedroom_light_control:
+    name: Light Control Bedroom Light
+    entities:
+      - input_number.light_rgb_color_r_bedroom_light
+      - input_number.light_rgb_color_g_bedroom_light
+      - input_number.light_rgb_color_b_bedroom_light
+      - input_number.light_color_temp_bedroom_light
+      - input_number.light_white_value_bedroom_light
+      - input_number.light_brightness_bedroom_light
+      - input_number.light_transition_bedroom_light
+      - input_select.light_flash_bedroom_light
+      - input_select.light_effect_bedroom_light
+
+      - sensor.light_rgb_color_bedroom_light
+      - sensor.light_color_temp_bedroom_light
+      - sensor.light_white_value_bedroom_light
+      - sensor.light_brightness_bedroom_light
+      - sensor.light_transition_bedroom_light
+
+  imac_light_control:
+    name: Light Control iMac Light
+    entities:
+      - input_number.light_rgb_color_r_imac_light
+      - input_number.light_rgb_color_g_imac_light
+      - input_number.light_rgb_color_b_imac_light
+      - input_number.light_color_temp_imac_light
+      - input_number.light_white_value_imac_light
+      - input_number.light_brightness_imac_light
+      - input_number.light_transition_imac_light
+      - input_select.light_flash_imac_light
+      - input_select.light_effect_imac_light
+
+      - sensor.light_rgb_color_imac_light
+      - sensor.light_color_temp_imac_light
+      - sensor.light_white_value_imac_light
+      - sensor.light_brightness_imac_light
+      - sensor.light_transition_imac_light
+
+################# Closet ######################
+  closet_lights:
+    name: Closet Lights
+    entities:
+      - light.closet_light
+
+  closet_light_control:
+    name: Light Control Closet Light
+    entities:
+      - input_number.light_rgb_color_r_closet_light
+      - input_number.light_rgb_color_g_closet_light
+      - input_number.light_rgb_color_b_closet_light
+      - input_number.light_color_temp_closet_light
+      - input_number.light_white_value_closet_light
+      - input_number.light_brightness_closet_light
+      - input_number.light_transition_closet_light
+      - input_select.light_flash_closet_light
+      - input_select.light_effect_closet_light
+
+      - sensor.light_rgb_color_closet_light
+      - sensor.light_color_temp_closet_light
+      - sensor.light_white_value_closet_light
+      - sensor.light_brightness_closet_light
+      - sensor.light_transition_closet_light
+
+
+
+
+
+################################################
+#
+# sensor
+#
+# using a variable to generate the entity_id in a template does not allow HA to automatically update the sensor when the entity_id is changed
+#
+################################################
+sensor:
+  - platform: template
+    sensors:
+      ## Add local sensors here for specific rooms that monitor input_numbers and override the global values
+      ## Format is light_<attribute>_<entity_id> (entity_id not including domain)
+      ## I.E. "light_rgb_color_livingroom_light"
+
+  ############### Living Room Light Sensors ###############
+
+      ## This is the example of what does not work
+
+      # light_rgb_color_livingroom_light:
+      #   friendly_name: "Rgb Color - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_rgb_color_r_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+      #     {% else %}
+      #       {{ '[' ~ states('input_number.light_rgb_color_r_' ~ entity_id)|int ~ ',' }}
+      #     {% endif %}
+      #     {% if states('input_number.light_rgb_color_g_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+      #     {% else %}
+      #       {{ states('input_number.light_rgb_color_g_' ~ entity_id)|int ~ ',' }}
+      #     {% endif %}
+      #     {% if states('input_number.light_rgb_color_b_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+      #     {% else %}
+      #       {{ states('input_number.light_rgb_color_b_' ~ entity_id)|int ~ ']' }}
+      #     {% endif %}
+
+      # light_white_value_livingroom_light:
+      #   friendly_name: "White Value - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_white_value_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_white_value')|int }}
+      #     {% else %}
+      #       {{ states('input_number.light_white_value_' ~ entity_id)|int }}
+      #     {% endif %}
+
+      # light_brightness_livingroom_light:
+      #   friendly_name: "Brightness - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_brightness_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_brightness')|int }}
+      #     {% else %}
+      #       {{ states('input_number.light_brightness_' ~ entity_id)|int }}
+      #     {% endif %}
+
+      # light_color_temp_livingroom_light:
+      #   friendly_name: "Color Temp - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_color_temp_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_color_temp')|int }}
+      #     {% else %}
+      #       {{ states('input_number.light_color_temp_' ~ entity_id)|int }}
+      #     {% endif %}
+
+      # light_transition_livingroom_light:
+      #   friendly_name: "Transition Duration - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_transition_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_transition')|int }}
+      #     {% else %}
+      #       {{ states('input_number.light_transition_' ~ entity_id)|int }}
+      #     {% endif %}
+
+      # light_flash_livingroom_light:
+      #   friendly_name: "Flash Duration - Livingroom Light"
+      #   value_template: >-
+      #     {% set entity_id = 'livingroom_light' %}
+      #     {% if states('input_number.light_flash_' ~ entity_id)|int == -1 %}
+      #       {{ states('sensor.light_transition')|int }}
+      #     {% else %}
+      #       {{ states('input_number.light_flash_' ~ entity_id)|int }}
+      #     {% endif %}
+
+      light_rgb_color_livingroom_light:
+        friendly_name: "Rgb Color - Livingroom Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_livingroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_livingroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_livingroom_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_livingroom_light:
+        friendly_name: "White Value - Livingroom Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_livingroom_light')|int }}
+          {%- endif %}
+
+      light_brightness_livingroom_light:
+        friendly_name: "Brightness - Livingroom Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_livingroom_light')|int }}
+          {%- endif %}
+
+      light_color_temp_livingroom_light:
+        friendly_name: "Color Temp - Livingroom Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_livingroom_light')|int }}
+          {%- endif %}
+
+      light_transition_livingroom_light:
+        friendly_name: "Transition Duration - Livingroom Light"
+        value_template: >-
+          {% if states('input_number.light_transition_livingroom_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_livingroom_light')|int }}
+          {%- endif %}
+
+
+      light_rgb_color_hyperion:
+        friendly_name: "Rgb Color - Hyperion"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_hyperion')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_hyperion')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_hyperion')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_hyperion')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_hyperion')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_hyperion')|int ~ ']' }}
+          {%- endif %}
+
+      light_brightness_hyperion:
+        friendly_name: "Brightness - Hyperion"
+        value_template: >-
+          {% if states('input_number.light_brightness_hyperion')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_hyperion')|int }}
+          {%- endif %}
+
+
+    ############### Kitchen Light Control ###############
+
+      light_rgb_color_kitchen_light:
+        friendly_name: "Rgb Color - Kitchen Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_kitchen_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_kitchen_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_kitchen_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_kitchen_light:
+        friendly_name: "White Value - Kitchen Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_kitchen_light')|int }}
+          {%- endif %}
+
+      light_brightness_kitchen_light:
+        friendly_name: "Brightness - Kitchen Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_kitchen_light')|int }}
+          {%- endif %}
+
+      light_color_temp_kitchen_light:
+        friendly_name: "Color Temp - Kitchen Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_kitchen_light')|int }}
+          {%- endif %}
+
+      light_transition_kitchen_light:
+        friendly_name: "Transition - Kitchen Light"
+        value_template: >-
+          {% if states('input_number.light_transition_kitchen_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_kitchen_light')|int }}
+          {%- endif %}
+
+
+
+      light_rgb_color_prep_light:
+        friendly_name: "Rgb Color - Prep Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_prep_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_prep_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_prep_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_prep_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_prep_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_prep_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_prep_light:
+        friendly_name: "White Value - Prep Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_prep_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_desk_light')|int }}
+          {%- endif %}
+
+      light_brightness_prep_light:
+        friendly_name: "Brightness - Prep Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_prep_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_prep_light')|int }}
+          {%- endif %}
+
+      light_color_temp_prep_light:
+        friendly_name: "Color Temp - Prep Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_prep_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_prep_light')|int }}
+          {%- endif %}
+
+      light_transition_prep_light:
+        friendly_name: "Transition - Prep Light"
+        value_template: >-
+          {% if states('input_number.light_transition_prep_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_prep_light')|int }}
+          {%- endif %}
+
+
+    ############### Office Light Control ###############
+
+      light_rgb_color_office_light:
+        friendly_name: "Rgb Color - Office Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_office_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_office_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_office_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_office_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_office_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_office_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_office_light:
+        friendly_name: "White Value - Office Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_office_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_office_light')|int }}
+          {%- endif %}
+
+      light_brightness_office_light:
+        friendly_name: "Brightness - Office Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_office_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_office_light')|int }}
+          {%- endif %}
+
+      light_color_temp_office_light:
+        friendly_name: "Color Temp - Office Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_office_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_office_light')|int }}
+          {%- endif %}
+
+      light_transition_office_light:
+        friendly_name: "Transition - Office Light"
+        value_template: >-
+          {% if states('input_number.light_transition_office_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_office_light')|int }}
+          {%- endif %}
+
+
+
+      light_rgb_color_desk_light:
+        friendly_name: "Rgb Color - Desk Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_desk_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_desk_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_desk_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_desk_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_desk_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_desk_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_desk_light:
+        friendly_name: "White Value - Desk Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_desk_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_desk_light')|int }}
+          {%- endif %}
+
+      light_brightness_desk_light:
+        friendly_name: "Brightness - Desk Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_desk_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_desk_light')|int }}
+          {%- endif %}
+
+      light_color_temp_desk_light:
+        friendly_name: "Color Temp - Desk Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_desk_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_desk_light')|int }}
+          {%- endif %}
+
+      light_transition_desk_light:
+        friendly_name: "Transition - Desk Light"
+        value_template: >-
+          {% if states('input_number.light_transition_desk_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_desk_light')|int }}
+          {%- endif %}
+
+
+
+      light_rgb_color_monitor_light:
+        friendly_name: "Rgb Color - Monitor Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_monitor_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_monitor_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_monitor_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_monitor_light:
+        friendly_name: "White Value - Monitor Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_monitor_light')|int }}
+          {%- endif %}
+
+      light_brightness_monitor_light:
+        friendly_name: "Brightness - Monitor Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_monitor_light')|int }}
+          {%- endif %}
+
+      light_color_temp_monitor_light:
+        friendly_name: "Color Temp - Monitor Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_monitor_light')|int }}
+          {%- endif %}
+
+      light_transition_monitor_light:
+        friendly_name: "Transition - Monitor Light"
+        value_template: >-
+          {% if states('input_number.light_transition_monitor_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_monitor_light')|int }}
+          {%- endif %}
+
+    ############### Bathroom Light Control ###############
+      light_rgb_color_bathroom_light:
+        friendly_name: "Rgb Color - Bathroom Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_bathroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_bathroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_bathroom_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_bathroom_light:
+        friendly_name: "White Value - Bathroom Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_bathroom_light')|int }}
+          {%- endif %}
+
+      light_brightness_bathroom_light:
+        friendly_name: "Brightness - Bathroom Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_bathroom_light')|int }}
+          {%- endif %}
+
+      light_color_temp_bathroom_light:
+        friendly_name: "Color Temp - Bathroom Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_bathroom_light')|int }}
+          {%- endif %}
+
+      light_transition_bathroom_light:
+        friendly_name: "Transition - Bathroom Light"
+        value_template: >-
+          {% if states('input_number.light_transition_bathroom_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_bathroom_light')|int }}
+          {%- endif %}
+
+
+    ############### Bedroom Light Control ###############
+      light_rgb_color_bedroom_light:
+        friendly_name: "Rgb Color - Bedroom Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_bedroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_bedroom_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_bedroom_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_bedroom_light:
+        friendly_name: "White Value - Bedroom Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_bedroom_light')|int }}
+          {%- endif %}
+
+      light_brightness_bedroom_light:
+        friendly_name: "Brightness - Bedroom Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_bedroom_light')|int }}
+          {%- endif %}
+
+      light_color_temp_bedroom_light:
+        friendly_name: "Color Temp - Bedroom Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_bedroom_light')|int }}
+          {%- endif %}
+
+      light_transition_bedroom_light:
+        friendly_name: "Transition - Bedroom Light"
+        value_template: >-
+          {% if states('input_number.light_transition_bedroom_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_bedroom_light')|int }}
+          {%- endif %}
+
+
+
+      light_rgb_color_imac_light:
+        friendly_name: "Rgb Color - iMac Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_imac_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_imac_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_imac_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_imac_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_imac_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_imac_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_imac_light:
+        friendly_name: "White Value - iMac Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_imac_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_imac_light')|int }}
+          {%- endif %}
+
+      light_brightness_imac_light:
+        friendly_name: "Brightness - iMac Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_imac_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_imac_light')|int }}
+          {%- endif %}
+
+      light_color_temp_imac_light:
+        friendly_name: "Color Temp - iMac Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_imac_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_imac_light')|int }}
+          {%- endif %}
+
+      light_transition_imac_light:
+        friendly_name: "Transition - iMac Light"
+        value_template: >-
+          {% if states('input_number.light_transition_imac_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_imac_light')|int }}
+          {%- endif %}
+
+
+
+
+      light_rgb_color_closet_light:
+        friendly_name: "Rgb Color - Closet Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_closet_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_closet_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_closet_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_closet_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_closet_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_closet_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_closet_light:
+        friendly_name: "White Value - Closet Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_closet_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_closet_light')|int }}
+          {%- endif %}
+
+      light_brightness_closet_light:
+        friendly_name: "Brightness - Closet Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_closet_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_closet_light')|int }}
+          {%- endif %}
+
+      light_color_temp_closet_light:
+        friendly_name: "Color Temp - Closet Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_closet_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_closet_light')|int }}
+          {%- endif %}
+
+      light_transition_closet_light:
+        friendly_name: "Transition - Closet Light"
+        value_template: >-
+          {% if states('input_number.light_transition_closet_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_closet_light')|int }}
+          {%- endif %}
+
+
+################################################
+#
+# input_number
+#
+################################################
+input_number:    
+## Add local input_numbers below for specific rooms that change sensor values and override global values
+
+############### Living Room Light Control ###############
+  light_rgb_color_r_livingroom_light:
+    name: Red Value - Living Room Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_livingroom_light:
+    name: Green Value - Living Room Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_livingroom_light:
+    name: Blue Value - Living Room Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_livingroom_light:
+    name: Color Temp - Living Room Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_livingroom_light:
+    name: White Value - Living Room Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_livingroom_light:
+    name: Brightness - Living Room Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_livingroom_light:
+    name: Transition Duration - Living Room Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+  light_rgb_color_r_hyperion:
+    name: Red Value - Hyperion - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_hyperion:
+    name: Green Value - Hyperion - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_hyperion:
+    name: Blue Value - Hyperion - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_hyperion:
+    name: Brightness - Hyperion - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+
+############### Kitchen Light Control ###############
+  light_rgb_color_r_kitchen_light:
+    name: Red Value - Kitchen Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_kitchen_light:
+    name: Green Value - Kitchen Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_kitchen_light:
+    name: Blue Value - Kitchen Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_kitchen_light:
+    name: Color Temp - Kitchen Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_kitchen_light:
+    name: White Value - Kitchen Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_kitchen_light:
+    name: Brightness - Kitchen Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_kitchen_light:
+    name: Transition - Kitchen Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+  light_rgb_color_r_prep_light:
+    name: Red Value - Prep Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_prep_light:
+    name: Green Value - Prep Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_prep_light:
+    name: Blue Value - Prep Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_prep_light:
+    name: Color Temp - Prep Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_prep_light:
+    name: White Value - Prep Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_prep_light:
+    name: Brightness - Prep Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_prep_light:
+    name: Transition - Prep Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+############### Office Light Control ###############
+  light_rgb_color_r_office_light:
+    name: Red Value - Office Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_office_light:
+    name: Green Value - Office Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_office_light:
+    name: Blue Value - Office Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_office_light:
+    name: Color Temp - Office Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_office_light:
+    name: White Value - Office Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_office_light:
+    name: Brightness - Office Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_office_light:
+    name: Transition - Office Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+  light_rgb_color_r_desk_light:
+    name: Red Value - Desk Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_desk_light:
+    name: Green Value - Desk Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_desk_light:
+    name: Blue Value - Desk Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_desk_light:
+    name: Color Temp - Desk Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_desk_light:
+    name: White Value - Desk Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_desk_light:
+    name: Brightness - Desk Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_desk_light:
+    name: Transition - Desk Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+  light_rgb_color_r_monitor_light:
+    name: Red Value - Monitor Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_monitor_light:
+    name: Green Value - Monitor Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_monitor_light:
+    name: Blue Value - Monitor Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_monitor_light:
+    name: Color Temp - Monitor Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_monitor_light:
+    name: White Value - Monitor Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_monitor_light:
+    name: Brightness - Monitor Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_monitor_light:
+    name: Transition - Monitor Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+############### Bathroom Light Control ###############
+  light_rgb_color_r_bathroom_light:
+    name: Red Value - Bathroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_bathroom_light:
+    name: Green Value - Bathroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_bathroom_light:
+    name: Blue Value - Bathroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_bathroom_light:
+    name: Color Temp - Bathroom Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_bathroom_light:
+    name: White Value - Bathroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_bathroom_light:
+    name: Brightness - Bathroom Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_bathroom_light:
+    name: Transition - Bathroom Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+############### Bedroom Light Control ###############
+  light_rgb_color_r_bedroom_light:
+    name: Red Value - Bedroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_bedroom_light:
+    name: Green Value - Bedroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_bedroom_light:
+    name: Blue Value - Bedroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_bedroom_light:
+    name: Color Temp - Bedroom Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_bedroom_light:
+    name: White Value - Bedroom Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_bedroom_light:
+    name: Brightness - Bedroom Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_bedroom_light:
+    name: Transition - Bedroom Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+  light_rgb_color_r_imac_light:
+    name: Red Value - iMac Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_imac_light:
+    name: Green Value - iMac Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_imac_light:
+    name: Blue Value - iMac Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_imac_light:
+    name: Color Temp - iMac Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_imac_light:
+    name: White Value - iMac Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_imac_light:
+    name: Brightness - iMac Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_imac_light:
+    name: Transition - iMac Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+
+  light_rgb_color_r_closet_light:
+    name: Red Value - Closet Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_closet_light:
+    name: Green Value - Closet Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_closet_light:
+    name: Blue Value - Closet Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_closet_light:
+    name: Color Temp - Closet Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_closet_light:
+    name: White Value - Closet Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_closet_light:
+    name: Brightness - Closet Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_closet_light:
+    name: Transition - Closet Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+
+
+
+################################################
+#
+# input_select
+#
+################################################
+input_select:
+
+## Add local config below for specific rooms that override global values
+
+############### Living Room Light Control ###############
+  light_effect_livingroom_light:
+    name: Effect - Livingroom Light - Override
+    options:
+      - alarm
+      - boot_up
+      - entrance
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_livingroom_light:
+    name: Flash Duration - Livingroom Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+############### Kitchen Light Control ###############
+  light_effect_kitchen_light:
+    name: Effect - Kitchen Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_kitchen_light:
+    name: Flash Duration - Kitchen Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+  light_effect_prep_light:
+    name: Effect - Prep Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_prep_light:
+    name: Flash Duration - Prep Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+############### Office Light Control ###############
+  light_effect_office_light:
+    name: Effect - Office Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_office_light:
+    name: Flash Duration - Office Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+  light_effect_desk_light:
+    name: Effect - Desk Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_desk_light:
+    name: Flash Duration - Desk Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+
+  light_effect_monitor_light:
+    name: Effect - Monitor Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_monitor_light:
+    name: Flash Duration - Monitor Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+############### Bathroom Light Control ###############
+  light_effect_bathroom_light:
+    name: Effect - Bathroom Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_bathroom_light:
+    name: Flash Duration - Bathroom Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+############### Bedroom Light Control ###############
+  light_effect_bedroom_light:
+    name: Effect - Bedroom Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_bedroom_light:
+    name: Flash Duration - Bedroom Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+
+
+  light_effect_imac_light:
+    name: Effect - iMac Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_imac_light:
+    name: Flash Duration - iMac Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+
+
+
+  light_effect_closet_light:
+    name: Effect - Closet Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_closet_light:
+    name: Flash Duration - Closet Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1

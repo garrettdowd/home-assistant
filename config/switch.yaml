@@ -1,0 +1,285 @@
+# H_8266_1
+- platform: mqtt
+  name: "H_8266_1 Lux ONOFF"
+  command_topic: "clb/lux/H_8266_1/onoff/set"
+  state_topic: "clb/lux/H_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "H_8266_1 Env ONOFF"
+  command_topic: "clb/env/H_8266_1/onoff/set"
+  state_topic: "clb/env/H_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+
+# H_8266_2
+- platform: mqtt
+  name: "H_8266_2 Lux ONOFF"
+  command_topic: "clb/lux/H_8266_2/onoff/set"
+  state_topic: "clb/lux/H_8266_2/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "H_8266_2 Env ONOFF"
+  command_topic: "clb/env/H_8266_2/onoff/set"
+  state_topic: "clb/env/H_8266_2/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+
+# H_8266_3
+- platform: mqtt
+  name: "H_8266_3 Lux ONOFF"
+  command_topic: "clb/lux/H_8266_3/onoff/set"
+  state_topic: "clb/lux/H_8266_3/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "H_8266_3 Env ONOFF"
+  command_topic: "clb/env/H_8266_3/onoff/set"
+  state_topic: "clb/env/H_8266_3/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+
+
+# N_8266_1
+- platform: mqtt
+  name: "N_8266_1 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_1/onoff/set"
+  state_topic: "clb/motion/N_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_1 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_1/onoff/set"
+  state_topic: "clb/lux/N_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_1 Env ONOFF"
+  command_topic: "clb/env/N_8266_1/onoff/set"
+  state_topic: "clb/env/N_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+
+
+# N_8266_2
+- platform: mqtt
+  name: "N_8266_2 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_2/onoff/set"
+  state_topic: "clb/motion/N_8266_2/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_2 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_1/onoff/set"
+  state_topic: "clb/lux/N_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_2 Env ONOFF"
+  command_topic: "clb/env/N_8266_1/onoff/set"
+  state_topic: "clb/env/N_8266_1/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+# N_8266_3
+- platform: mqtt
+  name: "N_8266_3 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_3/onoff/set"
+  state_topic: "clb/motion/N_8266_3/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_3 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_3/onoff/set"
+  state_topic: "clb/lux/N_8266_3/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_3 Env ONOFF"
+  command_topic: "clb/env/N_8266_3/onoff/set"
+  state_topic: "clb/env/N_8266_3/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+# N_8266_4
+- platform: mqtt
+  name: "N_8266_4 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_4/onoff/set"
+  state_topic: "clb/motion/N_8266_4/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_4 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_4/onoff/set"
+  state_topic: "clb/lux/N_8266_4/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_4 Env ONOFF"
+  command_topic: "clb/env/N_8266_4/onoff/set"
+  state_topic: "clb/env/N_8266_4/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+# N_8266_5
+- platform: mqtt
+  name: "N_8266_5 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_5/onoff/set"
+  state_topic: "clb/motion/N_8266_5/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_5 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_5/onoff/set"
+  state_topic: "clb/lux/N_8266_5/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_5 Env ONOFF"
+  command_topic: "clb/env/N_8266_5/onoff/set"
+  state_topic: "clb/env/N_8266_5/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+# N_8266_6
+- platform: mqtt
+  name: "N_8266_6 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_6/onoff/set"
+  state_topic: "clb/motion/N_8266_6/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_6 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_6/onoff/set"
+  state_topic: "clb/lux/N_8266_6/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_6 Env ONOFF"
+  command_topic: "clb/env/N_8266_6/onoff/set"
+  state_topic: "clb/env/N_8266_6/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+# N_8266_7
+- platform: mqtt
+  name: "N_8266_7 Motion ONOFF"
+  command_topic: "clb/motion/N_8266_7/onoff/set"
+  state_topic: "clb/motion/N_8266_7/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_7 Lux ONOFF"
+  command_topic: "clb/lux/N_8266_7/onoff/set"
+  state_topic: "clb/lux/N_8266_7/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"
+
+- platform: mqtt
+  name: "N_8266_7 Env ONOFF"
+  command_topic: "clb/env/N_8266_7/onoff/set"
+  state_topic: "clb/env/N_8266_7/onoff"
+  # payload_on: "ON"
+  # payload_off: "OFF"
+  # availability_topic: "clb/lux/H_8266_1/available"
+  # payload_available: "online"
+  # payload_not_available: "offline"

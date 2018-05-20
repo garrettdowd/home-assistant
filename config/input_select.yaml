@@ -1,0 +1,10 @@
+# light_effect:
+#   name: Override Default effect for Lights
+#   options:
+#     - boot_up
+#     - flash
+#     - colorfade
+#     - music
+#     - rainbow
+#     - no_array
+#   initial: boot_up

@@ -1,0 +1,219 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: !secret home_lat
+  longitude: !secret home_long
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: !secret home_elev
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/New_York
+  # Customization file
+  customize: !include config/customize.yaml
+  packages: !include_dir_named packages
+  
+# Show links to resources in log and frontend
+# introduction:
+
+# Enables configuration UI
+config:
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  include_used_components: true
+
+# Discover some devices automatically
+discovery:
+  # ignore:
+  #   - samsung_tv
+  #   - roku
+  #   - google_cast
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+conversation:
+
+# Enables a map showing the location of tracked devices
+map:
+
+sun:
+
+python_script:
+
+media_extractor:
+
+tts:
+  - platform: google
+  
+ifttt:
+  key: !secret ifttt_key
+
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include config/floorplan.yaml
+
+# Other Panels
+# Currently doesn't work because pages require basic http auth
+# panel_iframe:
+#   cp:
+#     title: 'Couchpotato'
+#     icon: mdi:movie
+#     url: !secret cp_address
+
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret web_url
+  ip_ban_enabled: True
+  login_attempts_threshold: 3
+
+
+# Enables support for tracking state changes over time
+history:
+  include:
+    # domains:
+    #   - sensor
+    #   - switch
+    #   - media_player
+    #   - light
+    entities:
+      - automation.wake_me_up
+      - group.all_lights
+      - group.garrett
+      - group.media_players
+      - light.bathroom_light
+      - light.bedroom_light
+      - light.closet_light
+      - light.desk_light
+      - light.kitchen_light
+      - light.livingroom_light
+      - light.monitor_light
+      - light.office_light
+      - light.prep_light
+      - light.server_light
+      - light.hyperion
+      - media_player.living_room_speaker
+      - media_player.living_room_tv
+      - media_player.minispeaker
+      - media_player.office_speaker
+      - media_player.rasplex
+      - media_player.spotify
+      - sensor.speedtest_download
+      - sensor.speedtest_upload
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_cloud_coverage
+      - sensor.dark_sky_humidity
+      - sensor.h_8266_1_humidity
+      - sensor.h_8266_1_temp
+      - sensor.h_8266_2_humidity
+      - sensor.h_8266_2_temp
+      - sensor.n_8266_6_humidity
+      - sensor.n_8266_6_temp
+      - sensor.n_8266_4_humidity
+      - sensor.n_8266_4_temp
+  # exclude:
+  #   entities:
+  #    - sensor.last_boot
+  #    - sensor.date
+  #    - sensor.pihole_ads_blocked_today
+  #    - sensor.pihole_ads_percentage_blocked_today
+  #    - sensor.pihole_dns_queries_today
+  #    - sensor.since_last_boot
+  #    - sensor.since_last_boot_templated
+  #    - sensor.floorplan_date
+  #    - sensor.floorplan_time
+  #    - sensor.ha_uptime
+  #    - sensor.time
+
+
+# View all events in a logbook
+logbook:
+  # exclude:
+  #   entities:
+  #     - automation.detect_lights_and_adjust_the_brightness_when_turned_on_based_on_time
+  #     - automation.cuckoo_clock
+  #     - binary_sensor.office_motion
+  #     - group.garage_doors
+  #     - media_player.LivingRoomCC
+  #     - py.warnings
+
+
+zone:
+  - name: CAR
+    latitude: !secret CAR_lat
+    longitude: !secret CAR_long
+    radius: 200
+    icon: mdi:worker
+
+  - name: Campus
+    latitude: !secret campus_lat
+    longitude: !secret campus_long
+    radius: 1000
+    icon: mdi:school
+
+  # This will override the default home zone
+  - name: Home
+    latitude: !secret home_lat
+    longitude: !secret home_long
+    radius: 55
+    icon: mdi:account-multiple
+
+
+device_tracker:
+  - platform: asuswrt
+    host: 192.168.0.1
+    username: !secret asus_username
+    password: !secret asus_password
+    track_new_devices: TRUE
+    interval_seconds: 11
+
+
+# MQTT server details for devices
+mqtt:
+  broker: !secret mqtt_broker
+  port: !secret mqtt_port
+  keepalive: 270
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+
+media_player:
+  - platform: plex
+    scan_interval: 3
+  - platform: spotify
+    client_id: !secret spotify_id
+    client_secret: !secret spotify_secret
+
+
+
+
+
+################################################
+# Includes
+################################################
+
+cloud: !include config/cloud.yaml
+weblink: !include config/weblinks.yaml
+input_boolean: !include config/input_boolean.yaml
+# input_number: !include config/input_number.yaml
+# input_select: !include config/input_select.yaml
+# ios: !include config/ios.yaml
+sensor: !include config/sensors.yaml
+binary_sensor: !include config/binary_sensors.yaml
+switch: !include config/switch.yaml
+# light: !include config/lights.yaml
+group: !include config/groups.yaml
+scene: !include_dir_merge_list scenes
+# automation: !include automations.yaml
+script: !include scripts.yaml

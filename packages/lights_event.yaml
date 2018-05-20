@@ -1,0 +1,545 @@
+################################################
+####
+#### Event Driven Lighting 
+####
+################################################
+
+
+
+################################################
+#
+# input_booleans
+#
+################################################
+input_boolean:
+  agl:
+    name: Adjust Global Light
+    # icon: mdi:calendar
+  
+  movie_lights:
+    name: Movie Lights
+
+################################################
+#
+# scenes
+#
+################################################
+scene:
+  - name: Movie Stop
+    entities:
+      light.livingroom_light:
+        state: on
+        rgb_color: [255,0,0]
+        brightness: 150
+        white_value: 100
+        transition: 3000
+        effect: "no_array"
+      light.hyperion:
+        state: on
+        rgb_color: [200,50,50]
+
+  - name: Movie Pause
+    entities:
+      light.livingroom_light:
+        state: on
+        rgb_color: [255,0,0]
+        brightness: 80
+        white_value: 40
+        transition: 1000
+        effect: "no_array"
+      light.hyperion:
+        state: on
+        rgb_color: [150,0,0]
+
+  - name: Movie Play
+    entities:
+      light.livingroom_light:
+        state: on
+        rgb_color: [255,0,0]
+        brightness: 20
+        white_value: 30
+        transition: 8000
+        effect: "movie"
+      light.hyperion:
+        state: on
+        effect: "HDMI"
+      light.kitchen_light:
+        state: off
+      light.prep_light:
+        state: off
+
+        
+################################################
+#
+# automations
+#
+################################################
+automation:
+
+  ############### Welcome Home ###################
+
+  # - id: Welcome_Home_Lights
+  #   alias: Turn On Lights When I Get Home
+
+
+
+  ###############     Plex     ###################
+
+  - id: Plex_Lights_Stop
+    alias: "Media player stopped"
+    trigger:
+      - platform: state
+        entity_id: media_player.rasplex
+        to: 'idle'
+      - platform: state
+        entity_id: media_player.living_room_tv
+        to: 'idle'
+    condition:
+      - condition: state
+        entity_id: input_boolean.movie_lights
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sun.sun
+        value_template: '{{ state.attributes.elevation }}'
+        below: 3.5
+    action:
+      - service: scene.turn_on
+        entity_id: scene.movie_stop
+      - service: automation.turn_on
+        entity_id: automation.turn_off_livingroom_lights
+      - service: automation.turn_on
+        entity_id: automation.adjust_livingroom_light
+      - service: automation.turn_on
+        entity_id: automation.adjust_hyperion
+
+  - id: Plex_Lights_Pause
+    alias: "Media player paused"
+    trigger:
+      - platform: state
+        entity_id: media_player.rasplex
+        to: 'paused'
+      - platform: state
+        entity_id: media_player.living_room_tv
+        to: 'paused'
+    condition:
+      - condition: state
+        entity_id: input_boolean.movie_lights
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sun.sun
+        value_template: '{{ state.attributes.elevation }}'
+        below: 3.5
+    action:
+        service: scene.turn_on
+        entity_id: scene.movie_pause
+
+  - id: Plex_Lights_Play
+    alias: "Media player playing"
+    trigger:
+      - platform: state
+        entity_id: media_player.rasplex
+        to: 'playing'
+      - platform: state
+        entity_id: media_player.living_room_tv
+        to: 'playing'
+    condition:
+      # - condition: or
+      #   conditions:
+      #     - condition: state
+      #       entity_id: media_player.rasplex.attributes.media_content_type
+      #       state: tvshow
+      #     - condition: state
+      #       entity_id: media_player.rasplex.attributes.media_content_type
+      #       state: movie
+      - condition: state
+        entity_id: input_boolean.movie_lights
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sun.sun
+        value_template: '{{ state.attributes.elevation }}'
+        below: 3.5
+    action:
+      - service: scene.turn_on
+        entity_id: scene.movie_play
+      - service: automation.turn_off
+        entity_id: automation.turn_off_livingroom_lights
+      - service: automation.turn_off
+        entity_id: automation.adjust_livingroom_light
+      - service: automation.turn_off
+        entity_id: automation.adjust_hyperion
+
+
+
+  ###############     Adjust Lights Throughout the Day     ###################
+
+  # Need to push updates to ONLY lights that are ON (or need to push update without state ON)
+  # Can this be done without custom automations/scripts for each light?
+  # Script is used to turn on lights to limit extra code and config time
+  # A script can only be called once at a time. This leads to scalability issues with large houses or synchronous events
+  ## Current workaround is to introduce a delay between script calls
+
+  - id: AGL_livingroom_light
+    alias: Adjust livingroom_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_livingroom_light
+      - platform: state
+        entity_id: sensor.light_color_temp_livingroom_light
+      - platform: state
+        entity_id: sensor.light_white_value_livingroom_light
+      - platform: state
+        entity_id: sensor.light_brightness_livingroom_light
+      - platform: state
+        entity_id: sensor.light_transition_livingroom_light
+      - platform: state
+        entity_id: input_select.light_flash_livingroom_light
+      - platform: state
+        entity_id: input_select.light_effect_livingroom_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.livingroom_light
+        state: 'on'
+    action:
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.livingroom_light
+
+  - id: AGL_hyperion
+    alias: Adjust hyperion
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_hyperion
+      - platform: state
+        entity_id: sensor.light_brightness_hyperion
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.hyperion
+        state: 'on'
+    action:
+      - service: light.turn_on
+        data_template:
+          entity_id: light.hyperion
+          brightness: "{{ states('sensor.light_brightness_hyperion') }}"
+
+  - id: AGL_kitchen_light
+    alias: Adjust kitchen_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_kitchen_light
+      - platform: state
+        entity_id: sensor.light_color_temp_livingroom_light
+      - platform: state
+        entity_id: sensor.light_white_value_kitchen_light
+      - platform: state
+        entity_id: sensor.light_brightness_kitchen_light
+      - platform: state
+        entity_id: sensor.light_transition_kitchen_light
+      - platform: state
+        entity_id: sensor.light_flash_kitchen_light
+      - platform: state
+        entity_id: input_select.light_effect_kitchen_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.kitchen_light
+        state: 'on'
+    action:
+      - delay: '00:00:01'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.kitchen_light
+
+  - id: AGL_prep_light
+    alias: Adjust prep_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_prep_light
+      - platform: state
+        entity_id: sensor.light_color_temp_prep_light
+      - platform: state
+        entity_id: sensor.light_white_value_prep_light
+      - platform: state
+        entity_id: sensor.light_brightness_prep_light
+      - platform: state
+        entity_id: sensor.light_transition_prep_light
+      - platform: state
+        entity_id: sensor.light_flash_prep_light
+      - platform: state
+        entity_id: input_select.light_effect_prep_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.prep_light
+        state: 'on'
+    action:
+      - delay: '00:00:02'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.prep_light
+
+
+  - id: AGL_office_light
+    alias: Adjust office_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_office_light
+      - platform: state
+        entity_id: sensor.light_color_temp_office_light
+      - platform: state
+        entity_id: sensor.light_white_value_office_light
+      - platform: state
+        entity_id: sensor.light_brightness_office_light
+      - platform: state
+        entity_id: sensor.light_transition_office_light
+      - platform: state
+        entity_id: sensor.light_flash_office_light
+      - platform: state
+        entity_id: input_select.light_effect_office_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.office_light
+        state: 'on'
+    action:
+      - delay: '00:00:03'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.office_light
+
+  - id: AGL_desk_light
+    alias: Adjust desk_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_desk_light
+      - platform: state
+        entity_id: sensor.light_color_temp_desk_light
+      - platform: state
+        entity_id: sensor.light_white_value_desk_light
+      - platform: state
+        entity_id: sensor.light_brightness_desk_light
+      - platform: state
+        entity_id: sensor.light_transition_desk_light
+      - platform: state
+        entity_id: sensor.light_flash_desk_light
+      - platform: state
+        entity_id: input_select.light_effect_desk_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.desk_light
+        state: 'on'
+    action:
+      - delay: '00:00:04'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.desk_light
+
+  - id: AGL_monitor_light
+    alias: Adjust monitor_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_monitor_light
+      - platform: state
+        entity_id: sensor.light_color_temp_monitor_light
+      - platform: state
+        entity_id: sensor.light_white_value_monitor_light
+      - platform: state
+        entity_id: sensor.light_brightness_monitor_light
+      - platform: state
+        entity_id: sensor.light_transition_monitor_light
+      - platform: state
+        entity_id: sensor.light_flash_monitor_light
+      - platform: state
+        entity_id: input_select.light_effect_monitor_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.monitor_light
+        state: 'on'
+    action:
+      - delay: '00:00:05'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.monitor_light
+
+  - id: AGL_bathroom_light
+    alias: Adjust bathroom_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_bathroom_light
+      - platform: state
+        entity_id: sensor.light_color_temp_bathroom_light
+      - platform: state
+        entity_id: sensor.light_white_value_bathroom_light
+      - platform: state
+        entity_id: sensor.light_brightness_bathroom_light
+      - platform: state
+        entity_id: sensor.light_transition_bathroom_light
+      - platform: state
+        entity_id: sensor.light_flash_bathroom_light
+      - platform: state
+        entity_id: input_select.light_effect_bathroom_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.bathroom_light
+        state: 'on'
+    action:
+      - delay: '00:00:06'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.bathroom_light
+
+  - id: AGL_bedroom_light
+    alias: Adjust bedroom_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_bathroom_light
+      - platform: state
+        entity_id: sensor.light_color_temp_bedroom_light
+      - platform: state
+        entity_id: sensor.light_white_value_bathroom_light
+      - platform: state
+        entity_id: sensor.light_brightness_bathroom_light
+      - platform: state
+        entity_id: sensor.light_transition_bathroom_light
+      - platform: state
+        entity_id: sensor.light_flash_bathroom_light
+      - platform: state
+        entity_id: input_select.light_effect_bathroom_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.bedroom_light
+        state: 'on'
+    action:
+      - delay: '00:00:07'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.bedroom_light
+      - delay: '00:00:01'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.imac_light
+
+  - id: AGL_closet_light
+    alias: Adjust closet_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_closet_light
+      - platform: state
+        entity_id: sensor.light_color_temp_closet_light
+      - platform: state
+        entity_id: sensor.light_white_value_closet_light
+      - platform: state
+        entity_id: sensor.light_brightness_closet_light
+      - platform: state
+        entity_id: sensor.light_transition_closet_light
+      - platform: state
+        entity_id: sensor.light_flash_closet_light
+      - platform: state
+        entity_id: input_select.light_effect_closet_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.closet_light
+        state: 'on'
+    action:
+      - delay: '00:00:09'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.closet_light
+
+
+
+
+
+

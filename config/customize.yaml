@@ -1,0 +1,49 @@
+group.all_automations:
+  hidden: false
+group.all_scripts:
+  hidden: false
+group.all_lights:
+  hidden: false
+
+sensor.h_8266_1_humidity:
+  friendly_name: Office Monitor Humidity
+
+sensor.h_8266_1_temp:
+  friendly_name: Office Monitor Air Temp
+
+sensor.h_8266_2_humidity:
+  friendly_name: Office Server Humidity
+
+sensor.h_8266_2_temp:
+  friendly_name: Office Server Air Temp
+
+sensor.n_8266_6_humidity:
+  friendly_name: Bathroom Humidity
+
+sensor.n_8266_6_temp:
+  friendly_name: Bathroom Temp
+
+sensor.n_8266_4_humidity:
+  friendly_name: Bedroom Humidity
+
+sensor.n_8266_4_temp:
+  friendly_name: Bedroom Temp
+
+# switch.R0
+#    icon: mdi:kettle
+#    friendly_name: mySwitch
+
+
+## Change the order of stuff because I am OCD
+
+group.lights:
+  order: 1
+
+group.alarmclock:
+  order: 2
+
+group.climate:
+  order: 3
+
+group.scenes:
+  order: 4

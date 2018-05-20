@@ -1,0 +1,672 @@
+################################################
+################################################
+####
+#### This files defines the global state for all lights in a setup
+####
+#### Device and related components are setup in the 'lights_config' package
+#### Other automations and related components are split into 'lights_events' and 'lights_presence'
+#### 'lights_events' handles light changes based on events (time, movies, etc)
+#### 'lights_presence' handles turning on and off lights based on motion in each room
+####
+#### created by https://github.com/garrettdowd
+####  with help and inspiration from https://github.com/dale3h
+####
+################################################
+################################################
+
+
+################################################
+#
+# groups
+#
+################################################
+group:
+  light_control:
+    name: Global Light Control
+    entities:
+      - input_boolean.followme
+      - input_boolean.presence_lights
+      - input_boolean.agl
+      - input_number.light_rgb_color_r
+      - input_number.light_rgb_color_g
+      - input_number.light_rgb_color_b
+      - input_number.light_color_temp
+      - input_number.light_white_value
+      - input_number.light_brightness
+      - input_number.light_transition
+      - input_select.light_flash
+      - input_select.light_effect
+      - sensor.light_rgb_color
+      - sensor.light_color_temp
+      - sensor.light_white_value
+      - sensor.light_brightness
+      - sensor.light_transition
+
+
+
+
+
+################################################
+#
+# script
+#
+################################################
+script:
+  turn_on_light_rgb:
+    ############ THIS IS CURRENTLY NOT FUNCTIONING DUE TO MQTT PAYLOAD ERROR #################
+      ### There must be a ~20ms delay between script calls
+      ###
+      ### Example of how to call script
+      ### entity_id is the only required input
+      # - service: script.turn_on_light_rgb
+      #   data_template:
+      #     entity_id: light.office_light
+      #     rgb_color: '[255,0,0]'
+      #     transition: "{{ states('input_number.alarm_flash_speed') }}"
+      #     brightness: 255
+      #     white_value: 0
+      #     effect: alarm
+    alias: Turn On Light RGB
+    sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: '{{ entity_id }}'
+          rgb_color:
+            - >-
+              {% set rgb_entity = 'light_rgb_color_' ~ entity_id.split('.', 1)[1] -%}
+              {% if rgb_color is defined -%}
+                {{ rgb_color[1:-1].split(',', 3)[0]|int }}
+              {% elif states('sensor.' ~ rgb_entity).split(',', 3)[0]|int != -1 -%}
+                {{ states('sensor.' ~ rgb_entity)[1:-1].split(',', 3)[0]|int }}
+              {%- endif %}
+            - >-
+              {% set rgb_entity = 'light_rgb_color_' ~ entity_id.split('.', 1)[1] -%}
+              {% if rgb_color is defined -%}
+                {{ rgb_color[1:-1].split(',', 3)[1]|int }}
+              {% elif states('sensor.' ~ rgb_entity).split(',', 3)[1]|int != -1 -%}
+                {{ states('sensor.' ~ rgb_entity).split(',', 3)[1]|int }}
+              {%- endif %}
+            - >-
+              {% set rgb_entity = 'light_rgb_color_' ~ entity_id.split('.', 1)[1] -%}
+              {% if rgb_color is defined -%}
+                {{ rgb_color[1:-1].split(',', 3)[2]|int }}
+              {% elif states('sensor.' ~ rgb_entity).split(',', 3)[2]|int != -1 -%}
+                {{ states('sensor.' ~ rgb_entity)[1:-1].split(',', 3)[2]|int }}
+              {%- endif %}
+          white_value: >-
+            {% set white_value_entity = 'light_white_value_' ~ entity_id.split('.', 1)[1]  -%}
+            {%- if white_value is defined and white_value|int != -1 -%}
+              {{ white_value|int }}
+            {%- elif states('sensor.' ~ white_value_entity)|int != -1 -%}
+              {{ states('sensor.' ~ white_value_entity)|int }}
+            {%- elif states.sensor.light_white_value is not none -%}
+              {{ states('sensor.light_white_value')|int }}
+            {%- else -%}
+              255
+            {%- endif %}
+          brightness: >-
+            {% set brightness_entity = 'light_brightness_' ~ entity_id.split('.', 1)[1]  -%}
+            {%- if brightness is defined and brightness|int != -1 -%}
+              {{ brightness|int }}
+            {%- elif states('sensor.' ~ brightness_entity)|int != -1 -%}
+              {{ states('sensor.' ~ brightness_entity)|int }}
+            {%- elif states.sensor.light_brightness is not none -%}
+              {{ states('sensor.light_brightness')|int }}
+            {%- else -%}
+              255
+            {%- endif %}
+          transition: >-
+            {% set transition_entity = 'light_transition_' ~ entity_id.split('.', 1)[1]  -%}
+            {%- if transition is defined -%}
+              {{ transition }}
+            {%- elif states('sensor.' ~ transition_entity)|int != -1 -%}
+              {{ states('sensor.' ~ transition_entity)|int }}
+            {%- elif states.sensor.light_transition is not none -%}
+              {{ states('sensor.light_transition')|int }}
+            {%- else -%}
+              2000
+            {%- endif %}
+          effect: >-
+            {% set effect_entity = 'light_effect_' ~ entity_id.split('.', 1)[1]  -%}
+            {%- if effect is defined %}
+              {{ effect }}
+            {%- elif states('input_select.' ~ effect_entity)|int != -1 -%}
+              {{ states('input_select.' ~ effect_entity) }}
+            {%- elif states.input_select.light_effect is not none -%}
+              {{ states('input_select.light_effect') }}
+            {%- else -%}
+              none
+            {%- endif %}
+
+
+  turn_on_light_ct:
+      ### There must be a ~20ms delay between script calls
+      ###
+      ### Example of how to call script
+      ### entity_id is the only required input
+      # - service: script.turn_on_light_ct
+      #   data_template:
+      #     entity_id: light.office_light
+      #     color_temp: 343
+      #     transition: "{{ states('input_number.alarm_flash_speed') }}"
+      #     brightness: 255
+      #     white_value: 0
+      #     effect: alarm
+
+    alias: Turn On Light Color Temp
+    sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: '{{ entity_id }}'
+          color_temp: >-
+            {% set color_temp_entity = 'light_color_temp_' ~ entity_id.split('.', 1)[1] -%}
+            {%- if color_temp is defined and color_temp|int != -1 -%}
+              {{ color_temp|int }}
+            {%- elif states('sensor.' ~ color_temp_entity)|int != -1 -%}
+              {{ states('sensor.' ~ color_temp_entity)|int }}
+            {%- elif states.sensor.light_color_temp is not none -%}
+              {{ states('sensor.light_color_temp')|int }}
+            {%- else -%}
+              150
+            {%- endif %}
+          white_value: >-
+            {% set white_value_entity = 'light_white_value_' ~ entity_id.split('.', 1)[1] -%}
+            {%- if white_value is defined and white_value|int != -1 %}
+              {{ white_value|int }}
+            {%- elif states('sensor.' ~ white_value_entity)|int != -1 -%}
+              {{ states('sensor.' ~ white_value_entity)|int }}
+            {%- elif states.sensor.light_white_value is not none -%}
+              {{ states('sensor.light_white_value')|int }}
+            {%- else -%}
+              255
+            {%- endif %}
+          brightness: >-
+            {% set brightness_entity = 'light_brightness_' ~ entity_id.split('.', 1)[1] -%}
+            {%- if brightness is defined and brightness|int != -1 %}
+              {{ brightness|int }}
+            {%- elif states('sensor.' ~ brightness_entity)|int != -1 -%}
+              {{ states('sensor.' ~ brightness_entity)|int }}
+            {%- elif states.sensor.light_brightness is not none -%}
+              {{ states('sensor.light_brightness')|int }}
+            {%- else -%}
+              255
+            {%- endif %}
+          transition: >-
+            {% set transition_entity = 'light_transition_' ~ entity_id.split('.', 1)[1] -%}
+            {%- if transition is defined and transition|int != -1 %}
+              {{ transition|int }}
+            {%- elif states('sensor.' ~ transition_entity)|int != -1 -%}
+              {{ states('sensor.' ~ transition_entity)|int }}
+            {%- elif states.sensor.light_transition is not none -%}
+              {{ states('sensor.light_transition')|int }}
+            {%- else -%}
+              2000
+            {%- endif %}
+          effect: >-
+            {% set effect_entity = 'light_effect_' ~ entity_id.split('.', 1)[1]  -%}
+            {%- if effect is defined %}
+              {{ effect }}
+            {%- elif states('input_select.' ~ effect_entity)|int != -1 -%}
+              {{ states('input_select.' ~ effect_entity) }}
+            {%- elif states.input_select.light_effect is not none -%}
+              {{ states('input_select.light_effect') }}
+            {%- else -%}
+              boot_up
+            {%- endif %}
+
+
+  agl_global_script:
+    alias: AGL Script
+    sequence:
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_rgb_color_r_auto
+          value: >-
+            {% set brightness = {
+              0: 255,
+              1: 255,
+              2: 255,
+              3: 255,
+              4: 255,
+              5: 150,
+              6: 0,
+              7: 0,
+              8: 0,
+              9: 0,
+              10: 0,
+              11: 0,
+              12: 0,
+              13: 0,
+              14: 0,
+              15: 0,
+              16: 0,
+              17: 0,
+              18: 0,
+              19: 64,
+              20: 100,
+              21: 188,
+              22: 255,
+              23: 255,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_rgb_color_g_auto
+          value: >-
+            {% set brightness = {
+              0: 0,
+              1: 0,
+              2: 0,
+              3: 0,
+              4: 0,
+              5: 0,
+              6: 0,
+              7: 0,
+              8: 0,
+              9: 0,
+              10: 0,
+              11: 0,
+              12: 10,
+              13: 40,
+              14: 50,
+              15: 60,
+              16: 40,
+              17: 20,
+              18: 0,
+              19: 0,
+              20: 0,
+              21: 0,
+              22: 0,
+              23: 0,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_rgb_color_b_auto
+          value: >-
+            {% set brightness = {
+              0: 0,
+              1: 0,
+              2: 0,
+              3: 0,
+              4: 0,
+              5: 64,
+              6: 188,
+              7: 255,
+              8: 188,
+              9: 64,
+              10: 0,
+              11: 0,
+              12: 0,
+              13: 0,
+              14: 0,
+              15: 0,
+              16: 0,
+              17: 0,
+              18: 0,
+              19: 0,
+              20: 0,
+              21: 0,
+              22: 0,
+              23: 0,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_color_temp_auto
+          value: >-
+            {% set brightness = {
+              0: 700,
+              1: 700,
+              2: 700,
+              3: 700,
+              4: 600,
+              5: 400,
+              6: 300,
+              7: 154,
+              8: 154,
+              9: 200,
+              10: 300,
+              11: 327,
+              12: 327,
+              13: 327,
+              14: 327,
+              15: 327,
+              16: 327,
+              17: 327,
+              18: 327,
+              19: 327,
+              20: 350,
+              21: 400,
+              22: 500,
+              23: 700,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_white_value_auto
+          value: >-
+            {% set brightness = {
+              0: 32,
+              1: 32,
+              2: 32,
+              3: 32,
+              4: 32,
+              5: 64,
+              6: 100,
+              7: 200,
+              8: 255,
+              9: 255,
+              10: 255,
+              11: 255,
+              12: 255,
+              13: 255,
+              14: 255,
+              15: 255,
+              16: 255,
+              17: 255,
+              18: 255,
+              19: 255,
+              20: 192,
+              21: 128,
+              22: 100,
+              23: 64,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.light_brightness_auto
+          value: >-
+            {% set brightness = {
+              0: 33,
+              1: 33,
+              2: 33,
+              3: 33,
+              4: 33,
+              5: 80,
+              6: 160,
+              7: 200,
+              8: 255,
+              9: 255,
+              10: 255,
+              11: 255,
+              12: 255,
+              13: 255,
+              14: 255,
+              15: 255,
+              16: 255,
+              17: 255,
+              18: 255,
+              19: 255,
+              20: 192,
+              21: 150,
+              22: 80,
+              23: 44,
+            } %}
+            {{ brightness[now().hour]|default(255) }}
+
+
+
+
+
+
+
+  # test_light_control_rgb:
+  #   alias: Test RGB
+  #   sequence:
+  #     - service: script.turn_on_light_RGB
+  #       data_template:
+  #         entity_id: light.office_light
+
+  # test_light_control_ct:
+  #   alias: Test CT
+  #   sequence:
+  #     - service: script.turn_on_light_CT
+  #       data_template:
+  #         entity_id: light.office_light
+
+
+
+################################################
+#
+# automation
+#
+################################################
+
+automation:
+  - id: AGL_global
+    alias: Adjust Global Light State
+    trigger:
+      - platform: time
+        minutes: 00
+        seconds: 01
+    action:
+      - service: script.agl_global_script
+
+
+
+
+################################################
+#
+# sensor
+#
+################################################
+sensor:
+  - platform: template
+    sensors:
+      ############### Global Light Sensors ###############
+      light_rgb_color:
+        friendly_name: "Rgb Color - All Lights"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r')|int == -1 -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_auto')|int ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g')|int == -1 -%}
+            {{ states('input_number.light_rgb_color_g_auto')|int ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b')|int == -1 -%}
+            {{ states('input_number.light_rgb_color_b_auto')|int ~ ']' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b')|int ~ ']' }}
+          {%- endif %}
+
+      light_color_temp:
+        friendly_name: "Color Temp - All Lights"
+        value_template: >-
+          {% if states('input_number.light_color_temp')|int == -1 -%}
+            {{ states('input_number.light_color_temp_auto')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp')|int }}
+          {%- endif %}
+
+      light_white_value:
+        friendly_name: "White Value - All Lights"
+        value_template: >-
+          {% if states('input_number.light_white_value')|int == -1 -%}
+            {{ states('input_number.light_white_value_auto')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value')|int }}
+          {%- endif %}
+
+      light_brightness:
+        friendly_name: "Brightness - All Lights"
+        value_template: >-
+          {% if states('input_number.light_brightness')|int == -1 -%}
+            {{ states('input_number.light_brightness_auto')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness')|int }}
+          {%- endif %}
+
+      light_transition:
+        friendly_name: "Transition Duration - All Lights"
+        value_template: >-
+          {% if states('input_number.light_transition')|int == -1 -%}
+            1000
+          {%- else -%}
+            {{ states('input_number.light_transition')|int }}
+          {%- endif %}
+
+
+
+
+################################################
+#
+# input_number
+#
+################################################
+input_number:
+  ############### Global Light Control ###############
+  ## These are values that are updated automatically based on the time of day
+  ## Should not be shown in GUI
+  light_rgb_color_r_auto:
+    name: Red Value - Lights
+    min: 0
+    max: 255
+    step: 1
+    initial: 0
+    mode: slider
+
+  light_rgb_color_g_auto:
+    name: Green Value - Lights
+    min: 0
+    max: 255
+    step: 1
+    initial: 0
+    mode: slider
+
+  light_rgb_color_b_auto:
+    name: Blue Value - Lights
+    min: 0
+    max: 255
+    step: 1
+    initial: 0
+    mode: slider
+
+  light_color_temp_auto:
+    name: Color Temp - Lights
+    min: 10
+    max: 700
+    step: 1
+    initial: 327
+    mode: slider
+
+  light_white_value_auto:
+    name: White Value - Lights
+    min: 0
+    max: 255
+    step: 1
+    initial: 255
+    mode: slider
+
+  light_brightness_auto:
+    name: Brightness - Lights
+    min: 0
+    max: 255
+    step: 1
+    initial: 255
+    mode: slider
+
+  light_transition_auto:
+    name: Transition Duration - Lights
+    min: 0
+    max: 20000
+    step: 1
+    initial: 1000
+    mode: box
+
+
+  ############### Global Light Control ###############
+  ## These are the values that override the "auto" values and can be controlled via the GUI
+  # -1 = NO OVERRIDE
+  # 0-X = OVERRIDE ON
+  light_rgb_color_r:
+    name: Red Value - Lights - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g:
+    name: Green Value - Lights - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b:
+    name: Blue Value - Lights - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp:
+    name: Color Temp - Lights - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value:
+    name: White Value - Lights - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness:
+    name: Brightness - Lights - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_transition:
+    name: Transition Duration - Lights - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+################################################
+#
+# input_select
+#
+################################################
+input_select:
+  ############### Global Light Control ###############
+  light_effect:
+    name: Effect - All Lights
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+    initial: none
+
+  light_flash:
+    name: Flash Duration - All Lights
+    options:
+      - short
+      - long
+    initial: short
+
+  

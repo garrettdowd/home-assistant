@@ -1,0 +1,292 @@
+################################################
+# Tab Views
+################################################
+
+default_view:
+  name: Home
+  view: yes
+  entities:
+    - group.lights
+    - group.alarmclock
+    - group.security_alarm
+    - group.light_control
+    - group.climate
+
+living_room:
+  name: Living Room
+  view: yes
+  entities:
+    - input_boolean.movie_lights
+    - group.livingroom_lights
+    - group.livingroom_light_control
+    - group.hyperion_control
+    - group.livingroom_motion
+
+kitchen:
+  name: Kitchen
+  view: yes
+  entities:
+    - group.kitchen_lights
+    - group.kitchen_light_control
+    - group.prep_light_control
+    - group.kitchen_motion
+
+office:
+  name: Office
+  view: yes
+  entities:
+    - group.office_lights
+    - group.office_light_control
+    - group.desk_light_control
+    - group.monitor_light_control
+    - group.office_motion
+    - group.office_climate
+
+bedroom:
+  name: Bedroom
+  view: yes
+  entities:
+    - input_boolean.good_night_story
+    - script.bedime_mozart
+    - group.bedroom_lights
+    - group.closet_lights
+    - group.bedroom_light_control
+    - group.closet_light_control
+    - group.bedroom_motion
+    - group.closet_motion
+    - group.bedroom_climate
+
+bathroom:
+  name: Bathroom
+  view: yes
+  entities:
+    - group.bathroom_lights
+    - group.bathroom_light_control
+    - group.bathroom_motion
+    - group.bathroom_climate
+
+media:
+  name: Media
+  view: yes
+  entities:
+    - group.media_players
+
+admin:
+  name: Admin
+  view: yes
+  entities:
+    - group.all_scripts
+    - group.all_automations
+    - group.weblinks
+    - group.network
+    - group.all_motion
+    - group.scenes
+    - group.input
+    - light.test_light
+
+
+
+
+################################################
+# Groups
+################################################
+
+
+################# Main Room ####################
+main_room_lights:
+  name: Main Room Lights
+  entities:
+    - light.livingroom_light
+    - light.kitchen_light
+    - light.prep_light
+    - light.hyperion
+
+################ Living Room ###################
+
+livingroom_motion:
+  name: Living Room Motion Sensors
+  entities:
+    - binary_sensor.n_8266_1_motion
+    - binary_sensor.n_8266_9_motion
+
+
+################## Kitchen #####################
+
+kitchen_motion:
+  name: Kitchen Motion Sensors
+  entities:
+    - binary_sensor.n_8266_3_motion
+
+################## Office ######################
+
+office_motion:
+  name: Office Motion Sensors
+  entities:
+    - binary_sensor.n_8266_5_motion
+
+office_climate:
+  name: Office Climate
+  entities:
+    - sensor.h_8266_1_humidity
+    - sensor.h_8266_1_temp
+    - sensor.h_8266_2_humidity
+    - sensor.h_8266_2_temp
+
+################# Bedroom ######################
+
+bedroom_motion:
+  name: Bedroom Motion Sensors
+  entities:
+    - binary_sensor.n_8266_4_motion
+
+bedroom_climate:
+  name: Bathroom Climate
+  entities:
+    - sensor.n_8266_4_humidity
+    - sensor.n_8266_4_temp
+
+################# Closet ######################
+
+closet_motion:
+  name: Closet Motion Sensors
+  entities:
+    - binary_sensor.n_8266_7_motion
+
+################ Bathroom #####################
+
+bathroom_motion:
+  name: Bathroom Motion Sensors
+  entities:
+    - binary_sensor.n_8266_6_motion
+
+bathroom_climate:
+  name: Bathroom Climate
+  entities:
+    - sensor.n_8266_6_humidity
+    - sensor.n_8266_6_temp
+
+################### Lights #####################
+
+
+
+
+################### Motion #####################
+
+all_motion:
+  name: All Motion Sensors
+  entities:
+    - binary_sensor.n_8266_1_motion
+    - binary_sensor.n_8266_2_motion
+    - binary_sensor.n_8266_3_motion
+    - binary_sensor.n_8266_4_motion
+    - binary_sensor.n_8266_5_motion
+    - binary_sensor.n_8266_6_motion
+    - binary_sensor.n_8266_7_motion
+    - binary_sensor.n_8266_8_motion
+    - binary_sensor.n_8266_9_motion
+
+
+################### Weather ####################
+climate:
+  name: Climate
+  entities:
+    - sensor.dark_sky_apparent_temperature
+    - sensor.dark_sky_cloud_coverage
+    - sensor.dark_sky_humidity
+    - sensor.h_8266_1_humidity
+    - sensor.h_8266_1_temp
+    - sensor.h_8266_2_humidity
+    - sensor.h_8266_2_temp
+    - sensor.n_8266_6_humidity
+    - sensor.n_8266_6_temp
+    - sensor.n_8266_4_humidity
+    - sensor.n_8266_4_temp
+
+################### Home #######################
+garrett:
+  name: Garrett Presence
+  entities:
+    - device_tracker.garrett_iphone
+    - device_tracker.miniscreen
+    - device_tracker.masterscreen
+
+
+#################### Media #####################
+media_players:
+  name: Media Players
+  entities:
+    - media_player.living_room_tv
+    - media_player.living_room_speaker
+    - media_player.minispeaker
+    - media_player.cc_audio
+    - media_player.all_speakers
+    - media_player.rasplex
+    - media_player.office_speaker
+    - media_player.plex_web_chrome
+    - media_player.miniscreen
+    - media_player.spotify
+
+
+
+input:
+  name: Input
+  control: hidden
+  entities:
+    - script.good_night
+    - input_boolean.garrett_tracker
+    - input_boolean.special_welcome_home
+
+scenes:
+  name: All Scenes
+  entities:
+    - scene.blue_sky
+    - scene.christmas
+    - scene.rainbows
+    - scene.music_mode
+    - scene.movie_pause
+    - scene.movie_play
+    - scene.movie_stop
+    - script.security_alarm_lights
+
+weblinks:
+  name: Web Links
+  entities:
+    - weblink.couchpotato
+    - weblink.deluge
+    - weblink.plex_request
+    - weblink.plexpy
+    - weblink.router
+    - weblink.sickrage
+
+network:
+  name: Network
+  entities:
+    - sensor.speedtest_ping
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+#     - sensor.deluge_speed
+#     - sensor.uptime
+#     - sensor.livingroomgooglehome
+#     - sensor.livingroomtv
+#     - sensor.livingroomchromecast
+#     - sensor.bedroomchromecast
+#     - sensor.outsidechromecast
+
+# automation_override:
+#   name: Automation Override
+#   entities:
+#     - input_boolean.guest_mode
+#     - input_boolean.alert_mode
+#     - input_boolean.speech_notifications
+#     - input_boolean.lastmsg
+#     - switch.air_conditioner
+#     - input_boolean.disable_auto_living_room_lamp
+#     - input_boolean.disable_media_player_light_control
+#     - input_boolean.disable_current_temperature_notification
+#     - input_boolean.disable_morning_notification
+#     - input_boolean.disable_afternoon_notification
+#     - input_boolean.disable_unexpected_motion_notification
+#     - input_boolean.disable_device_tampering_notification
+#     - input_boolean.disable_washing_machine_notification
+#     - input_boolean.disable_entry_light_trent_home
+#     - input_boolean.disable_entryway_light_frontdoor

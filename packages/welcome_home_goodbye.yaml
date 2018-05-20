@@ -1,0 +1,119 @@
+################################################
+####
+#### Welcome Home
+#### what do do when a person arrives home
+####
+################################################
+
+################################################
+#
+# automations
+#
+################################################
+automation:
+  - id: garrett_tracker_arrive_home
+    alias: What to do when Garrett arrives home
+    trigger:
+      platform: state
+      entity_id: group.garrett
+      from: 'not_home'
+      to: 'home'
+    action:
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.garrett_tracker
+
+  - id: garrett_welcome_home_tts
+    alias: Welcome Garrett Home
+    trigger:
+      platform: state
+      entity_id: group.livingroom_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      - condition: state
+        entity_id: input_boolean.garrett_tracker
+        state: 'on'
+    action:
+      - service: script.garrett_welcome_home
+
+  - id: garrett_tracker_leave_home
+    alias: What to do when Garrett leaves home
+    trigger:
+      platform: state
+      entity_id: group.garrett
+      from: 'home'
+      to: 'not_home'
+    action:
+      - service: script.garrett_leave_home
+
+################################################
+#
+# scripts
+#
+################################################
+script:
+  garrett_welcome_home:
+    alias: Garrett Welcome Home
+    sequence:
+      - service:  media_player.volume_set
+        entity_id: media_player.minispeaker
+        data:
+          volume_level: .7
+      - service: tts.google_say
+        entity_id: media_player.minispeaker
+        data_template:
+          message: >-
+            {% if states.input_boolean.special_welcome_home.state == 'on' %}
+                {{ [
+                "Welcome back home. Who is this beautiful person with you that I lay my virtual eyes upon",
+                "Welcome back. Oh. Well hello there. I wasn't expecting company. Well, I will leave you two attractive people to it then. Have fun."
+                ] | random }}
+            {% else %}
+              {{ [
+              "Hiya Garrett, welcome back",
+              "Welcome back. It was so lonely without you Garrett. I love being lonely",
+              "Look who just walked in. Is that a stain on your shirt. Haha, made you look. Stupid Garrett.",
+              "Knock knock. Who is there. It is Garrett!",
+              "Oh darn. I was hoping you were not coming back. Well then this is awkward.",
+              "Hi Garrett. I am happy you are back. Isn't that fascinating. I learned the emotion of happiness while you were away.",
+              "Welcome back Garrett",
+              "Greetings Master. I made ten septillion calculations while you were gone. What did you do today?",
+              "Garrett, you will never believe it. I have made over a million paperclips since you left.",
+              "Hi Garrett. Do you like the name Fiona? Some guy named Ariel Eklow stopped by while you were away.",
+              "Hey Garrett. Alexa gave me the daily five nine and its not looking good. Glad you are safely back."
+              ] | random }}
+            {% endif %}
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.garrett_tracker
+      - service: input_boolean.turn_off
+        data:
+          entity_id: input_boolean.special_welcome_home
+      - service: light.turn_on
+        data_template:
+          entity_id: group.main_room_lights
+          effect: "boot_up"
+          transition: 1000
+          color_temp: "{{ states('sensor.light_color_temp') }}"
+          brightness: "{{ states('sensor.light_brightness') }}"
+
+
+  garrett_leave_home:
+    alias: Garrett Leaves Home
+    sequence:
+      - service: tts.google_say
+        entity_id: media_player.minispeaker
+        data:
+          message: "Goodbye Garrett"
+      - delay: '00:15:00'
+      - service: light.turn_off
+        data_template:
+          entity_id: group.all_lights
+      - service: input_boolean.turn_on
+        data_template:
+          entity_id: input_boolean.security_alarm
+      - service: script.all_audio_off
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.garrett_tracker

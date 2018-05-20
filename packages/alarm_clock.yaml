@@ -1,0 +1,288 @@
+################################################
+#
+# Alarm Clock
+#
+# Adapted from https://github.com/master-kenobi/ha-alarmclock
+#
+################################################
+group: 
+  alarmclock:
+    name: Wake Me Up
+    entities: 
+      - automation.alarm_clock
+      - sensor.alarm_time
+      - input_number.alarmhour
+      - input_number.alarmminutes
+      - input_number.alarmminutes
+      - input_number.snoozetime
+      - input_boolean.alarmweekday
+
+
+automation:
+  ## make it so that two or three alarms can be configured
+
+  # this is the automation that starts the alarm clock loop. It will first fade on lights and then start the main control loop
+  - id: alarm_clock
+    alias: Alarm Clock
+    trigger:
+      platform: template
+      value_template: '{{ states.sensor.time.state == states.sensor.alarm_time.state }}'
+    condition:
+      condition: or
+      conditions:
+      - condition: and
+        conditions:
+        - condition: state
+          entity_id: input_boolean.alarmweekday
+          state: 'on'
+        - condition: time
+          weekday:
+          - mon
+          - tue
+          - wed
+          - thu
+          - fri
+        - condition: state
+          entity_id: group.garrett
+          state: 'home'
+      - condition: state
+        entity_id: input_boolean.alarmweekday
+        state: 'off'
+    action:
+      - service: light.turn_on
+        data:
+          entity_id: light.bedroom_light
+          white_value: 40
+          brightness: 255
+          rgb_color: [0,0,255]
+          transition: 900000
+      - delay: 00:10:00
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_state
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock_state
+
+
+  # this is the main control loop where lights, sounds, and user input are handled
+  - id: alarm_clock_loop
+    alias: Turn On Alarm Clock
+    trigger:
+      platform: state
+      entity_id: input_boolean.alarm_clock_state
+      from: 'off'
+      to: 'on'
+    action:
+      - service: notify.notify
+        data:
+          message: "Good morning. Time to Wake Up!"
+          data:
+            push:
+              badge: 1
+              # sound: <SOUND FILE HERE>
+              # Needs to match the top level identifier you used in the ios configuration
+              category: "alarm_clock" 
+            # action_data: # Anything passed in action_data will get echoed back to Home Assistant.
+            #   entity_id: light.test
+            #   my_custom_data: foo_bar
+      # - service: scene.turn_on
+      #   entity_id: scene.alarm_clock
+      - service:  media_player.turn_on
+        entity_id: media_player.office_speaker
+      - service:  media_player.volume_set
+        entity_id: media_player.office_speaker
+        data:
+          volume_level: 1
+        # make sure that presence lights does not interfere and turn off the bedroom lights
+      - service: automation.turn_off
+        entity_id: automation.turn_off_bedroom_lights
+      - service:  media_extractor.play_media
+        data_template:
+          entity_id: media_player.office_speaker
+          media_content_id: >
+            {{ [
+            "https://www.youtube.com/watch?v=JuYeHPFR3f0",
+            "https://www.youtube.com/watch?v=JGhoLcsr8GA",
+            "https://www.youtube.com/watch?v=IcrbM1l_BoI",
+            "https://www.youtube.com/watch?v=aatr_2MstrI",
+            "https://www.youtube.com/watch?v=I5exsScaHWo",
+            "https://www.youtube.com/watch?v=F4eccPBFEjE",
+            "https://www.youtube.com/watch?v=_2DkJjBiCWY",
+            "https://www.youtube.com/watch?v=qO7a-Q1HY1I",
+            "https://www.youtube.com/watch?v=Hha0bwVvGmY",
+            "https://www.youtube.com/watch?v=sVfdqWt_3ug",
+            "https://www.youtube.com/watch?v=Ze6szKAdGp0"
+            ] | random }}
+          media_content_type: video/youtube
+          # "https://www.youtube.com/watch?v=JuYeHPFR3f0", # Pokemon Theme Song
+          # "https://www.youtube.com/watch?v=JGhoLcsr8GA", # Macklemore Downtown
+          # "https://www.youtube.com/watch?v=IcrbM1l_BoI", # Avicii Wake Me Up
+          # "https://www.youtube.com/watch?v=aatr_2MstrI", # Clean Bandit - Symphony feat. Zara Larsson
+          # "https://www.youtube.com/watch?v=I5exsScaHWo", # John Newman - Come And Get It
+          # "https://www.youtube.com/watch?v=F4eccPBFEjE", # Daft Punk Derezzed
+          # "https://www.youtube.com/watch?v=_2DkJjBiCWY", # Capital Cities - Vowels
+          # "https://www.youtube.com/watch?v=qO7a-Q1HY1I", # Mura Masa - Helpline ft. Tom Tripp
+          # "https://www.youtube.com/watch?v=Hha0bwVvGmY", # Portugal. The Man - Live In The Moment
+          # "https://www.youtube.com/watch?v=sVfdqWt_3ug", # Robotaki - Together We Are Screwed
+          # "https://www.youtube.com/watch?v=Ze6szKAdGp0"  # Cris Lake - Turn Off the Lights (Cages Remix)
+      # - service:  media_player.play_media
+      #   data:
+      #     entity_id: media_player.office_speaker
+      #     media_content_id: put full web address here
+      #     media_content_type: audio/mp3
+
+      ## this section of the main loop handles the scenario that no user input was received (ie the user slept through the alarm)
+      - delay: 00:04:00
+      - condition: and
+        conditions:
+          - condition: state
+            entity_id: input_boolean.alarm_clock_state
+            state: 'on'
+          - condition: state
+            entity_id: input_boolean.alarm_clock_snooze
+            state: 'off'
+        # turn off and on alarm_clock_state to re-trigger main loop automation
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_state
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock_state
+
+
+  # this is an automation to handle user input (from ios notification) 
+  - id: snooze_alarm_clock 
+    alias: Snooze Alarm Clock
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: SNOOZE_ALARM_CLOCK
+    action:
+      - service:  media_player.turn_off
+        entity_id: media_player.office_speaker
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock_snooze
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_state
+
+  # this is an automation to handle user input (from ios notification) 
+  - id: turn_off_alarm_clock 
+    alias: Turn Off Alarm Clock
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: TURN_OFF_ALARM_CLOCK
+    action:
+      - service: script.turn_off_alarm_clock
+
+  # this code wakes up the alarm clock after the user snoozes
+  - id: unsnooze_alarm_clock
+    alias: Unsnooze Alarm Clock
+    trigger:
+      platform: state
+      entity_id: input_boolean.alarm_clock_snooze
+      from: 'off'
+      to: 'on'
+      for:
+        hours: 0
+        minutes: 15
+        seconds: 0
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock_state
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_snooze
+
+script:
+  turn_off_alarm_clock:
+    alias: Turn Off Alarm Clock
+    sequence:
+      - service:  media_player.turn_off
+        entity_id: media_player.office_speaker
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_snooze
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_state
+      - service: automation.turn_on
+        entity_id: automation.turn_off_bedroom_lights
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.sleeping
+      - service: input_boolean.turn_on
+        data:
+          entity_id: input_boolean.good_morning_message
+
+sensor:
+  - platform: template
+    sensors:
+      alarm_time:
+        friendly_name: 'Time'
+        value_template: '{{ "%0.02d:%0.02d" | format(states("input_number.alarmhour") | int, states("input_number.alarmminutes") | int) }}'
+
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'time_date'
+      - 'time_utc'
+
+
+
+input_number:
+  alarmhour:
+    name: Hour
+    icon: mdi:timer
+    min: 0
+    max: 23
+    step: 1
+    mode: slider
+  alarmminutes:
+    name: Minutes
+    icon: mdi:timer
+    min: 0
+    max: 59
+    step: 5
+    mode: slider
+  snoozetime:
+    name: Snooze Length
+    icon: mdi:timer
+    min: 5
+    max: 30
+    step: 1
+    mode: slider
+
+
+
+input_boolean:
+  alarmweekday:
+    name: Weekdays Only
+    icon: mdi:calendar
+
+  alarm_clock_state:
+    name: Alarm Clock
+
+  alarm_clock_snooze:
+    name: Snooze Alarm Clock
+
+
+
+ios:
+  push:
+    categories:
+      - name: Alarm Clock
+        identifier: 'alarm_clock'
+        actions:
+          - identifier: 'TURN_OFF_ALARM_CLOCK'
+            title: 'Turn Off Alarm Clock'
+            activationMode: 'background'
+            authenticationRequired: no
+            destructive: yes
+            behavior: 'default'
+          - identifier: 'SNOOZE_ALARM_CLOCK'
+            title: 'Snooze Alarm Clock'
+            activationMode: 'background'
+            authenticationRequired: no
+            destructive: no
+            behavior: 'default'
+            # behavior: 'textInput'
+            # textInputButtonTitle: 'Silencio!'
+            # textInputPlaceholder: 'Placeholder'

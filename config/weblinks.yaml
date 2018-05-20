@@ -1,0 +1,20 @@
+
+entities:
+  - name: Router
+    url: http://192.168.0.1/
+    icon: mdi:wifi
+  - name: Couchpotato
+    url: !secret cp_address
+    icon: mdi:movie
+  - name: Sickrage
+    url: !secret sr_address
+    icon: mdi:television
+  - name: Plexpy
+    url: !secret pp_address
+    icon: mdi:format-list-bulleted
+  - name: Deluge
+    url: !secret dl_address
+    icon: mdi:download
+  - name: Plex Request
+    url: !secret pr_address
+    icon: mdi:basket-fill

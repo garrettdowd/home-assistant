@@ -1,0 +1,102 @@
+# alexa:
+#   filter:
+#   #   include_entities:
+#   #     - light.kitchen
+#   #     - light.kitchen_left
+#     include_domains:
+#       - automation
+#       - input_boolean
+#       - light
+#       - media_player
+#       - scene
+#       - switch
+#   #   exclude_entities:
+#   #     - switch.outside
+#   entity_config:
+#     light.kitchen:
+#       name: Alexa
+#       description: Not Google Assistant
+#     switch.stairs:
+#       display_categories: LIGHT
+
+google_actions:
+  filter:
+    include_entities:
+      - script.agl_global_script
+      - script.all_audio_off
+      - script.bedime_mozart
+      - script.garrett_leave_home
+      - script.garrett_welcome_home
+      - script.good_morning
+      - script.good_night
+      - script.security_alarm_lights
+      - script.shower_time
+      - input_boolean.security_alarm
+      - input_boolean.agl
+      - input_boolean.presence_lights
+      - input_boolean.followme
+      - input_boolean.movie_lights
+      - input_boolean.good_night_story
+      - automation.alarm_clock
+    include_domains:
+      - light
+      - scene
+  #   exclude_entities:
+  entity_config:
+    script.agl_global_script:
+      name: Adjust The Lights
+      aliases:
+        - Adjust The Lights
+        - update the lights
+    script.all_audio_off:
+      name: Turn Off All Audio
+      aliases:
+        - Turn Off All Audio
+        - turn off all speakers
+        - all audio off
+    script.bedime_mozart:
+      name: Mozarts Magic Fantasy
+      aliases:
+        - Mozarts Magic Fantasy
+        - Mozart magic flute
+        - magic flute
+        
+    input_boolean.good_night_story:
+      name: Bed Time Story
+      aliases:
+        - Bed Time Story
+        - Good night story
+    input_boolean.security_alarm:
+      name: Security Alarm
+      aliases:
+        - Security System
+        - security alarm
+        - automatic thief killer
+    input_boolean.presence_lights:
+      name: Presence Lights
+      aliases:
+        - Presence Lights
+        - motion lights
+    input_boolean.followme:
+      name: Follow Me Lights
+      aliases:
+        - Follow Me Lights
+    input_boolean.agl:
+      name: Automaic Light Adjustment
+      aliases:
+        - Automaic Light Adjustment
+        - agl
+        - automatic global lights
+
+    scene.rainbows:
+      name: Rainbow Mode
+      aliases:
+        - Rainbow Mode
+        - all of the rainbows
+        - rainbow apartment
+    scene.music_mode:
+      name: Music Mode
+      aliases:
+        - Music Mode
+        - dancing lights
+        - party mode

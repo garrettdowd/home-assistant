@@ -1,0 +1,271 @@
+
+
+# - platform: mqtt
+#   name: "Livingroom Light"
+#   command_topic: "clb/lights/N_8266_1/onoff/set"
+#   state_topic: "clb/lights/N_8266_1/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_1/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_1/brightness"
+#   effect_command_topic: "clb/lights/N_8266_1/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_1/effect"
+#   effect_list:
+#     - "none"
+#     - "highlight_art"
+#     - "dinner"
+#     - "entrance"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "movie_mode"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_1/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_1/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_1/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_1/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Kitchen Light"
+#   command_topic: "clb/lights/N_8266_2/onoff/set"
+#   state_topic: "clb/lights/N_8266_2/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_2/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_2/brightness"
+#   effect_command_topic: "clb/lights/N_8266_2/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_2/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_2/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_2/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_2/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_2/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Prep Light"
+#   command_topic: "clb/lights/N_8266_3/onoff/set"
+#   state_topic: "clb/lights/N_8266_3/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_3/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_3/brightness"
+#   effect_command_topic: "clb/lights/N_8266_3/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_3/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_3/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_3/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_3/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_3/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Closet Light"
+#   command_topic: "clb/lights/N_8266_7/onoff/set"
+#   state_topic: "clb/lights/N_8266_7/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_7/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_7/brightness"
+#   effect_command_topic: "clb/lights/N_8266_7/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_7/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_7/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_7/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_7/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_7/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Bedroom Light"
+#   command_topic: "clb/lights/N_8266_4/onoff/set"
+#   state_topic: "clb/lights/N_8266_4/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_4/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_4/brightness"
+#   effect_command_topic: "clb/lights/N_8266_4/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_4/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_4/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_4/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_4/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_4/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Office Light"
+#   command_topic: "clb/lights/N_8266_5/onoff/set"
+#   state_topic: "clb/lights/N_8266_5/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_5/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_5/brightness"
+#   effect_command_topic: "clb/lights/N_8266_5/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_5/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_5/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_5/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_5/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_5/white"
+#   payload_off: "OFF"
+
+# - platform: mqtt
+#   name: "Desk Light"
+#   command_topic: "clb/lights/N_8266_8/onoff/set"
+#   state_topic: "clb/lights/N_8266_8/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_8/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_8/brightness"
+#   effect_command_topic: "clb/lights/N_8266_8/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_8/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_8/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_8/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_8/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_8/white"
+#   payload_off: "OFF"
+
+
+# - platform: mqtt
+#   name: "Bathroom Light"
+#   command_topic: "clb/lights/N_8266_6/onoff/set"
+#   state_topic: "clb/lights/N_8266_6/onoff"
+#   brightness_command_topic: "clb/lights/N_8266_6/brightness/set"
+#   brightness_state_topic: "clb/lights/N_8266_6/brightness"
+#   effect_command_topic: "clb/lights/N_8266_6/effect/set"
+#   effect_state_topic: "clb/lights/N_8266_6/effect"
+#   effect_list:
+#     - "none"
+#     - "boot_up_1x"
+#     - "boot_up_2x"
+#     - "boot_up_3x"
+#     - "rainbow"
+#     - "alarm"
+#     # - "#ff0000-3-44" #red fast
+#     # - "#0026ff-3-44" #blue f
+#     # - "#00ff39-3-44" #green f
+#     # - "#7300ff-3-44" #purple f
+#     # - "#ff0000-3-88" #red slow
+#     # - "#0026ff-3-88" #blue s
+#     # - "#00ff39-3-88" #green s
+#     # - "#7300ff-3-88" #purple s
+#     # - "#ff0000-3-176" #red super slow
+#     # - "#0026ff-3-176" #blue ss
+#     # - "#00ff39-3-176" #green ss
+#     # - "#7300ff-3-176" #purple ss
+#   rgb_command_topic: "clb/lights/N_8266_6/rgb/set"
+#   rgb_state_topic: "clb/lights/N_8266_6/rgb"
+#   white_value_command_topic: "clb/lights/N_8266_6/white/set"
+#   white_value_state_topic: "clb/lights/N_8266_6/white"
+#   payload_off: "OFF"
+

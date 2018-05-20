@@ -1,0 +1,978 @@
+################################################
+#
+# Notifications (TTS)
+#
+################################################
+
+## need to put a PIR sensor right near the door so lights turn on faster. change motion sensor used for welcome home TTS
+
+############### Welcome Home ###################
+# - id: Garrett_Tracker_Update
+#   alias: Track Garrett
+#   trigger:
+#     platform: state
+#     entity_id: group.garrett
+#     from: 'not_home'
+#     to: 'home'
+#   action:
+#     - service: input_boolean.turn_on
+#       data:
+#         entity_id: input_boolean.garrett_tracker
+
+# - id: Welcome_Home_TTS
+#   alias: Welcome Me Home
+#   trigger:
+#     platform: state
+#     entity_id: group.livingroom_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     - condition: state
+#       entity_id: input_boolean.garrett_tracker
+#       state: 'on'
+#   action:
+#     - service: script.welcome_home_garrett
+
+
+
+
+################################################
+#
+# Other
+#
+################################################
+
+
+
+# ################################################
+# #
+# # Presence Based Lights
+# #
+# ################################################
+# # Two Modes
+
+# # Presence Timer
+# # Lights turn on when motion is detected in their zone and
+# # they turn off after prescribed amount of time with no motion detected
+
+# # Follow Me
+# #Only one zone of lighting is on at a time. That zone is determined by the estimated location
+# # of the person. Estimation is based on the triggering of PIR sensor placed throughout the spaces
+
+
+# # TO DO
+# # create brightness, white value, and rgb custom sensors to use instead of same code in each automation
+# # some sort of automation to dim the lights before they turn off
+# # some sort of automation to set nightime frindly lights (low blue levels)
+# # some sort of automation to turn off lights when sleeping? at least in bedroom (create a sleeping automation to turn off PIR sensor or turn off "Light On" Automation)
+# # need to avoid turning off lights when someone is in room. Maybe use other sensors to tell if they have left the room?
+# # on cloudy days, need lights to turn on even when sun is above horizon. Cloud coverage doesnt give good estimate of light in apartment. Need lux sensor?
+
+# - id: Kitchen_Lights_On
+#   alias: Turn On Kitchen Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.kitchen_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.kitchen_lights
+#         state: 'off'
+
+#   action:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: group.kitchen_lights
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         white_value: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+#         effect: "boot_up"
+#         transition: 400
+
+#     #   entity_id: input_boolean.followme
+#     #   state: 'on'
+#     # - service: light.turn_off
+#     #   entity_id: group.not_kitchen
+
+
+# - id: Kitchen_Lights_Off
+#   alias: Turn Off Kitchen Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.kitchen_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 10
+#       seconds: 0
+#   action:
+#     - service: light.turn_off
+#       entity_id: group.kitchen_lights
+
+# - id: Office_Lights_On
+#   alias: Turn On Office Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.office_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.office_lights
+#         state: 'off'
+#       - condition: or
+#         conditions:
+#           - condition: numeric_state
+#             entity_id: sun.sun
+#             value_template: '{{ state.attributes.elevation }}'
+#             below: '7'
+#           - condition: numeric_state
+#             entity_id: sensor.dark_sky_cloud_coverage
+#             above: '75'
+#   action:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: group.office_lights
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         white_value: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+#         effect: "boot_up"
+#         transition: 400
+
+# - id: Office_Lights_Off
+#   alias: Turn Off Office Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.office_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 10
+#       seconds: 0
+#   action:
+#     # Dim the lights before turning off to warn anyone who might be in the room
+#     # May need to split this into another automation where state is tracked by a input boolean
+#     # "delay" and lack or real time motion feedback will not give the best UX
+#     # - service: light.turn_on
+#     #   data_template:
+#     #     entity_id: group.office_lights
+#     #     # WORKAROUND - since "group" has no brightness attribute, we must use the brightness attribute of one of the entities
+#     #     brightness: >
+#     #       {{ float(states.light.monitor_backlight.attributes.brightness) / 2 }}
+#     # - delay: 00:00:10
+#     # # Turn light back to original brightness in the case that motion has occurred during the delay
+#     # # This is not optimal because the brightness will increase before turning off if no motion has occurred
+#     # - service: light.turn_on
+#     #   data_template:
+#     #     entity_id: group.office_lights
+#     #     # WORKAROUND - since "group" has no brightness attribute, we must use the brightness attribute of one of the entities
+#     #     brightness: >
+#     #       {{ float(states.light.monitor_backlight.attributes.brightness) * 2 }}
+#     # - delay: 00:00:01
+#     - condition: state
+#       entity_id: group.office_motion
+#       state: 'off'
+#       for:
+#         hours: 0
+#         minutes: 1
+#         seconds: 0
+#     - service: light.turn_off
+#       entity_id: group.office_lights
+
+# - id: Bedroom_Lights_On
+#   alias: Turn On Bedroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.bedroom_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.bedroom_lights
+#         state: 'off'
+#       - condition: or
+#         conditions:
+#           - condition: numeric_state
+#             entity_id: sun.sun
+#             value_template: '{{ state.attributes.elevation }}'
+#             below: '7'
+#           - condition: numeric_state
+#             entity_id: sensor.dark_sky_cloud_coverage
+#             above: '75'
+#   action:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: group.bedroom_lights
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         white_value: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+#         effect: "boot_up"
+#         transition: 400
+
+# - id: Bedroom_Lights_Off
+#   alias: Turn Off Bedroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.bedroom_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 4
+#       seconds: 0
+#   action:
+#     service: light.turn_off
+#     entity_id: group.bedroom_lights
+
+# - id: Livingroom_Lights_On
+#   alias: Turn On Livingroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.livingroom_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.livingroom_lights
+#         state: 'off'
+#       - condition: or
+#         conditions:
+#           - condition: numeric_state
+#             entity_id: sun.sun
+#             value_template: '{{ state.attributes.elevation }}'
+#             below: '7'
+#           - condition: numeric_state
+#             entity_id: sensor.dark_sky_cloud_coverage
+#             above: '75'
+#   action:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: light.livingroom_light
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         white_value: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+#         effect: "boot_up"
+#         transition: 400
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: light.hyperion
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         brightness: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+
+# - id: Livingroom_Lights_Off
+#   alias: Turn Off Livingroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.livingroom_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 15
+#       seconds: 0
+#   action:
+#     service: light.turn_off
+#     entity_id: group.livingroom_lights
+
+
+# - id: Bathroom_Lights_On
+#   alias: Turn On Bathroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.bathroom_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.bathroom_lights
+#         state: 'off'
+#   action:
+#     - service: light.turn_on
+#       # entity_id: group.kitchen_lights
+#       data_template:
+#         entity_id: group.bathroom_lights
+#         # rgb_color: >-
+#         #   {% if states.sun.sun.attributes.elevation | float < -50 %}
+#         #     {% set rgb_color = "140, 0, 0" %}
+#         #     {% set list = rgb_color.split(',') %}
+#         #     [{%for item in list %}{%- if loop.first %}{% elif loop.last %},{% else %}, {% endif -%}{{item}}{% endfor %}]
+#         #   {% else %}
+#         #     [0, 0, 0]
+#         #   {% endif %}
+#         white_value: >-
+#           {% if states.sun.sun.attributes.elevation | float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+#         effect: "boot_up"
+#         transition: 400
+#     #   entity_id: input_boolean.followme
+#     #   state: 'on'
+#     # - service: light.turn_off
+#     #   entity_id: group.not_kitchen
+
+
+# - id: Bathroom_Lights_Off
+#   alias: Turn Off Bathroom Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.bathroom_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 2
+#       seconds: 0
+#   condition: 
+#     - condition: numeric_state
+#       entity_id: sensor.n_8266_6_humidity
+#       below: '70'
+#   action:
+#     - service: light.turn_off
+#       entity_id: group.bathroom_lights
+
+
+# - id: Closet_Lights_On
+#   alias: "Turn On Closet Lights"
+#   trigger:
+#     platform: state
+#     entity_id: group.closet_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.presence_lights
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#       - condition: state
+#         entity_id: group.closet_lights
+#         state: 'off'
+#   action:
+#     - service: light.turn_on
+#       data_template:
+#         entity_id: group.closet_lights
+#         effect: "boot_up"
+#         transition: 400
+#         # To template `rgb_color`, there is a tricky work-around :)
+#         ## That's fine, going to show you the work-around with what we have right now. <- yes :)
+#         ## Format is as a YAML list, with each list item being its own template
+#         ## For this, we are using:
+#         ##   - "{{ <TRUE_VALUE> if <EXPRESSION> else <FALSE_VALUE> }}"
+#         ## This can also be achieved using a Template Sensor. Let's say you have a sensor (sensor.closet_lights_rgb_color) that contains
+#         ##   the rgb_color in CSV format (R,G,B)
+#         ##
+#         ## or a custom sensor can be used
+#         # rgb_color:
+#         #   - "{{ 0 if time_now < 22 else 60 }}"
+#         #   - "{{ 0 if time_now < 22 else 0 }}"
+#         #   - "{{ 0 if time_now < 22 else 0 }}"
+
+#           # - "{{ states('sensor.closet_lights_rgb_color').split(',', 3)[0] }}"
+#           # - "{{ states('sensor.closet_lights_rgb_color').split(',', 3)[1] }}"
+#           # - "{{ states('sensor.closet_lights_rgb_color').split(',', 3)[2] }}"
+
+#         white_value: >-
+#           {% if state_attr('sun.sun', 'elevation')|float < -50 %}
+#             80
+#           {% elif states.input_boolean.sleeping.state == 'on' %}
+#             60
+#           {% else %}
+#             255
+#           {% endif %}
+          
+#         #   {% set brightness = {
+#         #     0: 64,
+#         #     1: 64,
+#         #     2: 64,
+#         #     3: 64,
+#         #     4: 64,
+#         #     5: 64,
+#         #     6: 64,
+#         #     7: 128,
+#         #     8: 192,
+#         #     9: 255,
+#         #     10: 255,
+#         #     11: 255,
+#         #     12: 255,
+#         #     13: 255,
+#         #     14: 255,
+#         #     15: 255,
+#         #     16: 255,
+#         #     17: 255,
+#         #     18: 255,
+#         #     19: 255,
+#         #     20: 192,
+#         #     21: 128,
+#         #     22: 64,
+#         #     23: 64,
+#         #   } %}
+#         #   {{ brightness[now().hour]|default(255) }}
+
+#         # ## Another way is to use HH:MM converted to a float:
+#         # {% set time_now = now().strftime('%H.%M')|float %}
+#         # {% if time_now < 7 %} # Before 7am (< 7am)
+#         #   64
+#         # {% elif time_now < 8 %} # Before 8am (7am < 8am)
+#         #   128
+#         # {% elif time_now < 9 %} # Before 9am (8am < 9am)
+#         #   192
+#         # {% elif time_now < 20 %} # Before 8pm (9am < 8pm)
+#         #   255
+#         # {% elif time_now < 21 %} # 
+#         #   192
+#         # {% elif time_now < 22 %} # Lol, ok
+#         #   128
+#         # {% else %}
+#         #   64
+#         # {% endif %}
+
+#         # ## So the last way, if you're up for enabling and using packages, is that you can use my `light_control` package
+#         # ## and setup a global_brightness sensor/input_number, and/or individual light sensors/input_numbers.
+
+#     #   entity_id: input_boolean.followme
+#     #   state: 'on'
+#     # - service: light.turn_off
+#     #   entity_id: group.not_kitchen
+
+
+# - id: Closet_Lights_Off
+#   alias: Turn Off Closet Lights
+#   trigger:
+#     platform: state
+#     entity_id: group.closet_motion
+#     from: 'on'
+#     to: 'off'
+#     for:
+#       hours: 0
+#       minutes: 1
+#       seconds: 0
+#   action:
+#     - service: light.turn_off
+#       entity_id: group.closet_lights
+
+
+# ################################################
+# #
+# # Event Driven Lighting 
+# #
+# ################################################
+
+# ############### Welcome Home ###################
+
+# # - id: Welcome_Home_Lights
+# #   alias: Turn On Lights When I Get Home
+
+
+
+# ###############     Plex     ###################
+
+# - id: Plex_Lights_Stop
+#   alias: "Media player stopped"
+#   trigger:
+#     - platform: state
+#       entity_id: media_player.rasplex
+#       to: 'idle'
+#     - platform: state
+#       entity_id: media_player.living_room_tv
+#       to: 'idle'
+#   condition:
+#     - condition: numeric_state
+#       entity_id: sun.sun
+#       value_template: '{{ state.attributes.elevation }}'
+#       below: 3.5
+#   action:
+#     - service: scene.turn_on
+#       entity_id: scene.movie_stop
+#     - service: automation.turn_on
+#       entity_id: automation.turn_off_livingroom_lights
+
+# - id: Plex_Lights_Pause
+#   alias: "Media player paused"
+#   trigger:
+#     - platform: state
+#       entity_id: media_player.rasplex
+#       to: 'paused'
+#     - platform: state
+#       entity_id: media_player.living_room_tv
+#       to: 'paused'
+#   condition:
+#     - condition: numeric_state
+#       entity_id: sun.sun
+#       value_template: '{{ state.attributes.elevation }}'
+#       below: 3.5
+#   action:
+#       service: scene.turn_on
+#       entity_id: scene.movie_pause
+
+# - id: Plex_Lights_Play
+#   alias: "Media player playing"
+#   trigger:
+#     - platform: state
+#       entity_id: media_player.rasplex
+#       to: 'playing'
+#     - platform: state
+#       entity_id: media_player.living_room_tv
+#       to: 'playing'
+#   condition:
+#     # - condition: or
+#     #   conditions:
+#     #     - condition: state
+#     #       entity_id: media_player.rasplex.attributes.media_content_type
+#     #       state: tvshow
+#     #     - condition: state
+#     #       entity_id: media_player.rasplex.attributes.media_content_type
+#     #       state: movie
+#     - condition: numeric_state
+#       entity_id: sun.sun
+#       value_template: '{{ state.attributes.elevation }}'
+#       below: 3.5
+#   action:
+#     - service: scene.turn_on
+#       entity_id: scene.movie_play
+#     - service: automation.turn_off
+#       entity_id: automation.turn_off_livingroom_lights
+
+# ################################################
+# #
+# # Security Alarm
+# #
+# ################################################
+
+# - id: alarm_triggered
+#   alias: Motion Detected
+#   trigger:
+#     platform: state
+#     entity_id: group.all_motion
+#     from: 'off'
+#     to: 'on'
+#   condition:
+#     condition: and
+#     conditions:
+#       - condition: state
+#         entity_id: input_boolean.alarm
+#         state: 'on'
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'not_home'
+#   action:
+#     - service: notify.notify
+#       data_template:
+#         message: "Security System Triggered"
+#         data:
+#           push:
+#             badge: 5
+#             sound: "US-EN-Morgan-Freeman-Motion-Detected.wav"
+#             # Needs to match the top level identifier you used in the ios configuration
+#             category: "alarm" 
+#           # action_data: # Anything passed in action_data will get echoed back to Home Assistant.
+#           #   entity_id: light.test
+#           #   my_custom_data: foo_bar
+
+
+# # this is an automation to handle user input (from ios notification) 
+# - id: sound_alarm
+#   alias: Sound Alarm
+#   trigger:
+#     platform: event
+#     event_type: ios.notification_action_fired
+#     event_data:
+#       actionName: SOUND_ALARM
+#   action:
+#     - service: script.sound_alarm
+#       # data:
+#       #   title: 'State change'
+#       #   message: 'The light is on!'
+    
+
+# # this is an automation to handle user input (from ios notification) 
+# - id: warning_alarm
+#   alias: Warning Alarm
+#   trigger:
+#     platform: event
+#     event_type: ios.notification_action_fired
+#     event_data:
+#       actionName: WARNING_ALARM
+#   action:
+#     - service: script.warning_alarm
+#       # data:
+#       #   title: 'State change'
+#       #   message: 'The light is on!'
+
+# # this is an automation to handle user input (from ios notification) 
+# - id: silence_alarm
+#   alias: Silence Alarm
+#   trigger:
+#     platform: event
+#     event_type: ios.notification_action_fired
+#     event_data:
+#       actionName: SILENCE_ALARM
+#   action:
+#     # MAKE THIS A SCRIPT
+#     - service:  media_player.turn_off
+#       entity_id: group.media_players
+#     - service: light.turn_off
+#       entity_id: group.all_lights
+
+
+
+# ################################################
+# #
+# # Alarm Clock
+# #
+# # Adapted from https://github.com/master-kenobi/ha-alarmclock
+# #
+# ################################################
+
+# ## put this in a package
+# ## make it so that two or three alarms can be configured
+
+# # this is the automation that starts the alarm clock loop. It will first fade on lights and then start the main control loop
+# - id: alarm_clock
+#   alias: Alarm Clock
+#   trigger:
+#     platform: template
+#     value_template: '{{ states.sensor.time.state == states.sensor.alarm_time.state }}'
+#   condition:
+#     condition: or
+#     conditions:
+#     - condition: and
+#       conditions:
+#       - condition: state
+#         entity_id: input_boolean.alarmweekday
+#         state: 'on'
+#       - condition: time
+#         weekday:
+#         - mon
+#         - tue
+#         - wed
+#         - thu
+#         - fri
+#       - condition: state
+#         entity_id: group.garrett
+#         state: 'home'
+#     - condition: state
+#       entity_id: input_boolean.alarmweekday
+#       state: 'off'
+#   action:
+#     # a rudimentary work around to fade on lights over ten minutes.
+#     # in the future this could be implemented on the micro-controller side as non-blocking fading
+#     - service: light.turn_on
+#       data:
+#         entity_id: light.bedroom_light
+#         white_value: 40
+#         rgb_color: [0,0,255]
+#         transition: 900
+#     - delay: 00:10:00
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_state
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.alarm_clock_state
+
+
+# # this is the main control loop where lights, sounds, and user input are handled
+# - id: alarm_clock_loop
+#   alias: Turn On Alarm Clock
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.alarm_clock_state
+#     from: 'off'
+#     to: 'on'
+#   action:
+#     - service: notify.notify
+#       data_template:
+#         message: "Good morning. Time to Wake Up!"
+#         data:
+#           push:
+#             badge: 5
+#             # sound: <SOUND FILE HERE>
+#             # Needs to match the top level identifier you used in the ios configuration
+#             category: "alarm_clock" 
+#           # action_data: # Anything passed in action_data will get echoed back to Home Assistant.
+#           #   entity_id: light.test
+#           #   my_custom_data: foo_bar
+#     # - service: scene.turn_on
+#     #   entity_id: scene.alarm_clock
+#     - service:  media_player.turn_on
+#       entity_id: media_player.office_speaker
+#     - service:  media_player.volume_set
+#       entity_id: media_player.office_speaker
+#       data:
+#         volume_level: 1
+#       # make sure that presence lights does not interfere and turn off the bedroom lights
+#     - service: automation.turn_off
+#       entity_id: automation.turn_off_bedroom_lights
+#     - service:  media_extractor.play_media
+#       data_template:
+#         entity_id: media_player.office_speaker
+#         media_content_id: >
+#           {{ [
+#           "https://www.youtube.com/watch?v=JuYeHPFR3f0",
+#           "https://www.youtube.com/watch?v=JGhoLcsr8GA",
+#           "https://www.youtube.com/watch?v=IcrbM1l_BoI",
+#           "https://www.youtube.com/watch?v=aatr_2MstrI",
+#           "https://www.youtube.com/watch?v=I5exsScaHWo",
+#           "https://www.youtube.com/watch?v=F4eccPBFEjE",
+#           "https://www.youtube.com/watch?v=_2DkJjBiCWY",
+#           "https://www.youtube.com/watch?v=qO7a-Q1HY1I",
+#           "https://www.youtube.com/watch?v=Hha0bwVvGmY",
+#           "https://www.youtube.com/watch?v=bA3Q4iYj58I"
+#           ] | random }}
+#         media_content_type: video/youtube
+#         # "https://www.youtube.com/watch?v=JuYeHPFR3f0", # Pokemon Theme Song
+#         # "https://www.youtube.com/watch?v=JGhoLcsr8GA", # Macklemore Downtown
+#         # "https://www.youtube.com/watch?v=IcrbM1l_BoI", # Avicii Wake Me Up
+#         # "https://www.youtube.com/watch?v=aatr_2MstrI", # Clean Bandit - Symphony feat. Zara Larsson
+#         # "https://www.youtube.com/watch?v=I5exsScaHWo", # John Newman - Come And Get It
+#         # "https://www.youtube.com/watch?v=F4eccPBFEjE", # Daft Punk Derezzed
+#         # "https://www.youtube.com/watch?v=_2DkJjBiCWY", # Capital Cities - Vowels
+#         # "https://www.youtube.com/watch?v=qO7a-Q1HY1I", # Mura Masa - Helpline ft. Tom Tripp
+#         # "https://www.youtube.com/watch?v=Hha0bwVvGmY", # Portugal. The Man - Live In The Moment
+#         # "https://www.youtube.com/watch?v=bA3Q4iYj58I" # Big Boi - All Night
+#     # - service:  media_player.play_media
+#     #   data:
+#     #     entity_id: media_player.office_speaker
+#     #     media_content_id: put full web address here
+#     #     media_content_type: audio/mp3
+
+#     ## this section of the main loop handles the scenario that no user input was received (ie the user slept through the alarm)
+#     - delay: 00:04:00
+#     - condition: and
+#       conditions:
+#         - condition: state
+#           entity_id: input_boolean.alarm_clock_state
+#           state: 'on'
+#         - condition: state
+#           entity_id: input_boolean.alarm_clock_snooze
+#           state: 'off'
+#       # turn off and on alarm_clock_state to re-trigger main loop automation
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_state
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.alarm_clock_state
+
+
+# # this is an automation to handle user input (from ios notification) 
+# - id: snooze_alarm_clock 
+#   alias: Snooze Alarm Clock
+#   trigger:
+#     platform: event
+#     event_type: ios.notification_action_fired
+#     event_data:
+#       actionName: SNOOZE_ALARM_CLOCK
+#   action:
+#     - service:  media_player.turn_off
+#       entity_id: media_player.office_speaker
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.alarm_clock_snooze
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_state
+
+# # this is an automation to handle user input (from ios notification) 
+# - id: turn_off_alarm_clock 
+#   alias: Turn Off Alarm Clock
+#   trigger:
+#     platform: event
+#     event_type: ios.notification_action_fired
+#     event_data:
+#       actionName: TURN_OFF_ALARM_CLOCK
+#   action:
+#     - service:  media_player.turn_off
+#       entity_id: media_player.office_speaker
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_snooze
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_state
+#     - service: automation.turn_on
+#       entity_id: automation.turn_off_bedroom_lights
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.sleeping
+
+# # this code wakes up the alarm clock after the user snoozes
+# - id: unsnooze_alarm_clock
+#   alias: Unsnooze Alarm Clock
+#   trigger:
+#     platform: state
+#     entity_id: input_boolean.alarm_clock_snooze
+#     from: 'off'
+#     to: 'on'
+#     for:
+#       hours: 0
+#       minutes: 10
+#       seconds: 0
+#   action:
+#     - service: input_boolean.turn_on
+#       entity_id: input_boolean.alarm_clock_state
+#     - service: input_boolean.turn_off
+#       entity_id: input_boolean.alarm_clock_snooze
+
+# ################################################
+# #
+# # Theme
+# #
+# ################################################
+
+# - id: SDMTOS
+#   alias: Set Day theme at startup
+#   initial_state: 'on'
+#   trigger:
+#   - platform: homeassistant
+#     event: start
+#   condition:
+#     condition: state
+#     entity_id: sun.sun
+#     state: 'above_horizon'
+#   action:
+#   - service: frontend.set_theme
+#     data:
+#       name: default
+# - id: SNTOS
+#   alias: Set Night theme at startup
+#   initial_state: 'on'
+#   trigger:
+#   - platform: homeassistant
+#     event: start
+#   condition:
+#     condition: state
+#     entity_id: sun.sun
+#     state: 'below_horizon'
+#   action:
+#   - service: frontend.set_theme
+#     data:
+#       name: darkblue
+# - id: SDMT
+#   alias: Set Day Mode Theme after Sunrise
+#   trigger:
+#   - platform: sun
+#     event: sunrise
+#     offset: +00:30:00
+#   action:
+#   - service: frontend.set_theme
+#     data:
+#       name: default
+# - id: SNMT
+#   alias: Set Night Mode Theme after Sunset
+#   trigger:
+#   - platform: sun
+#     event: sunset
+#   action:
+#   - service: frontend.set_theme
+#     data:
+#       name: darkblue
+
+

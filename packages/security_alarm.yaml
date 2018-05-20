@@ -1,0 +1,265 @@
+################################################
+#
+# Security Alarm
+#
+################################################
+
+group:
+  security_alarm:
+    name: Security Alarm Panel
+    control: hidden
+    entities:
+      - script.security_alarm_lights
+      - input_boolean.security_alarm
+      - input_boolean.visitor_alarm
+      - input_number.alarm_flash_speed
+      ## currently problems with using template values for rgb_color
+      # - input_number.alarm_flash_color_r
+      # - input_number.alarm_flash_color_g
+      # - input_number.alarm_flash_color_b
+      # - sensor.alarm_color_rgb
+
+automation:
+  - id: alarm_triggered
+    alias: Motion Detected
+    trigger:
+      platform: state
+      entity_id: group.all_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.security_alarm
+          state: 'on'
+        - condition: state
+          entity_id: group.garrett
+          state: 'not_home'
+    action:
+      - service: notify.notify
+        data_template:
+          message: "Security System Triggered"
+          data:
+            push:
+              badge: 5
+              sound: "US-EN-Morgan-Freeman-Motion-Detected.wav"
+              # Needs to match the top level identifier you used in the ios configuration
+              category: "alarm" 
+            # action_data: # Anything passed in action_data will get echoed back to Home Assistant.
+            #   entity_id: light.test
+            #   my_custom_data: foo_bar
+
+
+  # this is an automation to handle user input (from ios notification) 
+  - id: sound_alarm
+    alias: Sound Alarm
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: SOUND_ALARM
+    action:
+      - service: script.sound_alarm
+        # data:
+        #   title: 'State change'
+        #   message: 'The light is on!'
+      
+
+  # this is an automation to handle user input (from ios notification) 
+  - id: warning_alarm
+    alias: Warning Alarm
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: WARNING_ALARM
+    action:
+      - service: script.warning_alarm
+        # data:
+        #   title: 'State change'
+        #   message: 'The light is on!'
+
+  # this is an automation to handle user input (from ios notification) 
+  - id: silence_alarm
+    alias: Silence Alarm
+    trigger:
+      platform: event
+      event_type: ios.notification_action_fired
+      event_data:
+        actionName: SILENCE_ALARM
+    action:
+      # MAKE THIS A SCRIPT
+      - service:  media_player.turn_off
+        entity_id: group.media_players
+      - service: light.turn_off
+        entity_id: group.all_lights
+
+
+
+script:
+  sound_alarm:
+    alias: Sound the Alarm
+    sequence:
+      - service: media_player.turn_on
+        entity_id: media_player.all_speakers
+      - service:  media_player.volume_set
+        entity_id: media_player.all_speakers
+        data:
+          volume_level: 1
+      - service: media_player.play_media
+        data:
+          entity_id: media_player.all_speakers
+          media_content_id: !secret alarm_audio
+          media_content_type: audio/wav
+      - delay: '00:00:05'
+      - service: script.security_alarm_lights
+      
+  security_alarm_lights:
+    alias: Test Security Alarm Lights
+    sequence:
+      - service: light.turn_on
+        data_template:
+          entity_id: group.all_lights
+          rgb_color: [255,0,0]
+          transition: "{{ states('input_number.alarm_flash_speed') }}"
+          brightness: 255
+          white_value: 0
+          effect: "alarm"
+      - service: light.turn_on
+        data_template:
+          entity_id: light.hyperion
+          brightness: 255
+          effect: "Police Lights Single"
+
+
+  warning_alarm:
+    alias: Warning Alarm
+    sequence:
+      # - condition: state
+      #   entity_id: switch.pushover_notifications
+      #   state: 'on'
+      # - service: notify.pushover
+      #   data_template:
+      #     title: "{{ title }}"
+      #     message: "{{ message }}"
+      - service: media_player.turn_on
+        entity_id: media_player.all_speakers
+      - service:  media_player.volume_set
+        entity_id: media_player.all_speakers
+        data:
+          volume_level: 1
+      - service: tts.google_say
+        entity_id: media_player.all_speakers
+        data_template:
+          message: >-
+            {% if states.input_boolean.visitor_alarm.state == 'on' %}
+                {{ [
+                "Hello. Your arrival is expected. Garrett has been notified and he welcomes you to his apartment. Please be sure to remove your shoes.",
+                "Welcome. Garrett was expecting you and I have already sent him a notification of your arrival. Please be sure to remove your shoes."
+                ] | random }}
+            {% else %}
+              {{ [
+              "You have entered a private apartment without the authorization of the resident. Please leave immediately. Authorities have already been notified.",
+              "The resident of this apartment was not expecting any visitors. Please leave immediately. The authorities have already been notified of your unwanted presence."
+              ] | random }}
+            {% endif %}
+      - condition: state
+        entity_id: input_boolean.visitor_alarm
+        state: 'off'
+      - delay: '00:00:05'
+      - service: scene.turn_on
+        entity_id: scene.alarm
+
+
+
+ios:
+  push:
+    categories:
+      - name: Alarm
+        identifier: 'alarm'
+        actions:
+          - identifier: 'SOUND_ALARM'
+            title: 'Sound Alarm'
+            activationMode: 'background'
+            authenticationRequired: yes
+            destructive: yes
+            behavior: 'default'
+          - identifier: 'WARNING_ALARM'
+            title: 'Send Warning'
+            activationMode: 'background'
+            authenticationRequired: yes
+            destructive: no
+            behavior: 'default'
+          - identifier: 'SILENCE_ALARM'
+            title: 'Silence Alarm'
+            activationMode: 'background'
+            authenticationRequired: yes
+            destructive: no
+            behavior: 'default'
+
+
+
+scene:
+  - name: Alarm
+    entities:
+      group.all_lights:
+        state: on
+        effect: "alarm"
+      light.hyperion:
+        state: on
+        effect: "Police Lights Single"
+
+
+
+input_boolean:
+  security_alarm:
+    name: Security Alarm
+
+  visitor_alarm:
+    name: Expecting a Vistor
+
+
+
+input_number:
+  alarm_flash_speed:
+    name: Flash Speed - Alarm
+    min: 0
+    max: 20000
+    step: 1
+    initial: 200
+    mode: box
+
+  alarm_flash_color_r:
+    name: Red Value - Alarm
+    min: 0
+    max: 255
+    step: 1
+    initial: 255
+    mode: slider
+
+  alarm_flash_color_g:
+    name: Green Value - Alarm
+    min: 0
+    max: 255
+    step: 1
+    initial: 0
+    mode: slider
+
+  alarm_flash_color_b:
+    name: Blue Value - Alarm
+    min: 0
+    max: 255
+    step: 1
+    initial: 0
+    mode: slider
+
+sensor:
+  - platform: template
+    sensors:
+      alarm_color_rgb:
+        friendly_name: "Alarm Color"
+        value_template: >-
+            {{ '[' ~ states('input_number.alarm_flash_color_r')|int ~ ',' }}
+            {{ states('input_number.alarm_flash_color_g')|int ~ ',' }}
+            {{ states('input_number.alarm_flash_color_b')|int ~ ']' }}

@@ -1,0 +1,121 @@
+# # N_8266_test
+# - platform: mqtt
+#   name: "N_8266_test Motion"
+#   state_topic: "clb/sensors/N_8266_test"
+#   device_class: motion
+#   value_template: '{{ value_json.motion }}'
+
+# N_8266_1
+- platform: mqtt
+  name: "N_8266_1 Motion"
+  state_topic: "clb/sensors/N_8266_1"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_3
+- platform: mqtt
+  name: "N_8266_3 Motion"
+  state_topic: "clb/sensors/N_8266_3"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_4
+- platform: mqtt
+  name: "N_8266_4 Motion"
+  state_topic: "clb/sensors/N_8266_4"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_5
+- platform: mqtt
+  name: "N_8266_5 Motion"
+  state_topic: "clb/sensors/N_8266_5"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_6
+- platform: mqtt
+  name: "N_8266_6 Motion"
+  state_topic: "clb/sensors/N_8266_6"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_7
+- platform: mqtt
+  name: "N_8266_7 Motion"
+  state_topic: "clb/sensors/N_8266_7"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# N_8266_9
+- platform: mqtt
+  name: "N_8266_9 Motion"
+  state_topic: "clb/sensors/N_8266_9"
+  device_class: motion
+  value_template: '{{ value_json.motion }}'
+
+# # N_8266_2
+# - platform: mqtt
+#   name: "N_8266_2 Motion"
+#   state_topic: "clb/motion/N_8266_2/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:
+
+# # N_8266_3
+# - platform: mqtt
+#   name: "N_8266_3 Motion"
+#   state_topic: "clb/motion/N_8266_3/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:
+
+# # N_8266_4
+# - platform: mqtt
+#   name: "N_8266_4 Motion"
+#   state_topic: "clb/motion/N_8266_4/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:
+
+# # N_8266_5
+# - platform: mqtt
+#   name: "N_8266_5 Motion"
+#   state_topic: "clb/motion/N_8266_5/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:
+
+# # N_8266_6
+# - platform: mqtt
+#   name: "N_8266_6 Motion"
+#   state_topic: "clb/motion/N_8266_6/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:
+
+# # N_8266_7
+# - platform: mqtt
+#   name: "N_8266_7 Motion"
+#   state_topic: "clb/motion/N_8266_7/motion"
+#   device_class: motion
+#   # payload_on:
+#   # payload_off:
+#   # availability_topic:
+#   # payload_available:
+#   # payload_not_available:

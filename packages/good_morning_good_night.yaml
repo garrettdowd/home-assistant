@@ -1,0 +1,107 @@
+################################################
+#
+# automations
+#
+################################################
+automation:
+
+  # maybe make sure lights in bedroom do not turn on?
+  # - id: sleeping_start
+  #   alias: Going to Sleeping
+  #   trigger:
+  #     platform: state
+  #     entity_id: input_boolean.sleeping
+  #     from: 'off'
+  #     to: 'on'
+  #   action:
+  #     - service: script.good_night
+
+  # - id: morning_message_start
+  #   alias: Say Morning Message
+  #   trigger:
+  #     - platform: state
+  #       entity_id: group.all_motion
+  #       from: 'off'
+  #       to: 'on'
+  #   condition:
+  #     - condition: state
+  #       entity_id: input_boolean.good_morning_message
+  #       state: 'on'
+  #   action:
+  #     - service: script.good_morning
+
+
+################################################
+#
+# scripts
+#
+################################################
+script:
+  good_morning:
+    alias: Good Morning Routine
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.sleeping 
+#       - service:  media_player.volume_set
+#         entity_id: media_player.assistants
+#         data:
+#           volume_level: .7
+#       - service: tts.google_say
+#         entity_id: media_player.assistants
+#         data_template:
+#           message: !include ../phrases/good_morning.yaml
+#       - service: input_boolean.turn_off
+#         data:
+#           entity_id: input_boolean.good_morning_message
+
+
+  good_night:
+    alias: Good Night Routine
+    sequence:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.sleeping
+      - service:  media_player.volume_set
+        entity_id: media_player.office_speaker
+        data:
+          volume_level: .5
+      - service: tts.google_say
+        entity_id: media_player.office_speaker
+        data_template:
+          message: !include ../phrases/good_night.yaml
+      - service: light.turn_off
+        data_template:
+          entity_id: group.all_lights
+          transition: 5000
+      - delay: '00:00:07'
+      - condition: state
+        entity_id: input_boolean.good_night_story
+        state: 'on'
+      - service: tts.google_say
+        entity_id: media_player.office_speaker
+        data_template:
+          message: !include ../phrases/bedtime_story.yaml
+
+  bedime_mozart:
+    alias: Mozart Magic Fantasy
+    sequence:
+      - service: media_player.turn_on
+        entity_id: media_player.office_speaker
+      - service:  media_player.volume_set
+        entity_id: media_player.office_speaker
+        data:
+          volume_level: .5
+      - service: media_player.play_media
+        data:
+          entity_id: media_player.office_speaker
+          media_content_id: !secret mozart_bedtime
+          media_content_type: audio/mp3
+
+input_boolean:
+  # good_morning_message:
+  #   name: Good Morning Message
+
+  # sleeping:
+  #   name: I Am Sleeping
+
+  good_night_story:
+    name: Bed Time Story
