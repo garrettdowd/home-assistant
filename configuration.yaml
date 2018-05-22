@@ -82,46 +82,15 @@ http:
 # Enables support for tracking state changes over time
 history:
   include:
-    # domains:
-    #   - sensor
-    #   - switch
-    #   - media_player
-    #   - light
+    domains:
+      - sensor
+      - media_player
+      - light
     entities:
       - automation.wake_me_up
       - group.all_lights
       - group.garrett
       - group.media_players
-      - light.bathroom_light
-      - light.bedroom_light
-      - light.closet_light
-      - light.desk_light
-      - light.kitchen_light
-      - light.livingroom_light
-      - light.monitor_light
-      - light.office_light
-      - light.prep_light
-      - light.server_light
-      - light.hyperion
-      - media_player.living_room_speaker
-      - media_player.living_room_tv
-      - media_player.minispeaker
-      - media_player.office_speaker
-      - media_player.rasplex
-      - media_player.spotify
-      - sensor.speedtest_download
-      - sensor.speedtest_upload
-      - sensor.dark_sky_apparent_temperature
-      - sensor.dark_sky_cloud_coverage
-      - sensor.dark_sky_humidity
-      - sensor.h_8266_1_humidity
-      - sensor.h_8266_1_temp
-      - sensor.h_8266_2_humidity
-      - sensor.h_8266_2_temp
-      - sensor.n_8266_6_humidity
-      - sensor.n_8266_6_temp
-      - sensor.n_8266_4_humidity
-      - sensor.n_8266_4_temp
   # exclude:
   #   entities:
   #    - sensor.last_boot
@@ -203,17 +172,17 @@ media_player:
 # Includes
 ################################################
 
+# automation: !include config/automations.yaml
+# binary_sensor: !include config/binary_sensors.yaml
 cloud: !include config/cloud.yaml
-weblink: !include config/weblinks.yaml
-input_boolean: !include config/input_boolean.yaml
+group: !include config/groups.yaml
+# input_boolean: !include config/input_boolean.yaml
 # input_number: !include config/input_number.yaml
 # input_select: !include config/input_select.yaml
 # ios: !include config/ios.yaml
-sensor: !include config/sensors.yaml
-binary_sensor: !include config/binary_sensors.yaml
-switch: !include config/switch.yaml
 # light: !include config/lights.yaml
-group: !include config/groups.yaml
-scene: !include_dir_merge_list scenes
-# automation: !include automations.yaml
-script: !include scripts.yaml
+sensor: !include config/sensors.yaml
+scene: !include_dir_merge_list config/scenes
+script: !include config/scripts.yaml
+# switch: !include config/switch.yaml
+weblink: !include config/weblinks.yaml
