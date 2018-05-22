@@ -75,7 +75,19 @@ Security Alarm
 ---
 
 Good Morning / Good Night
+---
 
 Welcome / Goodnight
+---
 
 Frontend Themes
+---
+
+# Other
+
+Floorplan
+---
+
+Light
+---
+change to transition limit
