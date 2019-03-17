@@ -26,6 +26,8 @@ group:
     entities:
       - input_boolean.followme
       - input_boolean.presence_lights
+      - input_boolean.auto_light_switch
+      - input_boolean.limit_night_bright
       - input_boolean.agl
       - input_number.light_rgb_color_r
       - input_number.light_rgb_color_g
@@ -43,7 +45,13 @@ group:
       - sensor.light_transition
 
 
-
+input_boolean:
+  auto_light_switch:
+    name: Auto Light Switches
+    icon: mdi:light-switch
+  limit_night_bright:
+    name: Limit Bright Lights at Night
+    icon: mdi:weather-night
 
 
 ################################################
@@ -140,7 +148,7 @@ script:
 
 
   turn_on_light_ct:
-      ### There must be a ~20ms delay between script calls
+      ### There must be a ~200ms delay between script calls
       ###
       ### Example of how to call script
       ### entity_id is the only required input
@@ -213,6 +221,25 @@ script:
             {%- else -%}
               boot_up
             {%- endif %}
+
+
+  turn_on_light_switch:
+    alias: Light Switch
+    sequence:
+      - condition: state
+        entity_id: input_boolean.auto_light_switch
+        state: "on" 
+      - condition: or
+        conditions:
+          - condition: time
+            after: '04:30:00'
+            before: '22:30:00'
+          - condition: state
+            entity_id: input_boolean.limit_night_bright
+            state: "off"
+      - service: switch.turn_on
+        data_template:
+          entity_id: '{{ entity_id }}'
 
 
   agl_global_script:
@@ -323,9 +350,9 @@ script:
               4: 600,
               5: 400,
               6: 300,
-              7: 154,
-              8: 154,
-              9: 200,
+              7: 250,
+              8: 250,
+              9: 300,
               10: 300,
               11: 327,
               12: 327,
@@ -437,7 +464,7 @@ automation:
   - id: AGL_global
     alias: Adjust Global Light State
     trigger:
-      - platform: time
+      - platform: time_pattern
         minutes: 00
         seconds: 01
     action:

@@ -8,14 +8,16 @@
 group: 
   alarmclock:
     name: Wake Me Up
+    control: hidden
     entities: 
-      - automation.alarm_clock
+      - input_boolean.alarm_clock
       - sensor.alarm_time
       - input_number.alarmhour
       - input_number.alarmminutes
-      - input_number.alarmminutes
       - input_number.snoozetime
+      - input_number.alarm_clock_volume
       - input_boolean.alarmweekday
+      - script.good_night
 
 
 automation:
@@ -25,37 +27,64 @@ automation:
   - id: alarm_clock
     alias: Alarm Clock
     trigger:
-      platform: template
-      value_template: '{{ states.sensor.time.state == states.sensor.alarm_time.state }}'
+      platform: time_pattern
+      minutes: '/5'
+      seconds: 00
+    # trigger:
+    #   platform: template
+    #   value_template: '{{ ((now().strftime("%s") | int + 600) | timestamp_custom("%H:%M"))  ==  states.sensor.alarm_time.state  }}'
+    #   # value_template: '{{ states.sensor.time.state == states.sensor.alarm_time.state }}'
     condition:
-      condition: or
+      condition: and
       conditions:
-      - condition: and
+      - condition: state
+        entity_id: input_boolean.alarm_clock
+        state: 'on'
+      - condition: template
+        value_template: '{{ ((now().strftime("%s") | int + 600) | timestamp_custom("%H:%M"))  ==  states.sensor.alarm_time.state  }}'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: or
         conditions:
+        - condition: and
+          conditions:
+          - condition: state
+            entity_id: input_boolean.alarmweekday
+            state: 'on'
+          - condition: time
+            weekday:
+            - mon
+            - tue
+            - wed
+            - thu
+            - fri
         - condition: state
           entity_id: input_boolean.alarmweekday
-          state: 'on'
-        - condition: time
-          weekday:
-          - mon
-          - tue
-          - wed
-          - thu
-          - fri
-        - condition: state
-          entity_id: group.garrett
-          state: 'home'
-      - condition: state
-        entity_id: input_boolean.alarmweekday
-        state: 'off'
+          state: 'off'
     action:
+      - service: automation.turn_off
+        entity_id: automation.adjust_bed_light
+      - service: automation.turn_off
+        entity_id: automation.turn_off_bed_lights
+      - service: light.turn_on
+        data:
+          entity_id: light.bed_light
+          white_value: 40
+          brightness: 255
+          rgb_color: [0,0,255]
+          transition: 850000
+      - service: automation.turn_off
+        entity_id: automation.adjust_bedroom_light
+      - service: automation.turn_off
+        entity_id: automation.turn_off_bedroom_lights
       - service: light.turn_on
         data:
           entity_id: light.bedroom_light
           white_value: 40
           brightness: 255
           rgb_color: [0,0,255]
-          transition: 900000
+          transition: 850000
       - delay: 00:10:00
       - service: input_boolean.turn_off
         entity_id: input_boolean.alarm_clock_state
@@ -72,47 +101,75 @@ automation:
       from: 'off'
       to: 'on'
     action:
-      - service: notify.notify
+      - service: light.turn_on
         data:
-          message: "Good morning. Time to Wake Up!"
+          entity_id: group.bedroom_lights
+      - service: notify.notify
+        data_template:
+          message: 'Good Morning. Time to Wake Up'
           data:
             push:
-              badge: 1
-              # sound: <SOUND FILE HERE>
+              badge: 0
               # Needs to match the top level identifier you used in the ios configuration
-              category: "alarm_clock" 
-            # action_data: # Anything passed in action_data will get echoed back to Home Assistant.
-            #   entity_id: light.test
+              category: 'alarm_clock'
+            action_data:
+              entity_id: light.test_light
             #   my_custom_data: foo_bar
-      # - service: scene.turn_on
-      #   entity_id: scene.alarm_clock
       - service:  media_player.turn_on
         entity_id: media_player.office_speaker
       - service:  media_player.volume_set
         entity_id: media_player.office_speaker
-        data:
-          volume_level: 1
-        # make sure that presence lights does not interfere and turn off the bedroom lights
-      - service: automation.turn_off
-        entity_id: automation.turn_off_bedroom_lights
-      - service:  media_extractor.play_media
+        data_template:
+          volume_level: '{{ states.input_number.alarm_clock_volume.state | float }}'
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.alarm_clock_volume
+          value: >
+            {% if states.input_number.alarm_clock_volume.state | float < 1 %}
+              {{ (states.input_number.alarm_clock_volume.state | float + 0.1) }}
+            {% else %}
+              1
+            {% endif %}
+      - service:  media_player.play_media
         data_template:
           entity_id: media_player.office_speaker
           media_content_id: >
             {{ [
-            "https://www.youtube.com/watch?v=JuYeHPFR3f0",
-            "https://www.youtube.com/watch?v=JGhoLcsr8GA",
-            "https://www.youtube.com/watch?v=IcrbM1l_BoI",
-            "https://www.youtube.com/watch?v=aatr_2MstrI",
-            "https://www.youtube.com/watch?v=I5exsScaHWo",
-            "https://www.youtube.com/watch?v=F4eccPBFEjE",
-            "https://www.youtube.com/watch?v=_2DkJjBiCWY",
-            "https://www.youtube.com/watch?v=qO7a-Q1HY1I",
-            "https://www.youtube.com/watch?v=Hha0bwVvGmY",
-            "https://www.youtube.com/watch?v=sVfdqWt_3ug",
-            "https://www.youtube.com/watch?v=Ze6szKAdGp0"
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - avicii_wake_me_up_official_video_IcrbM1l_BoI.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - clean_bandit_symphony_feat_zara_larsson_official_video_aatr_2MstrI.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - macklemore_ryan_lewis_downtown_official_music_video_JGhoLcsr8GA.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - mura_masa_helpline_ft_tom_tripp_qO7a-Q1HY1I.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - portugal_the_man_live_in_the_moment_official_video_Hha0bwVvGmY.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - robotaki_together_were_screwed_feat_nevve_sVfdqWt_3ug.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - sigala_ella_eyre_meghan_trainor_just_got_paid_lyric_video_ft_french_montana_mCYwONZYiUc.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - capital_cities_vowels__2DkJjBiCWY.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - chris_lake_ft_alexis_roberts_turn_off_the_lights_cages_remix_Ze6szKAdGp0.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - daft_punk_derezzed_official_trackfull_songhq2010tron_soundtrack_F4eccPBFEjE.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - john_newman_come_and_get_it_I5exsScaHWo.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - loud_luxury_feat_brando_body_official_lyric_video_IetIg7y5k3A.mp3",
+            "https://home.garrettdowd.com/local/audio/alarmclock/y2mate.com - pokemon_theme_song_JuYeHPFR3f0.mp3"
             ] | random }}
-          media_content_type: video/youtube
+          media_content_type: music
+    # Currently youtube media extractor isnt working
+      # - service:  media_extractor.play_media
+      #   data_template:
+      #     entity_id: media_player.office_speaker
+      #     media_content_id: >
+      #       {{ [
+      #       "https://www.youtube.com/watch?v=JuYeHPFR3f0",
+      #       "https://www.youtube.com/watch?v=JGhoLcsr8GA",
+      #       "https://www.youtube.com/watch?v=IcrbM1l_BoI",
+      #       "https://www.youtube.com/watch?v=aatr_2MstrI",
+      #       "https://www.youtube.com/watch?v=I5exsScaHWo",
+      #       "https://www.youtube.com/watch?v=F4eccPBFEjE",
+      #       "https://www.youtube.com/watch?v=_2DkJjBiCWY",
+      #       "https://www.youtube.com/watch?v=qO7a-Q1HY1I",
+      #       "https://www.youtube.com/watch?v=Hha0bwVvGmY",
+      #       "https://www.youtube.com/watch?v=sVfdqWt_3ug",
+      #       "https://www.youtube.com/watch?v=Ze6szKAdGp0",
+      #       "https://www.youtube.com/watch?v=mCYwONZYiUc"
+      #       ] | random }}
+      #     media_content_type: video/youtube
           # "https://www.youtube.com/watch?v=JuYeHPFR3f0", # Pokemon Theme Song
           # "https://www.youtube.com/watch?v=JGhoLcsr8GA", # Macklemore Downtown
           # "https://www.youtube.com/watch?v=IcrbM1l_BoI", # Avicii Wake Me Up
@@ -154,7 +211,7 @@ automation:
       platform: event
       event_type: ios.notification_action_fired
       event_data:
-        actionName: SNOOZE_ALARM_CLOCK
+        actionName: SNOOZE_ALARM
     action:
       - service:  media_player.turn_off
         entity_id: media_player.office_speaker
@@ -162,53 +219,90 @@ automation:
         entity_id: input_boolean.alarm_clock_snooze
       - service: input_boolean.turn_off
         entity_id: input_boolean.alarm_clock_state
+      - service: light.turn_off
+        data:
+          entity_id: group.bedroom_lights
+      - delay: '00:{{ "{0:02d}".format(states.input_number.snoozetime.state | int)  }}:00'
+      - service: light.turn_on
+        data:
+          entity_id: group.bedroom_lights
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock_state
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.alarm_clock_snooze
+      
 
   # this is an automation to handle user input (from ios notification) 
-  - id: turn_off_alarm_clock 
+  - id: turn_off_alarm_clock
     alias: Turn Off Alarm Clock
     trigger:
       platform: event
       event_type: ios.notification_action_fired
       event_data:
-        actionName: TURN_OFF_ALARM_CLOCK
+        actionName: ALARM_OFF
     action:
       - service: script.turn_off_alarm_clock
 
-  # this code wakes up the alarm clock after the user snoozes
-  - id: unsnooze_alarm_clock
-    alias: Unsnooze Alarm Clock
-    trigger:
-      platform: state
-      entity_id: input_boolean.alarm_clock_snooze
-      from: 'off'
-      to: 'on'
-      for:
-        hours: 0
-        minutes: 15
-        seconds: 0
-    action:
-      - service: input_boolean.turn_on
-        entity_id: input_boolean.alarm_clock_state
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.alarm_clock_snooze
+  # # this code wakes up the alarm clock after the user snoozes
+  # - id: unsnooze_alarm_clock
+  #   alias: Unsnooze Alarm Clock
+  #   trigger:
+  #     platform: state
+  #     entity_id: input_boolean.alarm_clock_snooze
+  #     from: 'off'
+  #     to: 'on'
+  #     for:
+  #       hours: 0
+  #       minutes: 15
+  #       seconds: 0
+  #   action:
+  #     - service: input_boolean.turn_on
+  #       entity_id: input_boolean.alarm_clock_state
+  #     - service: input_boolean.turn_off
+  #       entity_id: input_boolean.alarm_clock_snooze
 
 script:
   turn_off_alarm_clock:
     alias: Turn Off Alarm Clock
     sequence:
+      # Do this main stuff
       - service:  media_player.turn_off
         entity_id: media_player.office_speaker
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.sleeping
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.good_morning_message
+      # Turn the light automation back on
+      - service: automation.turn_on
+        entity_id: automation.turn_on_bedroom_lights
+      - service: automation.turn_on
+        entity_id: automation.turn_off_bedroom_lights
+        # Turn on light adjustment for each light
+      - service: automation.turn_on
+        entity_id: automation.adjust_bedroom_light
+      - service: automation.turn_on
+        entity_id: automation.adjust_bed_light
+      - service: automation.turn_on
+        entity_id: automation.adjust_imac_light
+      # Update alarm clock state
       - service: input_boolean.turn_off
         entity_id: input_boolean.alarm_clock_snooze
       - service: input_boolean.turn_off
         entity_id: input_boolean.alarm_clock_state
-      - service: automation.turn_on
-        entity_id: automation.turn_off_bedroom_lights
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.sleeping
-      - service: input_boolean.turn_on
-        data:
-          entity_id: input_boolean.good_morning_message
+      - service: input_number.set_value
+        data_template:
+          entity_id: input_number.alarm_clock_volume
+          value: 0.1
+      # And play NPR News
+      - service:  media_player.volume_set
+        entity_id: media_player.office_speaker
+        data_template:
+          volume_level: 0.2
+      - service:  media_player.play_media
+        data_template:
+          entity_id: media_player.office_speaker
+          media_content_id: https://ideastream.streamguys1.com/wcpn.mp3
+          media_content_type: music
 
 sensor:
   - platform: template
@@ -244,21 +338,32 @@ input_number:
     mode: slider
   snoozetime:
     name: Snooze Length
-    icon: mdi:timer
+    icon: mdi:sleep
     min: 5
     max: 30
     step: 1
+    mode: slider
+  alarm_clock_volume:
+    name: Alarm Clock Volume
+    icon: mdi:volume-plus
+    min: .1
+    max: 1
+    step: .1
     mode: slider
 
 
 
 input_boolean:
+  alarm_clock:
+    name: Alarm Clock
+    icon: mdi:alarm
+
   alarmweekday:
     name: Weekdays Only
     icon: mdi:calendar
 
   alarm_clock_state:
-    name: Alarm Clock
+    name: Alarm Clock State
 
   alarm_clock_snooze:
     name: Snooze Alarm Clock
@@ -268,21 +373,18 @@ input_boolean:
 ios:
   push:
     categories:
-      - name: Alarm Clock
+      - name: Alarm_Clock
         identifier: 'alarm_clock'
         actions:
-          - identifier: 'TURN_OFF_ALARM_CLOCK'
-            title: 'Turn Off Alarm Clock'
+          - identifier: 'ALARM_OFF'
+            title: 'Turn Off Alarm'
             activationMode: 'background'
             authenticationRequired: no
             destructive: yes
             behavior: 'default'
-          - identifier: 'SNOOZE_ALARM_CLOCK'
-            title: 'Snooze Alarm Clock'
+          - identifier: 'SNOOZE_ALARM'
+            title: 'Snooze the Alarm'
             activationMode: 'background'
             authenticationRequired: no
             destructive: no
             behavior: 'default'
-            # behavior: 'textInput'
-            # textInputButtonTitle: 'Silencio!'
-            # textInputPlaceholder: 'Placeholder'

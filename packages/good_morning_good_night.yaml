@@ -58,12 +58,14 @@ script:
   good_night:
     alias: Good Night Routine
     sequence:
+      - service: automation.turn_off
+        entity_id: automation.turn_on_bedroom_lights
       - service: input_boolean.turn_on
         entity_id: input_boolean.sleeping
       - service:  media_player.volume_set
         entity_id: media_player.office_speaker
         data:
-          volume_level: .5
+          volume_level: .2
       - service: tts.google_say
         entity_id: media_player.office_speaker
         data_template:
@@ -89,7 +91,7 @@ script:
       - service:  media_player.volume_set
         entity_id: media_player.office_speaker
         data:
-          volume_level: .5
+          volume_level: .1
       - service: media_player.play_media
         data:
           entity_id: media_player.office_speaker

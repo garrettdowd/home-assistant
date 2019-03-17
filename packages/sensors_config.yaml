@@ -75,6 +75,13 @@ binary_sensor:
     device_class: motion
     value_template: '{{ value_json.motion }}'
 
+  # N_8266_2
+  - platform: mqtt
+    name: "N_8266_2 Motion"
+    state_topic: "clb/sensors/N_8266_2"
+    device_class: motion
+    value_template: '{{ value_json.motion }}'
+
   # N_8266_3
   - platform: mqtt
     name: "N_8266_3 Motion"
@@ -110,6 +117,13 @@ binary_sensor:
     device_class: motion
     value_template: '{{ value_json.motion }}'
 
+  # N_8266_8
+  - platform: mqtt
+    name: "N_8266_8 Motion"
+    state_topic: "clb/sensors/N_8266_8"
+    device_class: motion
+    value_template: '{{ value_json.motion }}'
+
   # N_8266_9
   - platform: mqtt
     name: "N_8266_9 Motion"
@@ -117,7 +131,12 @@ binary_sensor:
     device_class: motion
     value_template: '{{ value_json.motion }}'
 
-
+  # N_8266_10
+  - platform: mqtt
+    name: "N_8266_10 Motion"
+    state_topic: "clb/sensors/N_8266_10"
+    device_class: motion
+    value_template: '{{ value_json.motion }}'
 
 
 

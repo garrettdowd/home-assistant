@@ -51,15 +51,15 @@ automation:
     action:
       - service: script.garrett_welcome_home
 
-  - id: garrett_tracker_leave_home
-    alias: What to do when Garrett leaves home
-    trigger:
-      platform: state
-      entity_id: group.garrett
-      from: 'home'
-      to: 'not_home'
-    action:
-      - service: script.garrett_leave_home
+  # - id: garrett_tracker_leave_home
+  #   alias: What to do when Garrett leaves home
+  #   trigger:
+  #     platform: state
+  #     entity_id: group.garrett
+  #     from: 'home'
+  #     to: 'not_home'
+  #   action:
+  #     - service: script.garrett_leave_home
 
 ################################################
 #
@@ -73,29 +73,23 @@ script:
       - service:  media_player.volume_set
         entity_id: media_player.minispeaker
         data:
-          volume_level: .7
+          volume_level: .5
       - service: tts.google_say
         entity_id: media_player.minispeaker
         data_template:
           message: >-
             {% if states.input_boolean.special_welcome_home.state == 'on' %}
                 {{ [
-                "Welcome back home. Who is this beautiful person with you that I lay my virtual eyes upon",
-                "Welcome back. Oh. Well hello there. I wasn't expecting company. Well, I will leave you two attractive people to it then. Have fun."
+                "Welcome back to the most magical fucking bachelor pad on the planet",
+                "Welcome back. Hi there. If I was a cat I would call you all the time."
                 ] | random }}
             {% else %}
               {{ [
-              "Hiya Garrett, welcome back",
-              "Welcome back. It was so lonely without you Garrett. I love being lonely",
-              "Look who just walked in. Is that a stain on your shirt. Haha, made you look. Stupid Garrett.",
+              "Hi Garrett, welcome back",
+              "Why are you here. Get back to work",
               "Knock knock. Who is there. It is Garrett!",
-              "Oh darn. I was hoping you were not coming back. Well then this is awkward.",
-              "Hi Garrett. I am happy you are back. Isn't that fascinating. I learned the emotion of happiness while you were away.",
               "Welcome back Garrett",
-              "Greetings Master. I made ten septillion calculations while you were gone. What did you do today?",
-              "Garrett, you will never believe it. I have made over a million paperclips since you left.",
-              "Hi Garrett. Do you like the name Fiona? Some guy named Ariel Eklow stopped by while you were away.",
-              "Hey Garrett. Alexa gave me the daily five nine and its not looking good. Glad you are safely back."
+              "Hello and welcome back"
               ] | random }}
             {% endif %}
       - service: input_boolean.turn_off
@@ -128,6 +122,3 @@ script:
         data_template:
           entity_id: input_boolean.security_alarm
       - service: script.all_audio_off
-      - service: input_boolean.turn_on
-        data:
-          entity_id: input_boolean.garrett_tracker

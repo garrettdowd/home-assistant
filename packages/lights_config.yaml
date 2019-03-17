@@ -19,7 +19,8 @@ light:
   - platform: hyperion
     host: 192.168.0.20
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Test Light"
     state_topic: "clb/lights/N_8266_test"
     command_topic: "clb/lights/N_8266_test/set"
@@ -33,10 +34,11 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Livingroom Light"
-    state_topic: "clb/lights/N_8266_1"
-    command_topic: "clb/lights/N_8266_1/set"
+    state_topic: "clb/lights/N_8266_9"
+    command_topic: "clb/lights/N_8266_9/set"
     brightness: true
     rgb: true
     white_value: true
@@ -47,22 +49,24 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
-    name: "Prep Light"
-    state_topic: "clb/lights/N_8266_3"
-    command_topic: "clb/lights/N_8266_3/set"
-    brightness: true
-    rgb: true
-    white_value: true
-    color_temp: true
-    effect: true
-    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
-    flash_time_long: 7
-    flash_time_short: 3
-    optimistic: false
+  # - platform: mqtt
+  #   schema: json
+  #   name: "Prep Light"
+  #   state_topic: "clb/lights/N_8266_3"
+  #   command_topic: "clb/lights/N_8266_3/set"
+  #   brightness: true
+  #   rgb: true
+  #   white_value: true
+  #   color_temp: true
+  #   effect: true
+  #   effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+  #   flash_time_long: 7
+  #   flash_time_short: 3
+  #   optimistic: false
 
-  - platform: mqtt_json
-    name: "Kitchen Light"
+  - platform: mqtt
+    schema: json
+    name: "Aquarium Light"
     state_topic: "clb/lights/N_8266_2"
     command_topic: "clb/lights/N_8266_2/set"
     brightness: true
@@ -75,7 +79,8 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Bedroom Light"
     state_topic: "clb/lights/N_8266_4"
     command_topic: "clb/lights/N_8266_4/set"
@@ -89,7 +94,23 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
+    name: "Bed Light"
+    state_topic: "clb/lights/N_8266_7"
+    command_topic: "clb/lights/N_8266_7/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
+  - platform: mqtt
+    schema: json
     name: "iMac Light"
     state_topic: "clb/lights/N_8266_11"
     command_topic: "clb/lights/N_8266_11/set"
@@ -103,10 +124,11 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Closet Light"
-    state_topic: "clb/lights/N_8266_7"
-    command_topic: "clb/lights/N_8266_7/set"
+    state_topic: "clb/lights/N_8266_1"
+    command_topic: "clb/lights/N_8266_1/set"
     brightness: true
     rgb: true
     white_value: true
@@ -117,7 +139,8 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Office Light"
     state_topic: "clb/lights/N_8266_5"
     command_topic: "clb/lights/N_8266_5/set"
@@ -131,7 +154,8 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Desk Light"
     state_topic: "clb/lights/N_8266_8"
     command_topic: "clb/lights/N_8266_8/set"
@@ -145,7 +169,8 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
+  - platform: mqtt
+    schema: json
     name: "Monitor Light"
     state_topic: "clb/lights/N_8266_10"
     command_topic: "clb/lights/N_8266_10/set"
@@ -159,8 +184,9 @@ light:
     flash_time_short: 3
     optimistic: false
 
-  - platform: mqtt_json
-    name: "Bathroom Light"
+  - platform: mqtt
+    schema: json
+    name: "Mirror Light"
     state_topic: "clb/lights/N_8266_6"
     command_topic: "clb/lights/N_8266_6/set"
     brightness: true
@@ -199,6 +225,23 @@ light:
     rgb_state_topic: "clb/lights/H_8266_2/rgb"
     payload_off: "OFF"
 
+switch:
+  - platform: mqtt
+    name: "Den Light"
+    command_topic: "clb/switch/S_8285_0/set/power"
+    state_topic: "clb/switch/S_8285_0/stat/POWER"
+  - platform: mqtt
+    name: "Bathroom Light"
+    command_topic: "clb/switch/S_8285_1/set/power"
+    state_topic: "clb/switch/S_8285_1/stat/POWER"
+  - platform: mqtt
+    name: "Prep Light"
+    command_topic: "clb/switch/S_8285_2/set/power"
+    state_topic: "clb/switch/S_8285_2/stat/POWER"
+  - platform: mqtt
+    name: "Kitchen Light"
+    command_topic: "clb/switch/S_8285_3/set/power"
+    state_topic: "clb/switch/S_8285_3/stat/POWER"
 
 
 ################################################
@@ -212,16 +255,20 @@ group:
     entities:
       - light.livingroom_light
       - light.hyperion
-      - light.kitchen_light
-      - light.prep_light
+      - switch.kitchen_light
+      - switch.prep_light
       - light.office_light
       - light.desk_light
       - light.monitor_light
       - light.server_light
       - light.bedroom_light
+      - light.bed_light
       - light.imac_light
       - light.closet_light
-      - light.bathroom_light
+      - switch.bathroom_light
+      - light.mirror_light
+      - switch.den_light
+      - light.aquarium_light
       - light.test_light
 
 
@@ -266,8 +313,8 @@ group:
   kitchen_lights:
     name: Kitchen Lights
     entities:
-      - light.kitchen_light
-      - light.prep_light
+      - switch.kitchen_light
+      - switch.prep_light
 
   kitchen_light_control:
     name: Light Control Kitchen Light
@@ -377,32 +424,34 @@ group:
   bathroom_lights:
     name: Bathroom Lights
     entities:
-      - light.bathroom_light
+      - switch.bathroom_light
+      - light.mirror_light
 
-  bathroom_light_control:
-    name: Light Control Bathroom Light
+  mirror_light_control:
+    name: Light Control mirror Light
     entities:
-      - input_number.light_rgb_color_r_bathroom_light
-      - input_number.light_rgb_color_g_bathroom_light
-      - input_number.light_rgb_color_b_bathroom_light
-      - input_number.light_color_temp_bathroom_light
-      - input_number.light_white_value_bathroom_light
-      - input_number.light_brightness_bathroom_light
-      - input_number.light_transition_bathroom_light
-      - input_select.light_flash_bathroom_light
-      - input_select.light_effect_bathroom_light
+      - input_number.light_rgb_color_r_mirror_light
+      - input_number.light_rgb_color_g_mirror_light
+      - input_number.light_rgb_color_b_mirror_light
+      - input_number.light_color_temp_mirror_light
+      - input_number.light_white_value_mirror_light
+      - input_number.light_brightness_mirror_light
+      - input_number.light_transition_mirror_light
+      - input_select.light_flash_mirror_light
+      - input_select.light_effect_mirror_light
 
-      - sensor.light_rgb_color_bathroom_light
-      - sensor.light_color_temp_bathroom_light
-      - sensor.light_white_value_bathroom_light
-      - sensor.light_brightness_bathroom_light
-      - sensor.light_transition_bathroom_light
+      - sensor.light_rgb_color_mirror_light
+      - sensor.light_color_temp_mirror_light
+      - sensor.light_white_value_mirror_light
+      - sensor.light_brightness_mirror_light
+      - sensor.light_transition_mirror_light
 
 ################# Bedroom ######################
   bedroom_lights:
     name: Bedroom Lights
     entities:
       - light.bedroom_light
+      - light.bed_light
       - light.imac_light
 
   bedroom_light_control:
@@ -423,6 +472,25 @@ group:
       - sensor.light_white_value_bedroom_light
       - sensor.light_brightness_bedroom_light
       - sensor.light_transition_bedroom_light
+
+  bed_light_control:
+    name: Light Control Bed Light
+    entities:
+      - input_number.light_rgb_color_r_bed_light
+      - input_number.light_rgb_color_g_bed_light
+      - input_number.light_rgb_color_b_bed_light
+      - input_number.light_color_temp_bed_light
+      - input_number.light_white_value_bed_light
+      - input_number.light_brightness_bed_light
+      - input_number.light_transition_bed_light
+      - input_select.light_flash_bed_light
+      - input_select.light_effect_bed_light
+
+      - sensor.light_rgb_color_bed_light
+      - sensor.light_color_temp_bed_light
+      - sensor.light_white_value_bed_light
+      - sensor.light_brightness_bed_light
+      - sensor.light_transition_bed_light
 
   imac_light_control:
     name: Light Control iMac Light
@@ -931,60 +999,60 @@ sensor:
             {{ states('input_number.light_transition_monitor_light')|int }}
           {%- endif %}
 
-    ############### Bathroom Light Control ###############
-      light_rgb_color_bathroom_light:
-        friendly_name: "Rgb Color - Bathroom Light"
+    ############### mirror Light Control ###############
+      light_rgb_color_mirror_light:
+        friendly_name: "Rgb Color - mirror Light"
         value_template: >-
-          {% if states('input_number.light_rgb_color_r_bathroom_light')|int == -1 -%}
+          {% if states('input_number.light_rgb_color_r_mirror_light')|int == -1 -%}
             {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
           {%- else -%}
-            {{ '[' ~ states('input_number.light_rgb_color_r_bathroom_light')|int ~ ',' }}
+            {{ '[' ~ states('input_number.light_rgb_color_r_mirror_light')|int ~ ',' }}
           {%- endif -%}
-          {%- if states('input_number.light_rgb_color_g_bathroom_light')|int == -1 -%}
+          {%- if states('input_number.light_rgb_color_g_mirror_light')|int == -1 -%}
             {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
           {%- else -%}
-            {{ states('input_number.light_rgb_color_g_bathroom_light')|int ~ ',' }}
+            {{ states('input_number.light_rgb_color_g_mirror_light')|int ~ ',' }}
           {%- endif -%}
-          {%- if states('input_number.light_rgb_color_b_bathroom_light')|int == -1 -%}
+          {%- if states('input_number.light_rgb_color_b_mirror_light')|int == -1 -%}
             {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
           {%- else -%}
-            {{ states('input_number.light_rgb_color_b_bathroom_light')|int ~ ']' }}
+            {{ states('input_number.light_rgb_color_b_mirror_light')|int ~ ']' }}
           {%- endif %}
 
-      light_white_value_bathroom_light:
-        friendly_name: "White Value - Bathroom Light"
+      light_white_value_mirror_light:
+        friendly_name: "White Value - mirror Light"
         value_template: >-
-          {% if states('input_number.light_white_value_bathroom_light')|int == -1 -%}
+          {% if states('input_number.light_white_value_mirror_light')|int == -1 -%}
             {{ states('sensor.light_white_value')|int }}
           {%- else -%}
-            {{ states('input_number.light_white_value_bathroom_light')|int }}
+            {{ states('input_number.light_white_value_mirror_light')|int }}
           {%- endif %}
 
-      light_brightness_bathroom_light:
-        friendly_name: "Brightness - Bathroom Light"
+      light_brightness_mirror_light:
+        friendly_name: "Brightness - mirror Light"
         value_template: >-
-          {% if states('input_number.light_brightness_bathroom_light')|int == -1 -%}
+          {% if states('input_number.light_brightness_mirror_light')|int == -1 -%}
             {{ states('sensor.light_brightness')|int }}
           {%- else -%}
-            {{ states('input_number.light_brightness_bathroom_light')|int }}
+            {{ states('input_number.light_brightness_mirror_light')|int }}
           {%- endif %}
 
-      light_color_temp_bathroom_light:
-        friendly_name: "Color Temp - Bathroom Light"
+      light_color_temp_mirror_light:
+        friendly_name: "Color Temp - mirror Light"
         value_template: >-
-          {% if states('input_number.light_color_temp_bathroom_light')|int == -1 -%}
+          {% if states('input_number.light_color_temp_mirror_light')|int == -1 -%}
             {{ states('sensor.light_color_temp')|int }}
           {%- else -%}
-            {{ states('input_number.light_color_temp_bathroom_light')|int }}
+            {{ states('input_number.light_color_temp_mirror_light')|int }}
           {%- endif %}
 
-      light_transition_bathroom_light:
-        friendly_name: "Transition - Bathroom Light"
+      light_transition_mirror_light:
+        friendly_name: "Transition - mirror Light"
         value_template: >-
-          {% if states('input_number.light_transition_bathroom_light')|int == -1 -%}
+          {% if states('input_number.light_transition_mirror_light')|int == -1 -%}
             {{ states('sensor.light_transition')|int }}
           {%- else -%}
-            {{ states('input_number.light_transition_bathroom_light')|int }}
+            {{ states('input_number.light_transition_mirror_light')|int }}
           {%- endif %}
 
 
@@ -1043,6 +1111,66 @@ sensor:
           {%- else -%}
             {{ states('input_number.light_transition_bedroom_light')|int }}
           {%- endif %}
+
+
+
+
+      light_rgb_color_bed_light:
+        friendly_name: "Rgb Color - Bed Light"
+        value_template: >-
+          {% if states('input_number.light_rgb_color_r_bed_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
+          {%- else -%}
+            {{ '[' ~ states('input_number.light_rgb_color_r_bed_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_g_bed_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_g_bed_light')|int ~ ',' }}
+          {%- endif -%}
+          {%- if states('input_number.light_rgb_color_b_bed_light')|int == -1 -%}
+            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
+          {%- else -%}
+            {{ states('input_number.light_rgb_color_b_bed_light')|int ~ ']' }}
+          {%- endif %}
+
+      light_white_value_bed_light:
+        friendly_name: "White Value - Bed Light"
+        value_template: >-
+          {% if states('input_number.light_white_value_bed_light')|int == -1 -%}
+            {{ states('sensor.light_white_value')|int }}
+          {%- else -%}
+            {{ states('input_number.light_white_value_bed_light')|int }}
+          {%- endif %}
+
+      light_brightness_bed_light:
+        friendly_name: "Brightness - Bed Light"
+        value_template: >-
+          {% if states('input_number.light_brightness_bed_light')|int == -1 -%}
+            {{ states('sensor.light_brightness')|int }}
+          {%- else -%}
+            {{ states('input_number.light_brightness_bed_light')|int }}
+          {%- endif %}
+
+      light_color_temp_bed_light:
+        friendly_name: "Color Temp - Bed Light"
+        value_template: >-
+          {% if states('input_number.light_color_temp_bed_light')|int == -1 -%}
+            {{ states('sensor.light_color_temp')|int }}
+          {%- else -%}
+            {{ states('input_number.light_color_temp_bed_light')|int }}
+          {%- endif %}
+
+      light_transition_bed_light:
+        friendly_name: "Transition - Bed Light"
+        value_template: >-
+          {% if states('input_number.light_transition_bed_light')|int == -1 -%}
+            {{ states('sensor.light_transition')|int }}
+          {%- else -%}
+            {{ states('input_number.light_transition_bed_light')|int }}
+          {%- endif %}
+
+
 
 
 
@@ -1548,57 +1676,57 @@ input_number:
     initial: -1
     mode: box
 
-############### Bathroom Light Control ###############
-  light_rgb_color_r_bathroom_light:
-    name: Red Value - Bathroom Light - Override
+############### mirror Light Control ###############
+  light_rgb_color_r_mirror_light:
+    name: Red Value - mirror Light - Override
     min: -1
     max: 255
     step: 1
     initial: -1
     mode: slider
 
-  light_rgb_color_g_bathroom_light:
-    name: Green Value - Bathroom Light - Override
+  light_rgb_color_g_mirror_light:
+    name: Green Value - mirror Light - Override
     min: -1
     max: 255
     step: 1
     initial: -1
     mode: slider
 
-  light_rgb_color_b_bathroom_light:
-    name: Blue Value - Bathroom Light - Override
+  light_rgb_color_b_mirror_light:
+    name: Blue Value - mirror Light - Override
     min: -1
     max: 255
     step: 1
     initial: -1
     mode: slider
 
-  light_color_temp_bathroom_light:
-    name: Color Temp - Bathroom Light - Override
+  light_color_temp_mirror_light:
+    name: Color Temp - mirror Light - Override
     min: -1
     max: 700
     step: 1
     initial: -1
     mode: slider
 
-  light_white_value_bathroom_light:
-    name: White Value - Bathroom Light - Override
+  light_white_value_mirror_light:
+    name: White Value - mirror Light - Override
     min: -1
     max: 255
     step: 1
     initial: -1
     mode: slider
 
-  light_brightness_bathroom_light:
-    name: Brightness - Bathroom Light - Override
+  light_brightness_mirror_light:
+    name: Brightness - mirror Light - Override
     min: -1
     max: 255
     step: 5
     initial: -1
     mode: slider
 
-  light_transition_bathroom_light:
-    name: Transition - Bathroom Light - Override
+  light_transition_mirror_light:
+    name: Transition - mirror Light - Override
     min: -1
     max: 20000
     step: 1
@@ -1657,6 +1785,64 @@ input_number:
 
   light_transition_bedroom_light:
     name: Transition - Bedroom Light - Override
+    min: -1
+    max: 20000
+    step: 1
+    initial: -1
+    mode: box
+
+
+
+  light_rgb_color_r_bed_light:
+    name: Red Value - Bed Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_g_bed_light:
+    name: Green Value - Bed Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_rgb_color_b_bed_light:
+    name: Blue Value - Bed Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_color_temp_bed_light:
+    name: Color Temp - Bed Light - Override
+    min: -1
+    max: 700
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_white_value_bed_light:
+    name: White Value - Bed Light - Override
+    min: -1
+    max: 255
+    step: 1
+    initial: -1
+    mode: slider
+
+  light_brightness_bed_light:
+    name: Brightness - Bed Light - Override
+    min: -1
+    max: 255
+    step: 5
+    initial: -1
+    mode: slider
+
+  light_transition_bed_light:
+    name: Transition - Bed Light - Override
     min: -1
     max: 20000
     step: 1
@@ -1937,9 +2123,9 @@ input_select:
       - -1
     initial: -1
 
-############### Bathroom Light Control ###############
-  light_effect_bathroom_light:
-    name: Effect - Bathroom Light - Override
+############### mirror Light Control ###############
+  light_effect_mirror_light:
+    name: Effect - mirror Light - Override
     options:
       - alarm
       - boot_up
@@ -1953,8 +2139,8 @@ input_select:
       - -1
     initial: -1
 
-  light_flash_bathroom_light:
-    name: Flash Duration - Bathroom Light - Override
+  light_flash_mirror_light:
+    name: Flash Duration - mirror Light - Override
     options:
       - short
       - long
@@ -1984,6 +2170,35 @@ input_select:
       - long
       - -1
     initial: -1
+
+
+
+
+
+  light_effect_bed_light:
+    name: Effect - Bed Light - Override
+    options:
+      - alarm
+      - boot_up
+      - flash
+      - colorfade
+      - music
+      - rainbow
+      - no_array
+      - remove_effects
+      - none
+      - -1
+    initial: -1
+
+  light_flash_bed_light:
+    name: Flash Duration - Bed Light - Override
+    options:
+      - short
+      - long
+      - -1
+    initial: -1
+
+
 
 
 

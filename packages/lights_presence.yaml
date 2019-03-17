@@ -22,9 +22,11 @@
 input_boolean:
   presence_lights:
     name: Presence Lights
+    icon: mdi:run-fast
 
   followme:
     name: Follow Me Lights
+    icon: mdi:target-account
 
 automation:
   - id: Kitchen_Lights_On
@@ -88,10 +90,9 @@ automation:
         minutes: 10
         seconds: 0
     action:
-      - service: light.turn_off
+      - service: homeassistant.turn_off
         data:
           entity_id: group.kitchen_lights
-          transition: 10000
 
   - id: Office_Lights_On
     alias: Turn On Office Lights
@@ -117,7 +118,7 @@ automation:
             - condition: numeric_state
               entity_id: sun.sun
               value_template: '{{ state.attributes.elevation }}'
-              below: '7'
+              below: '20'
             - condition: numeric_state
               entity_id: sensor.dark_sky_cloud_coverage
               above: '75'
@@ -194,15 +195,21 @@ automation:
             - condition: numeric_state
               entity_id: sun.sun
               value_template: '{{ state.attributes.elevation }}'
-              below: '7'
+              below: '20'
             - condition: numeric_state
               entity_id: sensor.dark_sky_cloud_coverage
               above: '75'
     action:
       - service: script.turn_on_light_ct
         data_template:
+          entity_id: light.bed_light
+      - delay:
+          milliseconds: 100
+      - service: script.turn_on_light_ct
+        data_template:
           entity_id: light.bedroom_light
-      - delay: '00:00:01'
+      - delay:
+          milliseconds: 100
       - service: script.turn_on_light_ct
         data_template:
           entity_id: light.imac_light
@@ -220,10 +227,6 @@ automation:
       - service: light.turn_off
         data:
           entity_id: group.office_lights
-          transition: 2000
-      - service: light.turn_off
-        data:
-          entity_id: group.closet_lights
           transition: 2000
 
   - id: Bedroom_Lights_Off
@@ -267,7 +270,7 @@ automation:
             - condition: numeric_state
               entity_id: sun.sun
               value_template: '{{ state.attributes.elevation }}'
-              below: '7'
+              below: '20'
             - condition: numeric_state
               entity_id: sensor.dark_sky_cloud_coverage
               above: '75'
@@ -275,14 +278,14 @@ automation:
       - service: script.turn_on_light_ct
         data_template:
           entity_id: light.livingroom_light
-      - delay:
-          milliseconds: 50
       - service: light.turn_on
         data_template:
           entity_id: light.hyperion
+
       - condition: state
         entity_id: input_boolean.followme
         state: 'on'
+
       - service: light.turn_off
         data:
           entity_id: group.office_lights
@@ -338,12 +341,17 @@ automation:
           entity_id: group.bathroom_lights
           state: 'off'
     action:
+      - service: script.turn_on_light_switch
+        data_template:
+          entity_id: switch.bathroom_light
       - service: script.turn_on_light_ct
         data_template:
-          entity_id: light.bathroom_light
+          entity_id: light.mirror_light
+
       - condition: state
         entity_id: input_boolean.followme
         state: 'on'
+        
       - service: light.turn_off
         data:
           entity_id: group.main_room_lights
@@ -371,16 +379,19 @@ automation:
       to: 'off'
       for:
         hours: 0
-        minutes: 2
+        minutes: 5
         seconds: 0
-    condition: 
-      - condition: numeric_state
-        entity_id: sensor.n_8266_6_humidity
-        below: '70'
+    # condition: 
+    #   - condition: numeric_state
+    #     entity_id: sensor.n_8266_6_humidity
+    #     below: '70'
     action:
+      - service: homeassistant.turn_off
+        data:
+          entity_id: switch.bathroom_light
       - service: light.turn_off
         data:
-          entity_id: group.bathroom_lights
+          entity_id: light.mirror_light
           transition: 15000
 
 
@@ -418,7 +429,7 @@ automation:
       to: 'off'
       for:
         hours: 0
-        minutes: 1
+        minutes: 2
         seconds: 0
     action:
       - service: light.turn_off

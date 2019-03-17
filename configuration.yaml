@@ -13,9 +13,16 @@ homeassistant:
   # Customization file
   customize: !include config/customize.yaml
   packages: !include_dir_named packages
-  
-# Show links to resources in log and frontend
-# introduction:
+
+# Important for a few custom lovelace cards and other things 
+frontend:
+  javascript_version: latest
+
+# Set the lovelace mode
+# yaml - configure lovelace withe the lovelace-ui.yaml file
+# storage - using web editor to edit JSON file in .storage
+lovelace:
+  mode: yaml
 
 # Enables configuration UI
 config:
@@ -44,13 +51,32 @@ map:
 
 sun:
 
+# Dark sky as a weather object instead of individual sensors
+# weather:
+#   - platform: dark_sky
+#     name: "Dark Sky"
+#     api_key: !secret darksky_key
+#     latitude: !secret home_lat
+#     longitude: !secret home_long
+#     units: si
+#     mode: hourly
+
+
 python_script:
 
 media_extractor:
+  default_query: worst
+  customize:
+    media_player.office_speaker:
+      video: bestvideo
+      music: bestaudio[ext=mp3]
 
 tts:
   - platform: google
-  
+
+
+
+
 ifttt:
   key: !secret ifttt_key
 
@@ -72,18 +98,26 @@ panel_custom:
 
 http:
   # Secrets are defined in the file secrets.yaml
-  api_password: !secret http_password
+  # api_password: !secret http_password
   # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
   base_url: !secret web_url
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - 172.17.0.6
+  # trusted_networks:
+  #   - 127.0.0.1
+  #   - ::1
+  #   - 192.168.0.0/24
+  #   - fd00::/8
   ip_ban_enabled: True
-  login_attempts_threshold: 3
+  login_attempts_threshold: 7
 
 
 # Enables support for tracking state changes over time
 history:
   include:
     domains:
-      - sensor
       - media_player
       - light
     entities:
@@ -91,6 +125,15 @@ history:
       - group.all_lights
       - group.garrett
       - group.media_players
+      - sensor.dark_sky_apparent_temperature
+      - sensor.dark_sky_humidity
+      - sensor.n_8266_4_humidity
+      - sensor.n_8266_4_temp
+      - sensor.n_8266_6_humidity
+      - sensor.n_8266_6_temp
+      - sensor.speedtest_download
+      - sensor.speedtest_ping
+      - sensor.speedtest_upload
   # exclude:
   #   entities:
   #    - sensor.last_boot
@@ -138,12 +181,16 @@ zone:
     radius: 55
     icon: mdi:account-multiple
 
+asuswrt:
+  host: 192.168.0.1
+  username: !secret asus_username
+  password: !secret asus_password
+  # protocol: ssh
+  # mode: router
+  # port: 22
 
 device_tracker:
   - platform: asuswrt
-    host: 192.168.0.1
-    username: !secret asus_username
-    password: !secret asus_password
     track_new_devices: TRUE
     interval_seconds: 11
 
@@ -174,7 +221,7 @@ media_player:
 
 # automation: !include config/automations.yaml
 # binary_sensor: !include config/binary_sensors.yaml
-cloud: !include config/cloud.yaml
+google_assistant: !include config/google_assistant.yaml
 group: !include config/groups.yaml
 # input_boolean: !include config/input_boolean.yaml
 # input_number: !include config/input_number.yaml

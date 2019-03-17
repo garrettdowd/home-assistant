@@ -1,0 +1,515 @@
+
+title: Casa Autonoma
+resources:
+  - url: /local/custom_ui/group-card.js
+    type: js
+  - url: /local/custom_ui/dark-sky-weather-card.js?v=1.0
+    type: js
+views:
+  ####### Currently custom:group-card causes some unwanted reloading effects
+  # - path: home
+  #   title: Home
+  #   badges: []
+  #   cards:
+  #     - type: 'custom:group-card'
+  #       card:
+  #         type: entities
+  #         title: All Lights
+  #         entities:
+  #           - light.livingroom_light
+  #           - light.hyperion
+  #           - light.kitchen_light
+  #           - light.prep_light
+  #           - light.office_light
+  #           - light.desk_light
+  #           - light.monitor_light
+  #           - light.server_light
+  #           - light.bedroom_light
+  #           - light.bed_light
+  #           - light.imac_light
+  #           - light.closet_light
+  #           - light.bathroom_light
+  #           - light.test_light
+  #       group: group.lights
+  #     - type: 'custom:group-card'
+  #       card:
+  #         type: entities
+  #         title: Wake Up Call
+  #         show_header_toggle: false
+  #         entities:
+  #           - input_boolean.alarm_clock
+  #           - sensor.alarm_time
+  #           - input_number.alarmhour
+  #           - input_number.alarmminutes
+  #           - input_number.snoozetime
+  #           - input_number.alarm_clock_volume
+  #           - input_boolean.alarmweekday
+  #           - script.good_night
+  #       group: group.alarmclock
+  #     - type: 'custom:group-card'
+  #       card:
+  #         type: entities
+  #         title: Security
+  #         show_header_toggle: false
+  #         entities:
+  #           - script.security_alarm_lights
+  #           - input_boolean.security_alarm
+  #           - input_boolean.visitor_alarm
+  #           - input_number.alarm_flash_speed
+  #       group: group.security_alarm
+  #     - type: 'custom:group-card'
+  #       card:
+  #         type: entities
+  #         title: Global Light Preferences
+  #         show_header_toggle: false
+  #         entities:
+  #           - input_boolean.followme
+  #           - input_boolean.presence_lights
+  #           - input_boolean.agl
+  #           - input_number.light_rgb_color_r
+  #           - input_number.light_rgb_color_g
+  #           - input_number.light_rgb_color_b
+  #           - input_number.light_color_temp
+  #           - input_number.light_white_value
+  #           - input_number.light_brightness
+  #           - input_number.light_transition
+  #           - input_select.light_flash
+  #           - input_select.light_effect
+  #           - sensor.light_rgb_color
+  #           - sensor.light_color_temp
+  #           - sensor.light_white_value
+  #           - sensor.light_brightness
+  #           - sensor.light_transition
+  #       group: group.light_control
+  #     - type: 'custom:dark-sky-weather-card'
+  #       entity_sun: sun.sun
+  #       entity_daily_summary: sensor.dark_sky_daily_summary
+  #       entity_current_conditions: sensor.dark_sky_icon
+  #       entity_humidity: sensor.dark_sky_humidity
+  #       entity_pressure: sensor.dark_sky_pressure
+  #       entity_temperature: sensor.dark_sky_temperature
+  #       entity_visibility: sensor.dark_sky_visibility
+  #       entity_wind_bearing: sensor.dark_sky_wind_bearing
+  #       entity_wind_speed: sensor.dark_sky_wind_speed
+  #       entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
+  #       entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
+  #       entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
+  #       entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
+  #       entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
+  #       entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_0
+  #       entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_1
+  #       entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_2
+  #       entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_3
+  #       entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_4
+  #       entity_forecast_icon_1: sensor.dark_sky_icon_1
+  #       entity_forecast_icon_2: sensor.dark_sky_icon_2
+  #       entity_forecast_icon_3: sensor.dark_sky_icon_3
+  #       entity_forecast_icon_4: sensor.dark_sky_icon_4
+  #       entity_forecast_icon_5: sensor.dark_sky_icon_5
+  #       entity_summary_1: sensor.dark_sky_summary_1
+  #       entity_summary_2: sensor.dark_sky_summary_2
+  #       entity_summary_3: sensor.dark_sky_summary_3
+  #       entity_summary_4: sensor.dark_sky_summary_4
+  #       entity_summary_5: sensor.dark_sky_summary_5
+  #     - type: 'custom:group-card'
+  #       card:
+  #         type: entities
+  #         title: Climate
+  #         show_header_toggle: false
+  #         entities:
+  #           - sensor.dark_sky_apparent_temperature
+  #           - sensor.dark_sky_cloud_coverage
+  #           - sensor.dark_sky_humidity
+  #           - sensor.h_8266_2_humidity
+  #           - sensor.h_8266_2_temp
+  #           - sensor.n_8266_6_humidity
+  #           - sensor.n_8266_6_temp
+  #       group: group.climate
+
+  - path: home-temp
+    title: Home
+    badges: []
+    cards:
+      - type: entities
+        title: All Lights
+        entities:
+          - light.livingroom_light
+          - light.hyperion
+          - switch.kitchen_light
+          - switch.prep_light
+          - light.office_light
+          - light.desk_light
+          - light.monitor_light
+          - light.server_light
+          - light.bedroom_light
+          - light.bed_light
+          - light.imac_light
+          - light.closet_light
+          - switch.bathroom_light
+          - light.mirror_light
+          - switch.den_light
+          - light.aquarium_light
+          - light.test_light
+      - type: entities
+        title: Wake Up Call
+        show_header_toggle: false
+        entities:
+          - input_boolean.alarm_clock
+          - sensor.alarm_time
+          - input_number.alarmhour
+          - input_number.alarmminutes
+          - input_number.snoozetime
+          - input_number.alarm_clock_volume
+          - input_boolean.alarmweekday
+          - script.good_night
+      - type: entities
+        title: Security
+        show_header_toggle: false
+        entities:
+          - script.security_alarm_lights
+          - input_boolean.security_alarm
+          - input_boolean.visitor_alarm
+          - input_number.alarm_flash_speed
+      - type: entities
+        title: Global Light Preferences
+        show_header_toggle: false
+        entities:
+          - input_boolean.followme
+          - input_boolean.presence_lights
+          - input_boolean.auto_light_switch
+          - input_boolean.limit_night_bright
+          - input_boolean.agl
+          - input_number.light_rgb_color_r
+          - input_number.light_rgb_color_g
+          - input_number.light_rgb_color_b
+          - input_number.light_color_temp
+          - input_number.light_white_value
+          - input_number.light_brightness
+          - input_number.light_transition
+          - input_select.light_flash
+          - input_select.light_effect
+          - sensor.light_rgb_color
+          - sensor.light_color_temp
+          - sensor.light_white_value
+          - sensor.light_brightness
+          - sensor.light_transition
+      - type: 'custom:dark-sky-weather-card'
+        entity_sun: sun.sun
+        entity_daily_summary: sensor.dark_sky_daily_summary
+        entity_current_conditions: sensor.dark_sky_icon
+        entity_humidity: sensor.dark_sky_humidity
+        entity_pressure: sensor.dark_sky_pressure
+        entity_temperature: sensor.dark_sky_temperature
+        entity_visibility: sensor.dark_sky_visibility
+        entity_wind_bearing: sensor.dark_sky_wind_bearing
+        entity_wind_speed: sensor.dark_sky_wind_speed
+        entity_forecast_high_temp_1: sensor.dark_sky_daytime_high_temperature_1
+        entity_forecast_high_temp_2: sensor.dark_sky_daytime_high_temperature_2
+        entity_forecast_high_temp_3: sensor.dark_sky_daytime_high_temperature_3
+        entity_forecast_high_temp_4: sensor.dark_sky_daytime_high_temperature_4
+        entity_forecast_high_temp_5: sensor.dark_sky_daytime_high_temperature_5
+        entity_forecast_low_temp_1: sensor.dark_sky_overnight_low_temperature_0
+        entity_forecast_low_temp_2: sensor.dark_sky_overnight_low_temperature_1
+        entity_forecast_low_temp_3: sensor.dark_sky_overnight_low_temperature_2
+        entity_forecast_low_temp_4: sensor.dark_sky_overnight_low_temperature_3
+        entity_forecast_low_temp_5: sensor.dark_sky_overnight_low_temperature_4
+        entity_forecast_icon_1: sensor.dark_sky_icon_1
+        entity_forecast_icon_2: sensor.dark_sky_icon_2
+        entity_forecast_icon_3: sensor.dark_sky_icon_3
+        entity_forecast_icon_4: sensor.dark_sky_icon_4
+        entity_forecast_icon_5: sensor.dark_sky_icon_5
+        entity_summary_1: sensor.dark_sky_summary_1
+        entity_summary_2: sensor.dark_sky_summary_2
+        entity_summary_3: sensor.dark_sky_summary_3
+        entity_summary_4: sensor.dark_sky_summary_4
+        entity_summary_5: sensor.dark_sky_summary_5
+      - type: entities
+        title: Climate
+        show_header_toggle: false
+        entities:
+          - sensor.dark_sky_apparent_temperature
+          - sensor.dark_sky_cloud_coverage
+          - sensor.dark_sky_humidity
+          - sensor.h_8266_2_humidity
+          - sensor.h_8266_2_temp
+          - sensor.n_8266_6_humidity
+          - sensor.n_8266_6_temp
+
+
+  - path: floorplan
+    title: Floorplan
+    badges: []
+    cards:
+      - type: picture-elements
+        image: /local/custom_ui/lovelace-floorplan/floorplan.png?v=1.1
+        elements:
+          - type: image
+            entity: light.livingroom_light
+            tap_action:
+              action: toggle
+            image: /local/custom_ui/lovelace-floorplan/lr-d.png
+            state_filter:
+              'off': opacity(100%)
+              'on': opacity(1%)
+            style:
+              top: 20.3%
+              left: 29.0%
+              width: 57.4%
+          - type: image
+            entity: light.bedroom_light
+            tap_action:
+              action: toggle
+            image: /local/custom_ui/lovelace-floorplan/br-d.png
+            state_filter:
+              'off': opacity(100%)
+              'on': opacity(1%)
+            style:
+              top: 18.0%
+              left: 77.3%
+              width: 39.3%
+          - type: image
+            entity: light.closet_light
+            tap_action:
+              action: toggle
+            image: /local/custom_ui/lovelace-floorplan/cl-d.png
+            state_filter:
+              'off': opacity(100%)
+              'on': opacity(1%)
+            style:
+              top: 41.5%
+              left: 83.2%
+              width: 27.3%
+          - type: image
+            entity: light.bathroom_light
+            tap_action:
+              action: toggle
+            image: /local/custom_ui/lovelace-floorplan/bth-d.png
+            state_filter:
+              'off': opacity(100%)
+              'on': opacity(1%)
+            style:
+              top: 89.2%
+              left: 78.5%
+              width: 42.3%
+
+  - path: urbaneden
+    title: UrbanEden
+    cards:
+      - type: entities
+        title: Manual Control
+        show_header_toggle: false
+        entities:
+          - light.media_bed_1
+          - light.media_bed_2
+          - light.dwc_1
+          - light.dwc_2
+          - light.microgreens
+          - switch.sump
+          - switch.outlet_2
+          - switch.media_bed_1_drain
+          - switch.media_bed_2_drain
+          - switch.media_bed_light_1_fan
+          - switch.media_bed_light_2_fan
+          - switch.dwc_light_1_fan
+          - switch.dwc_light_2_fan
+      - type: entities
+        title: Show Off
+        show_header_toggle: false
+        entities:
+          - script.eden_test_lights
+          - script.eden_test_switches
+
+
+  - path: livingroom
+    title: Livingroom
+    cards:
+      - type: entities
+        title: Control
+        show_header_toggle: false
+        entities:
+          - input_boolean.movie_lights
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Lights
+          show_header_toggle: true
+        group: group.livingroom_lights
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Living Room Light
+          show_header_toggle: false
+        group: group.livingroom_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: TV Light
+          show_header_toggle: false
+        group: group.hyperion_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.livingroom_motion
+
+  - path: office
+    title: Office
+    cards:
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Lights
+          show_header_toggle: true
+        group: group.office_lights
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Office Light
+          show_header_toggle: false
+        group: group.office_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Desk Light
+          show_header_toggle: false
+        group: group.desk_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Monitor Light
+          show_header_toggle: false
+        group: group.monitor_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.office_motion
+
+  - path: bedroom
+    title: Bedroom
+    cards:
+      - type: entities
+        title: Control
+        show_header_toggle: false
+        entities:
+          - input_boolean.good_night_story
+          - script.bedime_mozart
+      - type: entities
+        title: Lights
+        show_header_toggle: true
+        entities:
+          - light.bed_light
+          - light.bedroom_light
+          - light.imac_light
+          - light.closet_light
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Bedroom Light
+          show_header_toggle: false
+        group: group.bedroom_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Bedroom Light
+          show_header_toggle: false
+        group: group.bed_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: iMac Light
+          show_header_toggle: false
+        group: group.imac_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Closet Light
+          show_header_toggle: false
+        group: group.closet_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.bedroom_motion
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.closet_motion
+
+
+  - path: bathroom
+    title: Bathroom
+    cards:
+      - type: entities
+        title: Control
+        show_header_toggle: false
+        entities:
+          - script.shower_time
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Lights
+          show_header_toggle: true
+        group: group.bathroom_lights
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Bathroom Light
+          show_header_toggle: false
+        group: group.bathroom_light_control
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.bathroom_motion
+
+  - path: admin
+    title: Admin
+    cards:
+      - type: entities
+        title: Control
+        show_header_toggle: false
+        entities:
+          - light.test_light
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Scripts
+          show_header_toggle: false
+        group: group.all_scripts
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Auto
+          show_header_toggle: false
+        group: group.all_automations
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Web
+          show_header_toggle: false
+        group: group.weblinks
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Network
+          show_header_toggle: false
+        group: group.network
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Motion
+          show_header_toggle: false
+        group: group.all_motion
+      - type: 'custom:group-card'
+        card:
+          type: entities
+          title: Scenes
+          show_header_toggle: false
+        group: group.scenes

@@ -1,24 +1,41 @@
 - platform: darksky
-  name: "Dark Sky"
+  # name: "Dark Sky"
   api_key: !secret darksky_key
   latitude: !secret home_lat
   longitude: !secret home_long
-  update_interval: "00:02:00"
+  update_interval:
+    minutes: 5
+  forecast:
+    - 0
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
   monitored_conditions:
-    - summary
-    - minutely_summary
     - icon
-    - apparent_temperature
-    - apparent_temperature_max
-    - apparent_temperature_min
-    - humidity
-    - precip_probability
-    - precip_intensity
-    - precip_type
-    - precip_intensity_max
-    - wind_speed
-    - cloud_cover
+    - summary
     - nearest_storm_distance
+    - nearest_storm_bearing
+    - humidity
+    - temperature
+    - temperature_high
+    - temperature_low
+    - apparent_temperature
+    - apparent_temperature_high
+    - apparent_temperature_low
+    - wind_speed
+    - wind_bearing
+    - precip_type
+    - precip_probability
+    - precip_accumulation
+    - precip_intensity
+    - precip_intensity_max
+    - uv_index
+    - daily_summary
+    - pressure
+    - visibility
+    - cloud_cover
 
 # - platform: yr
 #   name: Weather
@@ -32,16 +49,16 @@
 #     - cloudiness
 
 
-- platform: deluge
-  name: "MasterTower Deluge"
-  host: 192.168.0.4
-  port: 58846
-  username: !secret deluge_user
-  password: !secret deluge_pass
-  monitored_variables:
-    - 'current_status'
-    - 'download_speed'
-    - 'upload_speed'
+# - platform: deluge
+#   name: "MasterTower Deluge"
+#   host: 192.168.0.4
+#   port: 58846
+#   username: !secret deluge_user
+#   password: !secret deluge_pass
+#   monitored_variables:
+#     - 'current_status'
+#     - 'download_speed'
+#     - 'upload_speed'
 
 
 - platform: speedtest

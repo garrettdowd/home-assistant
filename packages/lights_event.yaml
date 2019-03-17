@@ -14,10 +14,11 @@
 input_boolean:
   agl:
     name: Adjust Global Light
-    # icon: mdi:calendar
+    icon: mdi:theme-light-dark
   
   movie_lights:
     name: Movie Lights
+    icon: mdi:movie
 
 ################################################
 #
@@ -56,16 +57,16 @@ scene:
       light.livingroom_light:
         state: on
         rgb_color: [255,0,0]
-        brightness: 20
+        brightness: 27
         white_value: 30
         transition: 8000
         effect: "movie"
       light.hyperion:
         state: on
         effect: "HDMI"
-      light.kitchen_light:
+      switch.kitchen_light:
         state: off
-      light.prep_light:
+      switch.prep_light:
         state: off
 
         
@@ -464,19 +465,19 @@ automation:
     alias: Adjust bedroom_light
     trigger:
       - platform: state
-        entity_id: sensor.light_rgb_color_bathroom_light
+        entity_id: sensor.light_rgb_color_bedroom_light
       - platform: state
         entity_id: sensor.light_color_temp_bedroom_light
       - platform: state
-        entity_id: sensor.light_white_value_bathroom_light
+        entity_id: sensor.light_white_value_bedroom_light
       - platform: state
-        entity_id: sensor.light_brightness_bathroom_light
+        entity_id: sensor.light_brightness_bedroom_light
       - platform: state
-        entity_id: sensor.light_transition_bathroom_light
+        entity_id: sensor.light_transition_bedroom_light
       - platform: state
-        entity_id: sensor.light_flash_bathroom_light
+        entity_id: sensor.light_flash_bedroom_light
       - platform: state
-        entity_id: input_select.light_effect_bathroom_light
+        entity_id: input_select.light_effect_bedroom_light
       - platform: state
         entity_id: input_select.light_effect
       - platform: state
@@ -500,6 +501,45 @@ automation:
       - service: script.turn_on_light_ct
         data_template:
           entity_id: light.imac_light
+
+
+  - id: AGL_bed_light
+    alias: Adjust bed_light
+    trigger:
+      - platform: state
+        entity_id: sensor.light_rgb_color_bed_light
+      - platform: state
+        entity_id: sensor.light_color_temp_bed_light
+      - platform: state
+        entity_id: sensor.light_white_value_bed_light
+      - platform: state
+        entity_id: sensor.light_brightness_bed_light
+      - platform: state
+        entity_id: sensor.light_transition_bed_light
+      - platform: state
+        entity_id: sensor.light_flash_bed_light
+      - platform: state
+        entity_id: input_select.light_effect_bed_light
+      - platform: state
+        entity_id: input_select.light_effect
+      - platform: state
+        entity_id: input_select.light_flash
+    condition:
+      - condition: state
+        entity_id: input_boolean.agl
+        state: 'on'
+      - condition: state
+        entity_id: group.garrett
+        state: 'home'
+      - condition: state
+        entity_id: light.bed_light
+        state: 'on'
+    action:
+      - delay: '00:00:10'
+      - service: script.turn_on_light_ct
+        data_template:
+          entity_id: light.bed_light
+
 
   - id: AGL_closet_light
     alias: Adjust closet_light
@@ -533,7 +573,7 @@ automation:
         entity_id: light.closet_light
         state: 'on'
     action:
-      - delay: '00:00:09'
+      - delay: '00:00:12'
       - service: script.turn_on_light_ct
         data_template:
           entity_id: light.closet_light

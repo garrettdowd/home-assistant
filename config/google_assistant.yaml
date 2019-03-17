@@ -1,0 +1,161 @@
+############
+# Personal
+############
+
+project_id: !secret google_project
+api_key: !secret google_API
+expose_by_default: false
+exposed_domains:
+  - scene
+  - light
+entity_config:
+  input_boolean.alarm_clock:
+    name: Alarm Clock
+    room: Bedroom
+    expose: true
+  input_boolean.good_night_story:
+    name: Bed Time Story
+    aliases:
+      - Bed Time Story
+      - Good night story
+    room: Bedroom
+    expose: true
+  input_boolean.security_alarm:
+    name: Security Alarm
+    aliases:
+      - Security System
+      - security alarm
+      - automatic thief killer
+    room: Control Panel
+    expose: true
+  input_boolean.presence_lights:
+    name: Motion Feature
+    room: Control Panel
+    expose: true
+  input_boolean.followme:
+    name: Follow Me Feature
+    room: Control Panel
+    expose: true
+  input_boolean.agl:
+    name: AGL Mode
+    room: Control Panel
+    expose: true
+  input_boolean.movie_lights:
+    name: Movie Mode
+    room: Control Panel
+    expose: true
+  scene.rainbows:
+    name: Rainbow Mode
+    aliases:
+      - Rainbow Mode
+      - all of the rainbows
+      - rainbow apartment
+    room: Control Panel
+    expose: true
+  scene.music_mode:
+    name: Music Mode
+    aliases:
+      - Music Mode
+      - dancing mode
+      - party mode
+    room: Control Panel
+    expose: true
+  script.all_audio_off:
+    name: Turn Off All Audio
+    aliases:
+      - Turn Off All Audio
+      - turn off all speakers
+      - all audio off
+    room: Control Panel
+    expose: true
+  script.bedtime_mozart:
+    name: Mozart Magic Fantasy
+    room: Bedroom
+    expose: true
+  script.garrett_leave_home:
+    name: Leaving Home Script
+    room: Control Panel
+    expose: true
+  script.garrett_welcome_home:
+    name: Welcome Home Script
+    room: Control Panel
+    expose: true
+  script.good_morning:
+    name: Good Night Script
+    room: Control Panel
+    expose: true
+  script.good_night:
+    name: Good Night Script
+    room: Control Panel
+    expose: true
+  script.security_alarm_lights:
+    name: Security Alarm
+    room: Control Panel
+    expose: true
+  script.shower_time:
+    name: Shower Time
+    room: Bathroom
+    expose: true
+  script.agl_global_script:
+    name: AGL Script
+    room: Control Panel
+    expose: true
+   
+  switch.den_light:
+    name: Den Light
+    room: Den
+    expose: true
+  switch.bathroom_light:
+    name: Bathroom Light
+    room: Bathroom
+    expose: true
+  switch.kitchen_light:
+    name: Kitchen Light
+    room: Kitchen
+    expose: true
+  switch.prep_light:
+    name: Prep Light
+    room: Kitchen
+    expose: true
+
+  light.mirror_light:
+    name: Mirror Light
+    room: Bathroom
+    expose: true
+  light.livingroom_light:
+    name: livingroom Light
+    room: Living room
+    expose: true
+  light.hyperion:
+    name: TV Light
+    room: Living room
+    expose: true
+  light.desk_light:
+    name: Desk Light
+    room: Office
+    expose: true
+  light.monitor_light:
+    name: Monitor Light
+    room: Office
+    expose: true
+  light.server_light:
+    name: Server Light
+    room: Office
+    expose: true
+  light.bedroom_light:
+    name: Bedroom Light
+    room: Bedroom
+    expose: true
+  light.bed_light:
+    name: Bed Light
+    room: Bedroom
+    expose: true
+  light.imac_light:
+    name: iMac Light
+    room: Bedroom
+    expose: true
+  light.closet_light:
+    name: Closet Light
+    room: Bedroom
+    expose: true
+

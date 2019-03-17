@@ -106,7 +106,7 @@ main_room_lights:
 livingroom_motion:
   name: Living Room Motion Sensors
   entities:
-    - binary_sensor.n_8266_1_motion
+    - binary_sensor.n_8266_X_motion
     - binary_sensor.n_8266_9_motion
 
 
@@ -122,13 +122,11 @@ kitchen_motion:
 office_motion:
   name: Office Motion Sensors
   entities:
-    - binary_sensor.n_8266_5_motion
+    - binary_sensor.n_8266_8_motion
 
 office_climate:
   name: Office Climate
   entities:
-    - sensor.h_8266_1_humidity
-    - sensor.h_8266_1_temp
     - sensor.h_8266_2_humidity
     - sensor.h_8266_2_temp
 
@@ -137,20 +135,20 @@ office_climate:
 bedroom_motion:
   name: Bedroom Motion Sensors
   entities:
-    - binary_sensor.n_8266_4_motion
+    - binary_sensor.n_8266_7_motion
 
 bedroom_climate:
-  name: Bathroom Climate
+  name: Bedroom Climate
   entities:
-    - sensor.n_8266_4_humidity
-    - sensor.n_8266_4_temp
+    - sensor.n_8266_7_humidity
+    - sensor.n_8266_7_temp
 
 ################# Closet ######################
 
 closet_motion:
   name: Closet Motion Sensors
   entities:
-    - binary_sensor.n_8266_7_motion
+    - binary_sensor.n_8266_1_motion
 
 ################ Bathroom #####################
 
@@ -193,14 +191,10 @@ climate:
     - sensor.dark_sky_apparent_temperature
     - sensor.dark_sky_cloud_coverage
     - sensor.dark_sky_humidity
-    - sensor.h_8266_1_humidity
-    - sensor.h_8266_1_temp
     - sensor.h_8266_2_humidity
     - sensor.h_8266_2_temp
     - sensor.n_8266_6_humidity
     - sensor.n_8266_6_temp
-    - sensor.n_8266_4_humidity
-    - sensor.n_8266_4_temp
 
 ################### Home #######################
 garrett:
