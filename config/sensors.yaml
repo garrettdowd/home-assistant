@@ -3,7 +3,7 @@
   api_key: !secret darksky_key
   latitude: !secret home_lat
   longitude: !secret home_long
-  update_interval:
+  scan_interval:
     minutes: 5
   forecast:
     - 0
@@ -61,19 +61,19 @@
 #     - 'upload_speed'
 
 
-- platform: speedtest
-  minute:
-    - 37
-  hour:
-    - 2
-    # - 6
-    # - 9
-    # - 12
-    # - 15
-    # - 19
-    # - 21
-  monitored_conditions:
-    - ping
-    - download
-    - upload
+# - platform: speedtest
+#   minute:
+#     - 37
+#   hour:
+#     - 2
+#     # - 6
+#     # - 9
+#     # - 12
+#     # - 15
+#     # - 19
+#     # - 21
+#   monitored_conditions:
+#     - ping
+#     - download
+#     - upload
 

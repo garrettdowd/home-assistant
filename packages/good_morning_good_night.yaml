@@ -40,7 +40,7 @@ script:
   good_morning:
     alias: Good Morning Routine
     sequence:
-      - service: input_boolean.turn_on
+      - service: input_boolean.turn_off
         entity_id: input_boolean.sleeping 
 #       - service:  media_player.volume_set
 #         entity_id: media_player.assistants
@@ -63,11 +63,11 @@ script:
       - service: input_boolean.turn_on
         entity_id: input_boolean.sleeping
       - service:  media_player.volume_set
-        entity_id: media_player.office_speaker
+        entity_id: media_player.bedroom_speaker
         data:
           volume_level: .2
       - service: tts.google_say
-        entity_id: media_player.office_speaker
+        entity_id: media_player.bedroom_speaker
         data_template:
           message: !include ../phrases/good_night.yaml
       - service: light.turn_off
@@ -79,7 +79,7 @@ script:
         entity_id: input_boolean.good_night_story
         state: 'on'
       - service: tts.google_say
-        entity_id: media_player.office_speaker
+        entity_id: media_player.bedroom_speaker
         data_template:
           message: !include ../phrases/bedtime_story.yaml
 
@@ -87,15 +87,15 @@ script:
     alias: Mozart Magic Fantasy
     sequence:
       - service: media_player.turn_on
-        entity_id: media_player.office_speaker
+        entity_id: media_player.bedroom_speaker
       - service:  media_player.volume_set
-        entity_id: media_player.office_speaker
+        entity_id: media_player.bedroom_speaker
         data:
           volume_level: .1
       - service: media_player.play_media
         data:
-          entity_id: media_player.office_speaker
-          media_content_id: !secret mozart_bedtime
+          entity_id: media_player.bedroom_speaker
+          media_content_id: http://192.168.0.4:8123/local/audio/Mozart_Magic_Fantasy.mp3
           media_content_type: audio/mp3
 
 input_boolean:

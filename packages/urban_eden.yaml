@@ -12,6 +12,7 @@ group:
   eden_all_lights:
     name: All Lights
     entities:
+      - light.aquarium_light
       - light.media_bed_1
       - light.media_bed_2
       - light.dwc_1
@@ -30,6 +31,7 @@ group:
     name: Manual Override
     control: hidden
     entities:
+      - light.aquarium_light
       - light.media_bed_1
       - light.media_bed_2
       - light.dwc_1
@@ -48,8 +50,9 @@ group:
     name: Show Off
     control: hidden
     entities:
-      - script.eden_test_lights
-      - script.eden_test_switches
+      - input_boolean.eden_test_lights
+      - input_boolean.eden_test_switches
+      - input_boolean.eden_cycle_override
 
 
 
@@ -135,6 +138,23 @@ light:
     optimistic: false
     retain: true
 
+  - platform: mqtt
+    schema: json
+    name: "Aquarium Light"
+    state_topic: "clb/lights/N_8266_2"
+    command_topic: "clb/lights/N_8266_2/set"
+    # state_topic: "clb/urban_eden/EDEN1/light/NEO/stat"
+    # command_topic: "clb/urban_eden/EDEN1/light/NEO/set"
+    brightness: true
+    rgb: true
+    white_value: true
+    color_temp: true
+    effect: true
+    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
+    flash_time_long: 7
+    flash_time_short: 3
+    optimistic: false
+
 
 
 switch:
@@ -194,8 +214,12 @@ switch:
 
 
 input_boolean:
-  dummy_delay:
-    name: ARGHHHH
+  eden_cycle_override:
+    name: Override Cycle
+  eden_test_lights:
+    name: Test Lights
+  eden_test_switches:
+    name: Test Switches
 
 
 
@@ -205,115 +229,7 @@ input_boolean:
 
 
 
-script:
-
-  eden_test_lights:
-    alias: Test Lights
-    sequence:
-      - service: switch.turn_on
-        entity_id: switch.media_bed_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.media_bed_light_2_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.dwc_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.dwc_light_2_fan
-      - delay: '00:00:01'
-      - service: light.turn_on
-        data_template:
-          entity_id: group.eden_all_lights
-          transition: 30
-          brightness: 255
-
-      - delay: '00:00:08'
-
-      - service: light.turn_off
-        data_template:
-          entity_id: light.media_bed_1
-          transition: 90
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data_template:
-          entity_id: light.media_bed_2
-          transition: 90
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data_template:
-          entity_id: light.dwc_1
-          transition: 90
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data_template:
-          entity_id: light.dwc_2
-          transition: 90
-      - delay: '00:00:01'
-      - service: light.turn_off
-        data_template:
-          entity_id: light.microgreens
-          transition: 90
-      - service: switch.turn_off
-        entity_id: group.eden_light_fans
-  
-
-
-
-  eden_test_switches:
-    alias: Test Switches
-    sequence:
-      - service: switch.turn_on
-        entity_id: switch.sump
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.outlet_2
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.media_bed_1_drain
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.media_bed_2_drain
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.media_bed_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.media_bed_light_2_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.dwc_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_on
-        entity_id: switch.dwc_light_2_fan
-      - delay: '00:00:01'
-
-
-
-
-      - service: switch.turn_off
-        entity_id: switch.sump
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.outlet_2
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.media_bed_1_drain
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.media_bed_2_drain
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.media_bed_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.media_bed_light_2_fan
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.dwc_light_1_fan
-      - delay: '00:00:01'
-      - service: switch.turn_off
-        entity_id: switch.dwc_light_2_fan
+# script:
 
 
 

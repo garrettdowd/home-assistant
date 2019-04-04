@@ -213,9 +213,11 @@ automation:
       - service: script.turn_on_light_ct
         data_template:
           entity_id: light.imac_light
+
       - condition: state
         entity_id: input_boolean.followme
         state: 'on'
+        
       - service: light.turn_off
         data:
           entity_id: group.main_room_lights
@@ -351,7 +353,7 @@ automation:
       - condition: state
         entity_id: input_boolean.followme
         state: 'on'
-        
+
       - service: light.turn_off
         data:
           entity_id: group.main_room_lights

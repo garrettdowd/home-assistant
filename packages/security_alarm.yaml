@@ -110,7 +110,7 @@ script:
       - service: media_player.play_media
         data:
           entity_id: media_player.all_speakers
-          media_content_id: !secret alarm_audio
+          media_content_id: http://192.168.0.4:8123/local/audio/security_alarm_1.wav
           media_content_type: audio/wav
       - delay: '00:00:05'
       - service: script.security_alarm_lights

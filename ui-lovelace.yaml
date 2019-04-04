@@ -159,6 +159,7 @@ views:
           - input_number.alarmhour
           - input_number.alarmminutes
           - input_number.snoozetime
+          - input_number.lightminutes
           - input_number.alarm_clock_volume
           - input_boolean.alarmweekday
           - script.good_night
@@ -299,6 +300,7 @@ views:
         title: Manual Control
         show_header_toggle: false
         entities:
+          - light.aquarium_light
           - light.media_bed_1
           - light.media_bed_2
           - light.dwc_1
@@ -316,8 +318,19 @@ views:
         title: Show Off
         show_header_toggle: false
         entities:
-          - script.eden_test_lights
-          - script.eden_test_switches
+          - input_boolean.eden_test_lights
+          - input_boolean.eden_test_switches
+          - input_boolean.eden_cycle_override
+      - type: picture-glance
+        title: UrbanEden
+        entities:
+          - light.media_bed_1
+        camera_image: camera.eyepi
+      # - type: entities
+      #   title: Watch
+      #   show_header_toggle: false
+      #   entities:
+      #     - camera.eyepi
 
 
   - path: livingroom
@@ -477,6 +490,7 @@ views:
         show_header_toggle: false
         entities:
           - light.test_light
+          - input_boolean.daylight_saving
       - type: 'custom:group-card'
         card:
           type: entities

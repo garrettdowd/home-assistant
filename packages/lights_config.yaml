@@ -6,7 +6,7 @@
 ####  using a Jinja variable to generate the entity_id in a template does not allow 
 ####  HA to automatically update the sensor when the related input_number is changed
 ####
-#### Time can be saved by limiting the scope of control (i.e. by only setting up input_numbers and sensors for brightness)
+#### Time can be saved by limiting the scope of control (i.e. by only setting up input_numbers and sensors for brightness (and not transition, rgb, etc))
 ####
 ################################################
 
@@ -64,20 +64,6 @@ light:
   #   flash_time_short: 3
   #   optimistic: false
 
-  - platform: mqtt
-    schema: json
-    name: "Aquarium Light"
-    state_topic: "clb/lights/N_8266_2"
-    command_topic: "clb/lights/N_8266_2/set"
-    brightness: true
-    rgb: true
-    white_value: true
-    color_temp: true
-    effect: true
-    effect_list: [alarm, boot_up, colorfade_slow, colorfade_fast, flash, music, rainbow, array, rgb_off, no_array, remove_effects, none]
-    flash_time_long: 7
-    flash_time_short: 3
-    optimistic: false
 
   - platform: mqtt
     schema: json

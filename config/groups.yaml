@@ -106,7 +106,7 @@ main_room_lights:
 livingroom_motion:
   name: Living Room Motion Sensors
   entities:
-    - binary_sensor.n_8266_X_motion
+    # - binary_sensor.n_8266_X_motion
     - binary_sensor.n_8266_9_motion
 
 

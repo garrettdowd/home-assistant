@@ -64,12 +64,6 @@ sun:
 
 python_script:
 
-media_extractor:
-  default_query: worst
-  customize:
-    media_player.office_speaker:
-      video: bestvideo
-      music: bestaudio[ext=mp3]
 
 tts:
   - platform: google
@@ -90,10 +84,21 @@ panel_custom:
 # Other Panels
 # Currently doesn't work because pages require basic http auth
 # panel_iframe:
+#   motioneye:
+#     title: EyePi
+#     icon: mdi:cctv
+#     url: http://192.168.0.19/picture/1/frame/
+    
+# panel_iframe:
 #   cp:
 #     title: 'Couchpotato'
 #     icon: mdi:movie
 #     url: !secret cp_address
+
+camera:
+  - platform: mjpeg
+    name: EyePi
+    mjpeg_url: http://192.168.0.19:8081
 
 
 http:
@@ -120,20 +125,8 @@ history:
     domains:
       - media_player
       - light
-    entities:
-      - automation.wake_me_up
-      - group.all_lights
-      - group.garrett
-      - group.media_players
-      - sensor.dark_sky_apparent_temperature
-      - sensor.dark_sky_humidity
-      - sensor.n_8266_4_humidity
-      - sensor.n_8266_4_temp
-      - sensor.n_8266_6_humidity
-      - sensor.n_8266_6_temp
-      - sensor.speedtest_download
-      - sensor.speedtest_ping
-      - sensor.speedtest_upload
+
+
   # exclude:
   #   entities:
   #    - sensor.last_boot
@@ -192,8 +185,22 @@ asuswrt:
 device_tracker:
   - platform: asuswrt
     track_new_devices: TRUE
-    interval_seconds: 11
+    interval_seconds: 7
 
+googlehome:
+  devices:
+    - host: 192.168.0.11
+      track_alarms: true
+      track_devices: false
+    - host: 192.168.0.12
+      track_alarms: true
+      track_devices: false
+    - host: 192.168.0.13
+      track_alarms: true
+      track_devices: false
+    - host: 192.168.0.14
+      track_alarms: true
+      track_devices: false
 
 # MQTT server details for devices
 mqtt:
@@ -210,6 +217,7 @@ media_player:
   - platform: spotify
     client_id: !secret spotify_id
     client_secret: !secret spotify_secret
+    name: Spotify
 
 
 
