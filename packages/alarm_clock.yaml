@@ -131,24 +131,33 @@ automation:
       # - service:  media_player.turn_on
       #   entity_id: media_player.bedroom_speaker
 
-      - service:  media_player.volume_set
+      - service: media_player.volume_set
         entity_id: media_player.bedroom_speaker
         data_template:
           volume_level: '{{ states.input_number.alarm_clock_volume.state | float }}'
-      - service: media_player.select_source
-        data:
-          entity_id: media_player.bedroom_speaker
-          source: Spotify
-      - delay: 00:00:10
-      - service: media_player.select_source
-        data:
-          entity_id: media_player.spotify
-          source: Bedroom Speaker
       - service: media_player.play_media
         data:
-          entity_id: media_player.spotify
-          media_content_id: 'spotify:user:1217158189:playlist:3RSK4I2z2peJmW6OHNHFZp'
-          media_content_type: 'playlist'
+          entity_id: media_player.mspotify
+          media_content_type: playlist
+          media_content_id: 0Wakeup
+      - service: script.mspotify_to_gc
+        data:
+          gc_entity: media_player.bedroom_speaker
+      # Spotify and CC stink, so this doesnt work because Spotify can't select the CC as a source
+      # - service: media_player.select_source
+      #   data:
+      #     entity_id: media_player.bedroom_speaker
+      #     source: Spotify
+      # - delay: 00:00:10
+      # - service: media_player.select_source
+      #   data:
+      #     entity_id: media_player.spotify
+      #     source: Bedroom Speaker
+      # - service: media_player.play_media
+      #   data:
+      #     entity_id: media_player.spotify
+      #     media_content_id: 'spotify:user:1217158189:playlist:3RSK4I2z2peJmW6OHNHFZp'
+      #     media_content_type: 'playlist'
 
       - service: notify.notify
         data_template:
@@ -166,6 +175,8 @@ automation:
         entity_id: input_boolean.alarm_clock_state
       - service: input_boolean.turn_on
         entity_id: input_boolean.alarm_clock_state
+
+
 
 
 
@@ -188,7 +199,7 @@ automation:
           entity_id: input_number.alarm_clock_volume
           value: >
             {% if states.input_number.alarm_clock_volume.state | float < 1 %}
-              {{ (states.input_number.alarm_clock_volume.state | float + 0.1) }}
+              {{ (states.input_number.alarm_clock_volume.state | float + 0.05) }}
             {% else %}
               1
             {% endif %}
@@ -301,6 +312,9 @@ automation:
             action_data:
               entity_id: light.test_light
             #   my_custom_data: foo_bar
+      - service: script.mspotify_to_gc
+        data:
+          gc_entity: media_player.bedroom_speaker
       - service: input_boolean.turn_on
         entity_id: input_boolean.alarm_clock_state
       - service: input_boolean.turn_off
@@ -343,6 +357,8 @@ script:
       # Do this main stuff
       - service:  media_player.turn_off
         entity_id: media_player.bedroom_speaker
+      - service:  media_player.media_stop
+        entity_id: media_player.mspotify
       - service: input_boolean.turn_off
         entity_id: input_boolean.sleeping
       - service: input_boolean.turn_on
@@ -367,7 +383,9 @@ script:
       - service: input_number.set_value
         data_template:
           entity_id: input_number.alarm_clock_volume
-          value: 0.1
+          value: 0.05
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.alarm_clock
       # And play NPR News
       - service:  media_player.volume_set
         entity_id: media_player.assistant_speakers
