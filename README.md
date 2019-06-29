@@ -1,7 +1,7 @@
 # ReadMe Placeholder
 
 # Devices
-DIY Lights
+**DIY Lights**
 - ESP8266 x 11
 - SK6812 RGBW 60LED/m Strip x 30m
 - AM312 PIR Sensor x 8
@@ -9,26 +9,26 @@ DIY Lights
 - 5V 30A SMPS x 7
 - link to repo
 
-Sonoff Basic x 9
+**Sonoff Basic** x 9
 - flashed with Tasmota
 
-Hyperion (TV Ambilight) x 1
+**Hyperion (TV Ambilight)**
 - Raspberry Pi 3B
 - Rasplex
 - APA102 RGB 30LED/m Strip
 - 5V 15A SMPS
 
-Google Home Mini x 6
+**Google Home Mini** x 6
 
-Google Chromecast Audio x 2
+**Google Chromecast Audio** x 2
 
-Google Chromecast
+**Google Chromecast**
 
-Amazon Kindle Fire 7 x 1
+**Amazon Kindle Fire 7**
 
-uFarm
+**uFarm**
 
-Main Server
+**Main Server**
 - 20 TB unRaid Server
 - Hardware
   - ASUS F1A75-V PRO
@@ -55,7 +55,7 @@ Main Server
   - Mariadb
   - calibreWeb
 
-Backup Server
+**Backup Server**
 - Raspberry Pi 3B
 - Hass.io
   - SSH
@@ -68,11 +68,11 @@ Backup Server
   - Aircast
   - TasmoAdmin
   
-Asus RT66U
+**Asus RT66U**
 - Asuswrt Merlin
 - OpenVPN, DuckDNS DDNS
 
-APC 2000W Back-up UPS
+**APC 2000W Back-up UPS**
 
 # Architecture
 
@@ -132,6 +132,8 @@ Floorplan
 Light
 ---
 change to transition limit
+
+# Components
 
 # Interested In
 Snips.ai
