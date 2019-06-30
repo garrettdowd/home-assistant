@@ -8,6 +8,7 @@ expose_by_default: false
 exposed_domains:
   - scene
   - light
+  - fan
 entity_config:
   input_boolean.alarm_clock:
     name: Alarm Clock
@@ -101,12 +102,20 @@ entity_config:
     room: Control Panel
     expose: true
    
+  switch.doorway_light:
+    name: Doorway Light
+    room: Entrance
+    expose: true
   switch.den_light:
     name: Den Light
     room: Den
     expose: true
   switch.bathroom_light:
     name: Bathroom Light
+    room: Bathroom
+    expose: true
+  switch.shower_light:
+    name: Shower Light
     room: Bathroom
     expose: true
   switch.kitchen_light:
@@ -116,6 +125,11 @@ entity_config:
   switch.prep_light:
     name: Prep Light
     room: Kitchen
+    expose: true
+    
+  fan.bedroom_fan:
+    name: Bedroom Fan
+    room: Bedroom
     expose: true
 
   light.mirror_light:

@@ -20,6 +20,10 @@ input_boolean:
     name: Movie Lights
     icon: mdi:movie
 
+  movie_lights_util:
+    name: For movie light automation
+
+
 ################################################
 #
 # scenes
@@ -68,6 +72,12 @@ scene:
         state: off
       switch.prep_light:
         state: off
+      light.desk_light:
+        state: off
+        transition: 8000
+      light.monitor_light:
+        state: off
+        transition: 8000
 
         
 ################################################
@@ -85,6 +95,45 @@ automation:
 
 
   ###############     Plex     ###################
+  - id: Plex_Lights_Play
+    alias: "Media player playing"
+    trigger:
+      - platform: state
+        entity_id: media_player.rasplex
+        to: 'playing'
+      - platform: state
+        entity_id: media_player.living_room_tv
+        to: 'playing'
+    condition:
+      - condition: state
+        entity_id: input_boolean.movie_lights
+        state: 'on'
+      - condition: numeric_state
+        entity_id: sun.sun
+        value_template: "{{ state.attributes.elevation }}"
+        below: 3.5
+      - condition: template
+        value_template: "{{ is_state_attr('media_player.living_room_tv', 'app_name', 'Plex') }}"
+      - condition: or
+        conditions:
+          - condition: template
+            value_template: "{{ is_state_attr('media_player.living_room_tv', 'media_content_type', 'tvshow') }}"
+          - condition: template
+            value_template: "{{ is_state_attr('media_player.living_room_tv', 'media_content_type', 'movie') }}"
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.movie_lights_util
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.eden_water_cycle
+      - service: scene.turn_on
+        entity_id: scene.movie_play
+      - service: automation.turn_off
+        entity_id: automation.turn_off_livingroom_lights
+      - service: automation.turn_off
+        entity_id: automation.adjust_livingroom_light
+      - service: automation.turn_off
+        entity_id: automation.adjust_hyperion
+
 
   - id: Plex_Lights_Stop
     alias: "Media player stopped"
@@ -97,13 +146,13 @@ automation:
         to: 'idle'
     condition:
       - condition: state
-        entity_id: input_boolean.movie_lights
+        entity_id: input_boolean.movie_lights_util
         state: 'on'
-      - condition: numeric_state
-        entity_id: sun.sun
-        value_template: '{{ state.attributes.elevation }}'
-        below: 3.5
     action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.movie_lights_util
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.eden_water_cycle
       - service: scene.turn_on
         entity_id: scene.movie_stop
       - service: automation.turn_on
@@ -112,6 +161,7 @@ automation:
         entity_id: automation.adjust_livingroom_light
       - service: automation.turn_on
         entity_id: automation.adjust_hyperion
+
 
   - id: Plex_Lights_Pause
     alias: "Media player paused"
@@ -124,50 +174,12 @@ automation:
         to: 'paused'
     condition:
       - condition: state
-        entity_id: input_boolean.movie_lights
+        entity_id: input_boolean.movie_lights_util
         state: 'on'
-      - condition: numeric_state
-        entity_id: sun.sun
-        value_template: '{{ state.attributes.elevation }}'
-        below: 3.5
-    action:
-        service: scene.turn_on
-        entity_id: scene.movie_pause
-
-  - id: Plex_Lights_Play
-    alias: "Media player playing"
-    trigger:
-      - platform: state
-        entity_id: media_player.rasplex
-        to: 'playing'
-      - platform: state
-        entity_id: media_player.living_room_tv
-        to: 'playing'
-    condition:
-      # - condition: or
-      #   conditions:
-      #     - condition: state
-      #       entity_id: media_player.rasplex.attributes.media_content_type
-      #       state: tvshow
-      #     - condition: state
-      #       entity_id: media_player.rasplex.attributes.media_content_type
-      #       state: movie
-      - condition: state
-        entity_id: input_boolean.movie_lights
-        state: 'on'
-      - condition: numeric_state
-        entity_id: sun.sun
-        value_template: '{{ state.attributes.elevation }}'
-        below: 3.5
     action:
       - service: scene.turn_on
-        entity_id: scene.movie_play
-      - service: automation.turn_off
-        entity_id: automation.turn_off_livingroom_lights
-      - service: automation.turn_off
-        entity_id: automation.adjust_livingroom_light
-      - service: automation.turn_off
-        entity_id: automation.adjust_hyperion
+        entity_id: scene.movie_pause
+
 
 
 

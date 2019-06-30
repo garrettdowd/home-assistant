@@ -58,6 +58,8 @@ script:
   good_night:
     alias: Good Night Routine
     sequence:
+      - service: fan.turn_on
+        entity_id: fan.bedroom_fan
       - service: automation.turn_off
         entity_id: automation.turn_on_bedroom_lights
       - service: input_boolean.turn_on

@@ -31,6 +31,8 @@ group:
     name: Manual Override
     control: hidden
     entities:
+      - input_boolean.eden_water_cycle
+      - input_boolean.eden_water_cycle_reset
       - light.aquarium_light
       - light.media_bed_1
       - light.media_bed_2
@@ -55,6 +57,17 @@ group:
       - input_boolean.eden_cycle_override
 
 
+input_boolean:
+  eden_cycle_override:
+    name: Override Cycle
+  eden_test_lights:
+    name: Test Lights
+  eden_test_switches:
+    name: Test Switches
+  eden_water_cycle:
+    name: Water Cycle
+  eden_water_cycle_reset:
+    name: Water Cycle Emergency Reset
 
 
 
@@ -213,13 +226,7 @@ switch:
 
 
 
-input_boolean:
-  eden_cycle_override:
-    name: Override Cycle
-  eden_test_lights:
-    name: Test Lights
-  eden_test_switches:
-    name: Test Switches
+
 
 
 

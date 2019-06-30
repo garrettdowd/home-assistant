@@ -29,6 +29,66 @@ input_boolean:
     icon: mdi:target-account
 
 automation:
+  - id: Entry_Lights_On
+    alias: Turn On Entry Lights
+    trigger:
+      platform: state
+      entity_id: group.entry_motion
+      from: 'off'
+      to: 'on'
+    condition:
+      condition: and
+      conditions:
+        - condition: state
+          entity_id: input_boolean.presence_lights
+          state: 'on'
+        # - condition: state
+        #   entity_id: group.garrett
+        #   state: 'home'
+        - condition: state
+          entity_id: group.entry_lights
+          state: 'off'
+    action:
+      - service: script.turn_on_light_switch
+        data_template:
+          entity_id: switch.doorway_light
+      - condition: state
+        entity_id: input_boolean.followme
+        state: 'on'
+      - service: light.turn_off
+        data:
+          entity_id: group.office_lights
+          transition: 2000
+      - service: light.turn_off
+        data:
+          entity_id: group.bathroom_lights
+          transition: 2000
+      - service: light.turn_off
+        data:
+          entity_id: group.bedroom_lights
+          transition: 2000
+      - service: light.turn_off
+        data:
+          entity_id: group.closet_lights
+          transition: 2000
+
+  - id: Entry_Lights_Off
+    alias: Turn Off Entry Lights
+    trigger:
+      platform: state
+      entity_id: group.entry_motion
+      from: 'on'
+      to: 'off'
+      for:
+        hours: 0
+        minutes: 0
+        seconds: 30
+    action:
+      - service: homeassistant.turn_off
+        data:
+          entity_id: group.entry_lights
+
+
   - id: Kitchen_Lights_On
     alias: Turn On Kitchen Lights
     trigger:

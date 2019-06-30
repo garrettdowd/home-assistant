@@ -36,6 +36,8 @@ updater:
   # Optional, allows Home Assistant developers to focus on popular components.
   include_used_components: true
 
+system_health:
+  
 # Discover some devices automatically
 discovery:
   # ignore:
@@ -51,73 +53,7 @@ map:
 
 sun:
 
-# Dark sky as a weather object instead of individual sensors
-# weather:
-#   - platform: dark_sky
-#     name: "Dark Sky"
-#     api_key: !secret darksky_key
-#     latitude: !secret home_lat
-#     longitude: !secret home_long
-#     units: si
-#     mode: hourly
-
-
 python_script:
-
-
-tts:
-  - platform: google
-
-
-
-
-ifttt:
-  key: !secret ifttt_key
-
-panel_custom:
-  - name: floorplan
-    sidebar_title: Floorplan
-    sidebar_icon: mdi:home
-    url_path: floorplan
-    config: !include config/floorplan.yaml
-
-# Other Panels
-# Currently doesn't work because pages require basic http auth
-# panel_iframe:
-#   motioneye:
-#     title: EyePi
-#     icon: mdi:cctv
-#     url: http://192.168.0.19/picture/1/frame/
-    
-# panel_iframe:
-#   cp:
-#     title: 'Couchpotato'
-#     icon: mdi:movie
-#     url: !secret cp_address
-
-camera:
-  - platform: mjpeg
-    name: EyePi
-    mjpeg_url: http://192.168.0.19:8081
-
-
-http:
-  # Secrets are defined in the file secrets.yaml
-  # api_password: !secret http_password
-  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
-  base_url: !secret web_url
-  use_x_forwarded_for: true
-  trusted_proxies:
-    - 127.0.0.1
-    - 172.17.0.6
-  # trusted_networks:
-  #   - 127.0.0.1
-  #   - ::1
-  #   - 192.168.0.0/24
-  #   - fd00::/8
-  ip_ban_enabled: True
-  login_attempts_threshold: 7
-
 
 # Enables support for tracking state changes over time
 history:
@@ -125,7 +61,6 @@ history:
     domains:
       - media_player
       - light
-
 
   # exclude:
   #   entities:
@@ -141,7 +76,6 @@ history:
   #    - sensor.ha_uptime
   #    - sensor.time
 
-
 # View all events in a logbook
 logbook:
   # exclude:
@@ -153,6 +87,9 @@ logbook:
   #     - media_player.LivingRoomCC
   #     - py.warnings
 
+tts:
+  - platform: google_translate
+    service_name: google_say
 
 zone:
   - name: CAR
@@ -173,6 +110,60 @@ zone:
     longitude: !secret home_long
     radius: 55
     icon: mdi:account-multiple
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  base_url: !secret web_url
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 127.0.0.1
+    - 172.17.0.6
+  # trusted_networks:
+  #   - 127.0.0.1
+  #   - ::1
+  #   - 192.168.0.0/24
+  #   - fd00::/8
+  ip_ban_enabled: True
+  login_attempts_threshold: 7
+
+notify:
+  - name: slack_home
+    platform: slack
+    api_key: !secret slack_api
+    default_channel: '#notifications'
+    username: 'HausBot'
+  - platform: html5
+    name: web
+    vapid_pub_key: !secret vapid_public_key
+    vapid_prv_key: !secret vapid_private_key
+    vapid_email: !secret vapid_email
+
+# MQTT server details for devices
+mqtt:
+  broker: !secret mqtt_broker
+  port: !secret mqtt_port
+  keepalive: 270
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+media_player:
+  - platform: plex
+    scan_interval: 3
+  - platform: spotify
+    client_id: !secret spotify_id
+    client_secret: !secret spotify_secret
+    name: Spotify
+
+
+camera:
+  - platform: mjpeg
+    name: EyePi
+    mjpeg_url: http://192.168.0.19:8081
+
+ifttt:
+  key: !secret ifttt_key
 
 asuswrt:
   host: 192.168.0.1
@@ -202,25 +193,37 @@ googlehome:
       track_alarms: true
       track_devices: false
 
-# MQTT server details for devices
-mqtt:
-  broker: !secret mqtt_broker
-  port: !secret mqtt_port
-  keepalive: 270
-  username: !secret mqtt_username
-  password: !secret mqtt_password
+panel_custom:
+  - name: floorplan
+    sidebar_title: Floorplan
+    sidebar_icon: mdi:home
+    url_path: floorplan
+    config: !include config/floorplan.yaml
+
+# Other Panels
+# Currently doesn't work because pages require basic http auth
+# panel_iframe:
+#   motioneye:
+#     title: EyePi
+#     icon: mdi:cctv
+#     url: http://192.168.0.19/picture/1/frame/
+    
+# panel_iframe:
+#   cp:
+#     title: 'Couchpotato'
+#     icon: mdi:movie
+#     url: !secret cp_address
 
 
-media_player:
-  - platform: plex
-    scan_interval: 3
-  - platform: spotify
-    client_id: !secret spotify_id
-    client_secret: !secret spotify_secret
-    name: Spotify
-
-
-
+# Dark sky as a weather object instead of individual sensors
+# weather:
+#   - platform: dark_sky
+#     name: "Dark Sky"
+#     api_key: !secret darksky_key
+#     latitude: !secret home_lat
+#     longitude: !secret home_long
+#     units: si
+#     mode: hourly
 
 
 ################################################

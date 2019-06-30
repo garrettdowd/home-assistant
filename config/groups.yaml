@@ -109,6 +109,12 @@ livingroom_motion:
     # - binary_sensor.n_8266_X_motion
     - binary_sensor.n_8266_9_motion
 
+################## Entryway #####################
+
+entry_motion:
+  name: Entry Motion Sensors
+  entities:
+    - binary_sensor.s_8285_7_motion
 
 ################## Kitchen #####################
 
@@ -182,6 +188,13 @@ all_motion:
     - binary_sensor.n_8266_7_motion
     - binary_sensor.n_8266_8_motion
     - binary_sensor.n_8266_9_motion
+    - binary_sensor.s_8285_1_motion
+    - binary_sensor.s_8285_2_motion
+    - binary_sensor.s_8285_3_motion
+    - binary_sensor.s_8285_4_motion
+    - binary_sensor.s_8285_5_motion
+    - binary_sensor.s_8285_6_motion
+    - binary_sensor.s_8285_7_motion
 
 
 ################### Weather ####################

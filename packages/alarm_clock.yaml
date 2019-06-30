@@ -17,6 +17,7 @@ group:
       - input_number.snoozetime
       - input_number.lightminutes
       - input_number.alarm_clock_volume
+      - input_boolean.morning_news
       - input_boolean.alarmweekday
       - script.good_night
 
@@ -25,7 +26,7 @@ automation:
   ## make it so that two or three alarms can be configured
 
 
-  - id: google_home_set_time
+  - id: google_home_set_alarm_time
     alias: Google Home Set Alarm Time
     trigger:
       platform: state
@@ -52,14 +53,14 @@ automation:
       - service: input_boolean.turn_on
         entity_id: input_boolean.alarm_clock
 
-  - id: google_home_set_time
-    alias: Google Home Set Alarm Time
-    trigger:
-      platform: state
-      entity_id: sensor.bedroom_assistant_alarm
-      to: 'unavailable'
-    action:
-      - service: script.turn_off_alarm_clock
+  # - id: google_home_turn_off_alarm_clock
+  #   alias: Google Home Turn Off Alarm Clock
+  #   trigger:
+  #     platform: state
+  #     entity_id: sensor.bedroom_assistant_alarm
+  #     to: 'unavailable'
+  #   action:
+  #     - service: script.turn_off_alarm_clock
 
 
 
@@ -143,6 +144,10 @@ automation:
       - service: script.mspotify_to_gc
         data:
           gc_entity: media_player.bedroom_speaker
+      - service: media_player.shuffle_set
+        data:
+          entity_id: media_player.mspotify
+          shuffle: 'true'
       # Spotify and CC stink, so this doesnt work because Spotify can't select the CC as a source
       # - service: media_player.select_source
       #   data:
@@ -199,7 +204,7 @@ automation:
           entity_id: input_number.alarm_clock_volume
           value: >
             {% if states.input_number.alarm_clock_volume.state | float < 1 %}
-              {{ (states.input_number.alarm_clock_volume.state | float + 0.05) }}
+              {{ (states.input_number.alarm_clock_volume.state | float + 0.02) }}
             {% else %}
               1
             {% endif %}
@@ -262,7 +267,7 @@ automation:
       #     media_content_type: audio/mp3
 
       ## this section of the main loop handles the scenario that no user input was received (ie the user slept through the alarm)
-      - delay: 00:02:00
+      - delay: 00:00:45
       - condition: and
         conditions:
           - condition: state
@@ -312,6 +317,11 @@ automation:
             action_data:
               entity_id: light.test_light
             #   my_custom_data: foo_bar
+      - service: media_player.play_media
+        data:
+          entity_id: media_player.mspotify
+          media_content_type: playlist
+          media_content_id: 0Wakeup
       - service: script.mspotify_to_gc
         data:
           gc_entity: media_player.bedroom_speaker
@@ -383,10 +393,15 @@ script:
       - service: input_number.set_value
         data_template:
           entity_id: input_number.alarm_clock_volume
-          value: 0.05
-      - service: input_boolean.turn_on
+          value: 0.06
+      - service: input_boolean.turn_off
         entity_id: input_boolean.alarm_clock
+      - service: fan.turn_off
+        entity_id: fan.bedroom_fan
       # And play NPR News
+      - condition: state
+        entity_id: input_boolean.morning_news
+        state: 'on'
       - service:  media_player.volume_set
         entity_id: media_player.assistant_speakers
         data_template:
@@ -439,9 +454,9 @@ input_number:
   alarm_clock_volume:
     name: Alarm Clock Volume
     icon: mdi:volume-plus
-    min: .1
+    min: 0
     max: 1
-    step: .1
+    step: .02
     mode: slider
   lightminutes:
     name: Sunrise Light Minutes
@@ -470,6 +485,10 @@ input_boolean:
 
   daylight_saving:
     name: Daylight Savings Time
+
+  morning_news:
+    name: Play News
+    icon: mdi:newspaper
 
 
 

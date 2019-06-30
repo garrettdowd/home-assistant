@@ -228,6 +228,20 @@ switch:
     name: "Kitchen Light"
     command_topic: "clb/switch/S_8285_3/set/power"
     state_topic: "clb/switch/S_8285_3/stat/POWER"
+  - platform: mqtt
+    name: "Shower Light"
+    command_topic: "clb/switch/S_8285_5/set/power"
+    state_topic: "clb/switch/S_8285_5/stat/POWER"
+  - platform: mqtt
+    name: "Doorway Light"
+    command_topic: "clb/switch/S_8285_7/set/power"
+    state_topic: "clb/switch/S_8285_7/stat/POWER"
+  
+fan:
+  - platform: mqtt
+    name: "Bedroom Fan"
+    command_topic: "clb/switch/S_8285_6/set/power"
+    state_topic: "clb/switch/S_8285_6/stat/POWER"
 
 
 ################################################
@@ -252,9 +266,11 @@ group:
       - light.imac_light
       - light.closet_light
       - switch.bathroom_light
+      - switch.shower_light
       - light.mirror_light
       - switch.den_light
       - light.aquarium_light
+      - switch.doorway_light
       - light.test_light
 
 
@@ -295,12 +311,19 @@ group:
       - sensor.light_rgb_color_hyperion
       - sensor.light_brightness_hyperion
 
+################## Entry #####################
+  entry_lights:
+    name: Entry Lights
+    entities:
+      - switch.doorway_light
+
 ################## Kitchen #####################
   kitchen_lights:
     name: Kitchen Lights
     entities:
       - switch.kitchen_light
       - switch.prep_light
+      - switch.doorway_light
 
   kitchen_light_control:
     name: Light Control Kitchen Light
@@ -321,24 +344,7 @@ group:
       - sensor.light_brightness_kitchen_light
       - sensor.light_transition_kitchen_light
 
-  prep_light_control:
-    name: Light Control Prep Light
-    entities:
-      - input_number.light_rgb_color_r_prep_light
-      - input_number.light_rgb_color_g_prep_light
-      - input_number.light_rgb_color_b_prep_light
-      - input_number.light_color_temp_prep_light
-      - input_number.light_white_value_prep_light
-      - input_number.light_brightness_prep_light
-      - input_number.light_transition_prep_light
-      - input_select.light_flash_prep_light
-      - input_select.light_effect_prep_light
 
-      - sensor.light_rgb_color_prep_light
-      - sensor.light_color_temp_prep_light
-      - sensor.light_white_value_prep_light
-      - sensor.light_brightness_prep_light
-      - sensor.light_transition_prep_light
 
 ################## Office ######################
   office_lights:
@@ -756,62 +762,6 @@ sensor:
             {{ states('input_number.light_transition_kitchen_light')|int }}
           {%- endif %}
 
-
-
-      light_rgb_color_prep_light:
-        friendly_name: "Rgb Color - Prep Light"
-        value_template: >-
-          {% if states('input_number.light_rgb_color_r_prep_light')|int == -1 -%}
-            {{ states('sensor.light_rgb_color').split(',', 3)[0] ~ ',' }}
-          {%- else -%}
-            {{ '[' ~ states('input_number.light_rgb_color_r_prep_light')|int ~ ',' }}
-          {%- endif -%}
-          {%- if states('input_number.light_rgb_color_g_prep_light')|int == -1 -%}
-            {{ states('sensor.light_rgb_color').split(',', 3)[1] ~ ',' }}
-          {%- else -%}
-            {{ states('input_number.light_rgb_color_g_prep_light')|int ~ ',' }}
-          {%- endif -%}
-          {%- if states('input_number.light_rgb_color_b_prep_light')|int == -1 -%}
-            {{ states('sensor.light_rgb_color').split(',', 3)[2] }}
-          {%- else -%}
-            {{ states('input_number.light_rgb_color_b_prep_light')|int ~ ']' }}
-          {%- endif %}
-
-      light_white_value_prep_light:
-        friendly_name: "White Value - Prep Light"
-        value_template: >-
-          {% if states('input_number.light_white_value_prep_light')|int == -1 -%}
-            {{ states('sensor.light_white_value')|int }}
-          {%- else -%}
-            {{ states('input_number.light_white_value_desk_light')|int }}
-          {%- endif %}
-
-      light_brightness_prep_light:
-        friendly_name: "Brightness - Prep Light"
-        value_template: >-
-          {% if states('input_number.light_brightness_prep_light')|int == -1 -%}
-            {{ states('sensor.light_brightness')|int }}
-          {%- else -%}
-            {{ states('input_number.light_brightness_prep_light')|int }}
-          {%- endif %}
-
-      light_color_temp_prep_light:
-        friendly_name: "Color Temp - Prep Light"
-        value_template: >-
-          {% if states('input_number.light_color_temp_prep_light')|int == -1 -%}
-            {{ states('sensor.light_color_temp')|int }}
-          {%- else -%}
-            {{ states('input_number.light_color_temp_prep_light')|int }}
-          {%- endif %}
-
-      light_transition_prep_light:
-        friendly_name: "Transition - Prep Light"
-        value_template: >-
-          {% if states('input_number.light_transition_prep_light')|int == -1 -%}
-            {{ states('sensor.light_transition')|int }}
-          {%- else -%}
-            {{ states('input_number.light_transition_prep_light')|int }}
-          {%- endif %}
 
 
     ############### Office Light Control ###############
@@ -1432,64 +1382,6 @@ input_number:
     mode: box
 
 
-
-  light_rgb_color_r_prep_light:
-    name: Red Value - Prep Light - Override
-    min: -1
-    max: 255
-    step: 1
-    initial: -1
-    mode: slider
-
-  light_rgb_color_g_prep_light:
-    name: Green Value - Prep Light - Override
-    min: -1
-    max: 255
-    step: 1
-    initial: -1
-    mode: slider
-
-  light_rgb_color_b_prep_light:
-    name: Blue Value - Prep Light - Override
-    min: -1
-    max: 255
-    step: 1
-    initial: -1
-    mode: slider
-
-  light_color_temp_prep_light:
-    name: Color Temp - Prep Light - Override
-    min: -1
-    max: 700
-    step: 1
-    initial: -1
-    mode: slider
-
-  light_white_value_prep_light:
-    name: White Value - Prep Light - Override
-    min: -1
-    max: 255
-    step: 1
-    initial: -1
-    mode: slider
-
-  light_brightness_prep_light:
-    name: Brightness - Prep Light - Override
-    min: -1
-    max: 255
-    step: 5
-    initial: -1
-    mode: slider
-
-  light_transition_prep_light:
-    name: Transition - Prep Light - Override
-    min: -1
-    max: 20000
-    step: 1
-    initial: -1
-    mode: box
-
-
 ############### Office Light Control ###############
   light_rgb_color_r_office_light:
     name: Red Value - Office Light - Override
@@ -2015,28 +1907,7 @@ input_select:
       - -1
     initial: -1
 
-  light_effect_prep_light:
-    name: Effect - Prep Light - Override
-    options:
-      - alarm
-      - boot_up
-      - flash
-      - colorfade
-      - music
-      - rainbow
-      - no_array
-      - remove_effects
-      - none
-      - -1
-    initial: -1
 
-  light_flash_prep_light:
-    name: Flash Duration - Prep Light - Override
-    options:
-      - short
-      - long
-      - -1
-    initial: -1
 
 ############### Office Light Control ###############
   light_effect_office_light:

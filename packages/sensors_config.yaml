@@ -138,7 +138,11 @@ binary_sensor:
     device_class: motion
     value_template: '{{ value_json.motion }}'
 
-
+  # S_8285_7
+  - platform: mqtt
+    name: "S_8285_7 Motion"
+    state_topic: "clb/switch/S_8285_7/motion/set/POWER1"
+    device_class: motion
 
 
 
