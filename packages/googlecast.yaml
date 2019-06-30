@@ -1,0 +1,118 @@
+# https://www.vittoriomonaco.de/home-automation-part-7.html
+
+media_player:
+  - platform: mpd
+    name: mspotify
+    host: 192.168.0.4
+
+script:
+  keep_gc_alive:
+    alias: Keep Google Cast Alive
+    sequence:
+      - condition: and
+        conditions:
+          - condition: template
+            value_template: "{{ states(media_player.all_speakers) != 'playing' }}"
+          - condition: template
+            value_template: >-
+              {% if gc_group is defined -%}
+                "{{ states(gc_entity) != 'playing' }}"
+              {%- else -%}
+                "{{ true }}"
+              {%- endif %}
+          - condition: template
+            value_template: "{{ states(gc_entity) != 'playing' }}"
+      - service: media_player.play_media
+        data_template:
+          entity_id: "{{gc_entity}}"
+          media_content_id: http://192.168.0.4:8123/local/audio/1sec.mp3
+          media_content_type: music
+
+  mspotify_to_gc:
+    alias: Start streaming
+    sequence:
+      - delay: '00:00:05'
+      - service: media_player.play_media
+        data_template:
+          entity_id: "{{gc_entity}}"
+          media_content_id: "http://192.168.0.4:8000/mopidy.mp3"
+          media_content_type: "audio/mp4"
+
+
+automation:
+  - id: fix_cc_volume
+    alias: Prevent CC from Playing at 100%
+    trigger:
+      - platform: state
+        entity_id: media_player.living_room_tv
+        to: "playing"
+      - platform: state
+        entity_id: media_player.speakers
+        to: "playing"
+      - platform: state
+        entity_id: media_player.all_speakers
+        to: "playing"
+      - platform: state
+        entity_id: media_player.assistant_speakers
+        to: "playing"
+    condition:
+      - condition: state
+        entity_id: input_boolean.fix_cc_volume
+        state: 'on'
+    action:
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.fix_cc_volume
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.living_room_tv
+          volume_level: 0.7
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.bedroom_speaker
+          volume_level: 0.15
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.bedroom_assistant
+          volume_level: 0.2
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.living_room_assistant
+          volume_level: 0.55
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.office_assistant
+          volume_level: 0.35
+      - service: media_player.volume_set
+        data_template:
+          entity_id: media_player.bathroom_assistant
+          volume_level: 0.4
+
+
+  - id: reset_fix_cc_audio
+    alias: Utility for fix_cc_volume
+    trigger:
+      - platform: state
+        entity_id: input_boolean.fix_cc_volume
+        to: 'off'
+        for:
+          hours: 6
+    action:
+      - service: input_boolean.turn_on
+        entity_id: input_boolean.fix_cc_volume
+
+#   - id: keep_alive_bedroom_speaker
+#     alias: Keep Bedroom Speaker Alive
+#     trigger:
+#       platform: time_pattern
+#       minutes: '/2'
+#       seconds: 00
+#     action:
+#       - service: script.keep_gc_alive
+#         data:
+#           gc_entity: media_player.bedroom_speaker
+#           gc_group: media_player.speakers
+
+input_boolean:
+  fix_cc_volume:
+    name: Adjust CC Volume for Multiroom Casting
+    initial: on
