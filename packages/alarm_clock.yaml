@@ -17,6 +17,7 @@ group:
       - input_number.snoozetime
       - input_number.lightminutes
       - input_number.alarm_clock_volume
+      - input_number.alarm_clock_volume_speed
       - input_boolean.morning_news
       - input_boolean.alarmweekday
       - script.good_night
@@ -204,31 +205,11 @@ automation:
           entity_id: input_number.alarm_clock_volume
           value: >
             {% if states.input_number.alarm_clock_volume.state | float < 1 %}
-              {{ (states.input_number.alarm_clock_volume.state | float + 0.02) }}
+              {{ float(states.input_number.alarm_clock_volume.state) + float(states.input_number.alarm_clock_volume_speed.state) }}
             {% else %}
               1
             {% endif %}
 
-      # - service:  media_player.play_media
-      #   data_template:
-      #     entity_id: media_player.bedroom_speaker
-      #     media_content_id: >
-      #       {{ [
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - avicii_wake_me_up_official_video_IcrbM1l_BoI.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - clean_bandit_symphony_feat_zara_larsson_official_video_aatr_2MstrI.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - macklemore_ryan_lewis_downtown_official_music_video_JGhoLcsr8GA.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - mura_masa_helpline_ft_tom_tripp_qO7a-Q1HY1I.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - portugal_the_man_live_in_the_moment_official_video_Hha0bwVvGmY.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - robotaki_together_were_screwed_feat_nevve_sVfdqWt_3ug.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - sigala_ella_eyre_meghan_trainor_just_got_paid_lyric_video_ft_french_montana_mCYwONZYiUc.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - capital_cities_vowels__2DkJjBiCWY.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - chris_lake_ft_alexis_roberts_turn_off_the_lights_cages_remix_Ze6szKAdGp0.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - daft_punk_derezzed_official_trackfull_songhq2010tron_soundtrack_F4eccPBFEjE.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - john_newman_come_and_get_it_I5exsScaHWo.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - loud_luxury_feat_brando_body_official_lyric_video_IetIg7y5k3A.mp3",
-      #       "http://192.168.0.4:8123/local/audio/alarmclock/y2mate.com - pokemon_theme_song_JuYeHPFR3f0.mp3"
-      #       ] | random }}
-      #     media_content_type: music
     # Currently youtube media extractor isnt working
       # - service:  media_extractor.play_media
       #   data_template:
@@ -433,6 +414,7 @@ input_number:
   alarmhour:
     name: Hour
     icon: mdi:timer
+    initial: 7
     min: 0
     max: 23
     step: 1
@@ -440,6 +422,7 @@ input_number:
   alarmminutes:
     name: Minutes
     icon: mdi:timer
+    initial: 0
     min: 0
     max: 59
     step: 5
@@ -447,6 +430,7 @@ input_number:
   snoozetime:
     name: Snooze Length
     icon: mdi:sleep
+    initial: 10
     min: 5
     max: 30
     step: 1
@@ -454,13 +438,23 @@ input_number:
   alarm_clock_volume:
     name: Alarm Clock Volume
     icon: mdi:volume-plus
+    initial: .06
     min: 0
     max: 1
     step: .02
     mode: slider
+  alarm_clock_volume_speed:
+    name: Volume Multiplier
+    icon: mdi:volume-plus
+    initial: .02
+    min: .01
+    max: .3
+    step: .01
+    mode: slider
   lightminutes:
     name: Sunrise Light Minutes
     icon: mdi:timer
+    initial: 10
     min: 0
     max: 30
     step: 1
