@@ -31,7 +31,7 @@ script:
   mspotify_to_gc:
     alias: Start streaming
     sequence:
-      - delay: '00:00:05'
+      - delay: '00:00:02'
       - service: media_player.play_media
         data_template:
           entity_id: "{{gc_entity}}"
