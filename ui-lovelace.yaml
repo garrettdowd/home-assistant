@@ -164,6 +164,7 @@ views:
           - input_number.snoozetime
           - input_number.lightminutes
           - input_number.alarm_clock_volume
+          - input_number.alarm_clock_volume_speed
           - input_boolean.morning_news
           - input_boolean.alarmweekday
           - script.good_night
