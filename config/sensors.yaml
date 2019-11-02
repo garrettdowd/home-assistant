@@ -37,6 +37,10 @@
     - visibility
     - cloud_cover
 
+- platform: time_date
+  display_options:
+    - 'time'
+
 # - platform: yr
 #   name: Weather
 #   forecast: 24

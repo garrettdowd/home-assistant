@@ -155,6 +155,15 @@ media_player:
     client_id: !secret spotify_id
     client_secret: !secret spotify_secret
     name: Spotify
+  - platform: pjlink
+    host: 192.168.0.100
+    name: arcturus
+  - platform: pjlink
+    host: 192.168.0.101
+    name: vega
+  - platform: pjlink
+    host: 192.168.0.103
+    name: procyon
 
 
 camera:
@@ -178,20 +187,20 @@ device_tracker:
     track_new_devices: TRUE
     interval_seconds: 7
 
-googlehome:
-  devices:
-    - host: 192.168.0.11
-      track_alarms: true
-      track_devices: false
-    - host: 192.168.0.12
-      track_alarms: true
-      track_devices: false
-    - host: 192.168.0.13
-      track_alarms: true
-      track_devices: false
-    - host: 192.168.0.14
-      track_alarms: true
-      track_devices: false
+# googlehome:
+#   devices:
+#     - host: 192.168.0.11
+#       track_alarms: true
+#       track_devices: false
+#     - host: 192.168.0.12
+#       track_alarms: true
+#       track_devices: false
+#     - host: 192.168.0.13
+#       track_alarms: true
+#       track_devices: false
+#     - host: 192.168.0.14
+#       track_alarms: true
+#       track_devices: false
 
 panel_custom:
   - name: floorplan

@@ -59,12 +59,12 @@ scene:
   - name: Movie Play
     entities:
       light.livingroom_light:
-        state: on
-        rgb_color: [255,0,0]
-        brightness: 27
-        white_value: 30
-        transition: 8000
-        effect: "movie"
+        state: off
+        # rgb_color: [255,0,0]
+        # brightness: 27
+        # white_value: 30
+        # transition: 8000
+        # effect: "movie"
       light.hyperion:
         state: on
         effect: "HDMI"
@@ -123,8 +123,6 @@ automation:
     action:
       - service: input_boolean.turn_on
         entity_id: input_boolean.movie_lights_util
-      - service: input_boolean.turn_off
-        entity_id: input_boolean.eden_water_cycle
       - service: scene.turn_on
         entity_id: scene.movie_play
       - service: automation.turn_off
@@ -132,7 +130,13 @@ automation:
       - service: automation.turn_off
         entity_id: automation.adjust_livingroom_light
       - service: automation.turn_off
+        entity_id: automation.turn_on_livingroom_lights
+      - service: automation.turn_off
         entity_id: automation.adjust_hyperion
+      - service: input_boolean.turn_off
+        entity_id: input_boolean.eden_water_cycle
+      - service: automation.turn_off
+        entity_id: automation.turn_on_office_lights
 
 
   - id: Plex_Lights_Stop
@@ -158,9 +162,13 @@ automation:
       - service: automation.turn_on
         entity_id: automation.turn_off_livingroom_lights
       - service: automation.turn_on
+        entity_id: automation.turn_on_livingroom_lights
+      - service: automation.turn_on
         entity_id: automation.adjust_livingroom_light
       - service: automation.turn_on
         entity_id: automation.adjust_hyperion
+      - service: automation.turn_on
+        entity_id: automation.turn_on_office_lights
 
 
   - id: Plex_Lights_Pause

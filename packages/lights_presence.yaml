@@ -42,9 +42,9 @@ automation:
         - condition: state
           entity_id: input_boolean.presence_lights
           state: 'on'
-        # - condition: state
-        #   entity_id: group.garrett
-        #   state: 'home'
+        - condition: state
+          entity_id: group.garrett
+          state: 'away'
         - condition: state
           entity_id: group.entry_lights
           state: 'off'

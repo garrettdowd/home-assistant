@@ -266,58 +266,320 @@ views:
   - path: floorplan
     title: Floorplan
     badges: []
+    panel: true
     cards:
       - type: picture-elements
-        image: /local/custom_ui/lovelace-floorplan/floorplan.png?v=1.1
+        image: /local/custom_ui/lovelace-floorplan/base.png?v=0.1
         elements:
           - type: image
             entity: light.livingroom_light
+            image: /local/custom_ui/lovelace-floorplan/live.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: light.desk_light
+            image: /local/custom_ui/lovelace-floorplan/desk.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: light.monitor_light
+            image: /local/custom_ui/lovelace-floorplan/monitor.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: light.bedroom_light
+            image: /local/custom_ui/lovelace-floorplan/bed.png?v=0.1
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: light.closet_light
+            image: /local/custom_ui/lovelace-floorplan/closet.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: switch.bathroom_light
+            image: /local/custom_ui/lovelace-floorplan/bath.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: switch.kitchen_light
+            image: /local/custom_ui/lovelace-floorplan/kitch.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: switch.prep_light
+            image: /local/custom_ui/lovelace-floorplan/prep.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: switch.doorway_light
+            image: /local/custom_ui/lovelace-floorplan/door.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: switch.den_light
+            image: /local/custom_ui/lovelace-floorplan/den.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+          - type: image
+            entity: group.eden_all_lights
+            image: /local/custom_ui/lovelace-floorplan/ufarm.png
+            state_filter:
+              'on': opacity(100%)
+              'off': opacity(1%)
+            style:
+              mix-blend-mode: lighten
+              top: 50%
+              left: 50%
+              width: 100%
+
+          # - type: state-icon
+          #   entity: group.livingroom_lights
+          #   tap_action:
+          #     action: toggle
+          #   hold_action:
+          #     action: call-service
+          #     service: light.turn_on
+          #     service_data:
+          #       entity_id: light.livingroom_light
+          #       effect: remove_effects
+          #   style:
+          #     top: 35%
+          #     left: 46%
+          - type: state-icon
+            entity: light.livingroom_light
             tap_action:
               action: toggle
-            image: /local/custom_ui/lovelace-floorplan/lr-d.png
-            state_filter:
-              'off': opacity(100%)
-              'on': opacity(1%)
+            hold_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: light.livingroom_light
+                effect: remove_effects
             style:
-              top: 20.3%
-              left: 29.0%
-              width: 57.4%
-          - type: image
+              top: 28%
+              left: 29%
+          - type: state-icon
+            entity: light.desk_light
+            tap_action:
+              action: toggle
+            hold_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: light.desk_light
+                effect: remove_effects
+            style:
+              top: 32%
+              left: 52%
+          - type: state-icon
+            entity: light.monitor_light
+            tap_action:
+              action: toggle
+            hold_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: light.monitor_light
+                effect: remove_effects
+            style:
+              top: 28%
+              left: 46%
+          - type: state-icon
             entity: light.bedroom_light
             tap_action:
               action: toggle
-            image: /local/custom_ui/lovelace-floorplan/br-d.png
-            state_filter:
-              'off': opacity(100%)
-              'on': opacity(1%)
+            hold_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: light.bedroom_light
+                effect: remove_effects
             style:
-              top: 18.0%
-              left: 77.3%
-              width: 39.3%
-          - type: image
+              top: 29%
+              left: 70%
+          - type: state-icon
             entity: light.closet_light
             tap_action:
               action: toggle
-            image: /local/custom_ui/lovelace-floorplan/cl-d.png
-            state_filter:
-              'off': opacity(100%)
-              'on': opacity(1%)
+            hold_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: light.closet_light
+                effect: remove_effects
             style:
-              top: 41.5%
-              left: 83.2%
-              width: 27.3%
-          - type: image
-            entity: light.bathroom_light
+              top: 41%
+              left: 82%
+          - type: state-icon
+            entity: group.bathroom_lights
             tap_action:
               action: toggle
-            image: /local/custom_ui/lovelace-floorplan/bth-d.png
-            state_filter:
-              'off': opacity(100%)
-              'on': opacity(1%)
             style:
-              top: 89.2%
-              left: 78.5%
-              width: 42.3%
+              top: 88%
+              left: 75%
+          - type: state-icon
+            entity: switch.kitchen_light
+            tap_action:
+              action: toggle
+            style:
+              top: 65%
+              left: 48%
+          - type: state-icon
+            entity: switch.prep_light
+            tap_action:
+              action: toggle
+            style:
+              top: 55%
+              left: 56%
+          - type: state-icon
+            entity: switch.doorway_light
+            tap_action:
+              action: toggle
+            style:
+              top: 87%
+              left: 50%
+          - type: state-icon
+            entity: switch.den_light
+            tap_action:
+              action: toggle
+            style:
+              top: 65%
+              left: 70%
+
+          - type: service-button
+            title: Lights Off
+            style:
+              top: 95%
+              left: 15%
+            service: homeassistant.turn_off
+            service_data:
+              entity_id: group.lights
+          - type: service-button
+            title: Lights On
+            style:
+              top: 85%
+              left: 15%
+            service: homeassistant.turn_on
+            service_data:
+              entity_id: group.lights
+
+
+  # - path: floorplan-old
+  #   title: Floorplan-old
+  #   badges: []
+  #   cards:
+  #     - type: picture-elements
+  #       image: /local/custom_ui/lovelace-floorplan-old/floorplan.png?v=1.1
+  #       elements:
+  #         - type: image
+  #           entity: light.livingroom_light
+  #           tap_action:
+  #             action: toggle
+  #           image: /local/custom_ui/lovelace-floorplan-old/lr-d.png
+  #           state_filter:
+  #             'off': opacity(100%)
+  #             'on': opacity(1%)
+  #           style:
+  #             top: 20.3%
+  #             left: 29.0%
+  #             width: 57.4%
+  #         - type: image
+  #           entity: light.bedroom_light
+  #           tap_action:
+  #             action: toggle
+  #           image: /local/custom_ui/lovelace-floorplan-old/br-d.png
+  #           state_filter:
+  #             'off': opacity(100%)
+  #             'on': opacity(1%)
+  #           style:
+  #             top: 18.0%
+  #             left: 77.3%
+  #             width: 39.3%
+  #         - type: image
+  #           entity: light.closet_light
+  #           tap_action:
+  #             action: toggle
+  #           image: /local/custom_ui/lovelace-floorplan-old/cl-d.png
+  #           state_filter:
+  #             'off': opacity(100%)
+  #             'on': opacity(1%)
+  #           style:
+  #             top: 41.5%
+  #             left: 83.2%
+  #             width: 27.3%
+  #         - type: image
+  #           entity: light.bathroom_light
+  #           tap_action:
+  #             action: toggle
+  #           image: /local/custom_ui/lovelace-floorplan-old/bth-d.png
+  #           state_filter:
+  #             'off': opacity(100%)
+  #             'on': opacity(1%)
+  #           style:
+  #             top: 89.2%
+  #             left: 78.5%
+  #             width: 42.3%
 
   - path: urbaneden
     title: UrbanEden
@@ -365,10 +627,14 @@ views:
     title: Livingroom
     cards:
       - type: entities
-        title: Control
+        title: Entertainment
         show_header_toggle: false
         entities:
           - input_boolean.movie_lights
+          - media_player.canopus
+          - media_player.vega
+          - media_player.arcturus
+          - media_player.procyon
       - type: 'custom:group-card'
         card:
           type: entities

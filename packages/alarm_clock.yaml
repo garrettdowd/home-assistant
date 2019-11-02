@@ -40,7 +40,7 @@ automation:
           entity_id: input_number.alarmhour
           value: >
             {% set time = states("sensor.bedroom_assistant_alarm").split('T')[1].split('+')[0] %}
-            {% if states.input_boolean.daylight_saving.state == 'on' %}
+            {% if states('input_boolean.daylight_saving') == 'on' %}
             {{ time.split(':')[0] | int - 4}}
             {% else %}
             {{ time.split(':')[0] | int - 5}}
@@ -71,11 +71,7 @@ automation:
     trigger:
       platform: time_pattern
       minutes: '/1'
-      seconds: 00
-    # trigger:
-    #   platform: template
-    #   value_template: '{{ ((now().strftime("%s") | int + 600) | timestamp_custom("%H:%M"))  ==  states.sensor.alarm_time.state  }}'
-    #   # value_template: '{{ states.sensor.time.state == states.sensor.alarm_time.state }}'
+      seconds: 0
     condition:
       condition: and
       conditions:
@@ -83,7 +79,7 @@ automation:
         entity_id: input_boolean.alarm_clock
         state: 'on'
       - condition: template
-        value_template: '{{ ((now().strftime("%s") | int + (states.input_number.lightminutes.state | int) * 60) | timestamp_custom("%H:%M"))  ==  states.sensor.alarm_time.state  }}' # 600 seconds before alarm time
+        value_template: "{{ ( (as_timestamp(now()) | int + (states('input_number.lightminutes') | int) * 60) | timestamp_custom('%H:%M') )  ==  states.sensor.alarm_time.state  }}" # 600 seconds before alarm time
       - condition: state
         entity_id: group.garrett
         state: 'home'
@@ -128,7 +124,7 @@ automation:
           rgb_color: [0,0,255]
           transition: 850000
 
-      - delay: '00:{{states.input_number.lightminutes.state | int}}:00'
+      - delay: "00:{{states('input_number.lightminutes') | int}}:00"
 
       # - service:  media_player.turn_on
       #   entity_id: media_player.bedroom_speaker
@@ -136,7 +132,7 @@ automation:
       - service: media_player.volume_set
         entity_id: media_player.bedroom_speaker
         data_template:
-          volume_level: '{{ states.input_number.alarm_clock_volume.state | float }}'
+          volume_level: "{{ states('input_number.alarm_clock_volume') | float }}"
       - service: media_player.play_media
         data:
           entity_id: media_player.mspotify
@@ -199,13 +195,13 @@ automation:
       - service:  media_player.volume_set
         entity_id: media_player.bedroom_speaker
         data_template:
-          volume_level: '{{ states.input_number.alarm_clock_volume.state | float }}'
+          volume_level: "{{ states('input_number.alarm_clock_volume') | float }}"
       - service: input_number.set_value
         data_template:
           entity_id: input_number.alarm_clock_volume
           value: >
-            {% if states.input_number.alarm_clock_volume.state | float < 1 %}
-              {{ float(states.input_number.alarm_clock_volume.state) + float(states.input_number.alarm_clock_volume_speed.state) }}
+            {% if states('input_number.alarm_clock_volume') | float < 1 %}
+              {{ float(states('input_number.alarm_clock_volume')) + float(states('input_number.alarm_clock_volume_speed')) }}
             {% else %}
               1
             {% endif %}
@@ -283,7 +279,7 @@ automation:
       - service: light.turn_off
         data:
           entity_id: group.bedroom_lights
-      - delay: '00:{{ "{0:02d}".format(states.input_number.snoozetime.state | int)  }}:00'
+      - delay: "00:{{ '{0:02d}'.format(states('input_number.snoozetime') | int)  }}:00"
       - service: light.turn_on
         data:
           entity_id: group.bedroom_lights
@@ -398,7 +394,7 @@ sensor:
     sensors:
       alarm_time:
         friendly_name: 'Time'
-        value_template: '{{ "%0.02d:%0.02d" | format(states("input_number.alarmhour") | int, states("input_number.alarmminutes") | int) }}'
+        value_template: "{{ '%0.02d:%0.02d' | format(states('input_number.alarmhour') | int, states('input_number.alarmminutes') | int) }}"
 
   - platform: time_date
     display_options:

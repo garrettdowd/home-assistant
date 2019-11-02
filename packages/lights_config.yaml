@@ -418,6 +418,7 @@ group:
     entities:
       - switch.bathroom_light
       - light.mirror_light
+      - switch.shower_light
 
   mirror_light_control:
     name: Light Control mirror Light

@@ -173,3 +173,22 @@ entity_config:
     room: Bedroom
     expose: true
 
+  media_player.canopus:
+    name: Canopus
+    room: Living Room
+    expose: true
+
+  media_player.vega:
+    name: Vega
+    room: Living Room
+    expose: true
+
+  media_player.arcturus:
+    name: Arcturus
+    room: Living Room
+    expose: true
+
+  media_player.procyon:
+    name: Procyon
+    room: Living Room
+    expose: true
