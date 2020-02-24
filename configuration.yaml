@@ -37,6 +37,10 @@ updater:
   include_used_components: true
 
 system_health:
+
+mobile_app:
+
+ios:
   
 # Discover some devices automatically
 discovery:
@@ -156,9 +160,6 @@ media_player:
     client_secret: !secret spotify_secret
     name: Spotify
   - platform: pjlink
-    host: 192.168.0.100
-    name: arcturus
-  - platform: pjlink
     host: 192.168.0.101
     name: vega
   - platform: pjlink
@@ -184,7 +185,7 @@ asuswrt:
 
 device_tracker:
   - platform: asuswrt
-    track_new_devices: TRUE
+    track_new_devices: False
     interval_seconds: 7
 
 # googlehome:
@@ -202,12 +203,12 @@ device_tracker:
 #       track_alarms: true
 #       track_devices: false
 
-panel_custom:
-  - name: floorplan
-    sidebar_title: Floorplan
-    sidebar_icon: mdi:home
-    url_path: floorplan
-    config: !include config/floorplan.yaml
+# panel_custom:
+#   - name: floorplan
+#     sidebar_title: Floorplan
+#     sidebar_icon: mdi:home
+#     url_path: floorplan
+#     config: !include config/floorplan.yaml
 
 # Other Panels
 # Currently doesn't work because pages require basic http auth
@@ -238,18 +239,17 @@ panel_custom:
 ################################################
 # Includes
 ################################################
-
-# automation: !include config/automations.yaml
-# binary_sensor: !include config/binary_sensors.yaml
 google_assistant: !include config/google_assistant.yaml
 group: !include config/groups.yaml
+sensor: !include config/sensors.yaml
+scene: !include_dir_merge_list config/scenes
+script: !include config/scripts.yaml
+weblink: !include config/weblinks.yaml
+# automation: !include config/automations.yaml
+# binary_sensor: !include config/binary_sensors.yaml
 # input_boolean: !include config/input_boolean.yaml
 # input_number: !include config/input_number.yaml
 # input_select: !include config/input_select.yaml
 # ios: !include config/ios.yaml
 # light: !include config/lights.yaml
-sensor: !include config/sensors.yaml
-scene: !include_dir_merge_list config/scenes
-script: !include config/scripts.yaml
 # switch: !include config/switch.yaml
-weblink: !include config/weblinks.yaml

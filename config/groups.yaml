@@ -213,8 +213,8 @@ climate:
 garrett:
   name: Garrett Presence
   entities:
-    - device_tracker.garrett_iphone
     - device_tracker.miniscreen
+    - device_tracker.miniscreen_wifi
     - device_tracker.masterscreen
 
 
